@@ -2,3 +2,21 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+/* TODO: document styling:  */
+ #initiatieven-kaart-map {
+   height: 400px;
+   width: 100%;
+ }
+
+
+ .leaflet-marker-icon {
+   background-color: white;
+   text-align: center;
+   border-radius: 50%;
+   font-size: 1.1em;
+ }
+
+ .clusterIcon-sm {
+
+ }

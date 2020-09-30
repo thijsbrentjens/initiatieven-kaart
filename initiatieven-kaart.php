@@ -13,12 +13,12 @@
  * @package           Initiatieven_Kaart
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
+ * Plugin Name:       Initiatieven Kaart
  * Plugin URI:        http://example.com/initiatieven-kaart-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Toont LED initiatieven op een
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            Thijs Brentjens
+ * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       initiatieven-kaart
@@ -78,5 +78,19 @@ function run_initiatieven_kaart() {
 	$plugin = new Initiatieven_Kaart();
 	$plugin->run();
 
+	add_action('wp_enqueue_scripts', array($plugin, 'enqueue_scripts'));
+
+
 }
 run_initiatieven_kaart();
+
+// Thijs: setting up things, for dev. TODO: better place?
+function get_custom_post_type_template( $archive_template ) {
+	global $post;
+
+	if ( is_post_type_archive ( CPT_INITIATIEF ) ) {
+		$archive_template = dirname( __FILE__ ) . '/includes/templates/archive-initiatieven.php';
+	}
+	return $archive_template;
+}
+add_filter( 'archive_template', 'get_custom_post_type_template' ) ;

@@ -48,6 +48,8 @@ class Initiatieven_Kaart {
 	 */
 	protected $initiatieven_kaart;
 
+	// Thijs: TODO: document
+	private $types;
 	/**
 	 * The current version of the plugin.
 	 *
@@ -72,6 +74,11 @@ class Initiatieven_Kaart {
 		} else {
 			$this->version = '1.0.0';
 		}
+
+		if ( ! defined( 'CPT_INITIATIEF' ) ) {
+			define( 'CPT_INITIATIEF', 'initiatief' );
+		}
+
 		$this->initiatieven_kaart = 'initiatieven-kaart';
 
 		$this->load_dependencies();
@@ -79,6 +86,8 @@ class Initiatieven_Kaart {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		// register type:
+		$this->registerPostType();
 	}
 
 	/**
@@ -215,4 +224,109 @@ class Initiatieven_Kaart {
 		return $this->version;
 	}
 
+	public function registerPostType() {
+
+		$this->types = array(
+
+			// Custom post types
+			CPT_INITIATIEF => array(
+				'label'                 => esc_html__( CPT_INITIATIEF, 'waymark' ),
+				'description'           => '',
+				'labels'                => array(
+					'name'                  => esc_html__('Initiatieven', 'waymark' ),
+					'singular_name'         => esc_html__('Initiatief', 'waymark' ),
+					'menu_name'             => esc_html__('Initiatieven', 'waymark' ),
+					'name_admin_bar'        => esc_html__('Initiatief', 'waymark' ),
+					'archives'              => esc_html__('Overzicht initiatieven', 'waymark' ),
+					'attributes'            => esc_html__('Eigenschappen initiatief', 'waymark' ),
+					'parent_item_colon'     => esc_html__('Parent Map:', 'waymark' ),
+					'all_items'             => esc_html__('Alle initiatieven', 'waymark' ),
+					'add_new_item'          => esc_html__('Initiatief toevoegen', 'waymark' ),
+					'add_new'               => esc_html__('Toevoegen', 'waymark' ),
+					'new_item'              => esc_html__('Nieuw initiatief', 'waymark' ),
+					'edit_item'             => esc_html__('Bewerk initiatief', 'waymark' ),
+					'update_item'           => esc_html__('Update initiatief', 'waymark' ),
+					'view_item'             => esc_html__('Bekijk initiatief', 'waymark' ),
+					'view_items'            => esc_html__('Bekijk initiatieven', 'waymark' ),
+					'search_items'          => esc_html__('Zoek initiatief', 'waymark' ),
+					'not_found'             => esc_html__('Not found', 'waymark' ),
+					'not_found_in_trash'    => esc_html__('Not found in Trash', 'waymark' ),
+					'featured_image'        => esc_html__('Featured Image', 'waymark' ),
+					'set_featured_image'    => esc_html__('Set featured image', 'waymark' ),
+					'remove_featured_image' => esc_html__('Remove featured image', 'waymark' ),
+					'use_featured_image'    => esc_html__('Use as featured image', 'waymark' ),
+					'insert_into_item'      => esc_html__('Insert into Map', 'waymark' ),
+					'uploaded_to_this_item' => esc_html__('Uploaded to this initiatief', 'waymark' ),
+					'items_list'            => esc_html__('Map list', 'waymark' ),
+					'items_list_navigation' => esc_html__('Maps list navigation', 'waymark' ),
+					'filter_items_list'     => esc_html__('Filter initiatief list', 'waymark' ),
+				),
+				'supports'              => array( 'title', 'author', 'excerpt', 'editor' ),
+				'hierarchical'          => false,
+				'public'                => true,
+				'show_ui'               => true,
+				'show_in_menu'          => true,
+				'menu_position'         => 6,
+				'show_in_admin_bar'     => true,
+				'show_in_nav_menus'     => true,
+				'can_export'            => true,
+				'has_archive'           => true,
+				'exclude_from_search'   => false,
+				'publicly_queryable'    => true,
+				// TODO: 'rewrite' is not working?
+				// 'rewrite'               => array('slug' => CPT_INITIATIEF ),
+				'rewrite'               => false,
+				'capability_type'       => 'post'
+			));
+
+			$types = array();
+			foreach($this->types as $type_id => $type_data) {
+				$types[] = $type_id;
+
+				register_post_type($type_id, $type_data);
+			}
+		return True;
+	}
+
+	// TODO: version? $plugin->version?
+	public function enqueue_scripts() {
+
+		wp_register_style('leaflet-css', '/wp-content/plugins/initiatieven-kaart/public/css/leaflet.css', array(), '1.7.1');
+		wp_enqueue_style('leaflet-css');
+
+		wp_register_style('markercluster-css', '/wp-content/plugins/initiatieven-kaart/public/css/MarkerCluster.css', array(), '1.0.0');
+		wp_enqueue_style('markercluster-css');
+
+		wp_register_style('markercluster-default-css', '/wp-content/plugins/initiatieven-kaart/public/css/MarkerCluster.Default.css', array(), '1.0.0');
+		wp_enqueue_style('markercluster-default-css');
+
+		wp_register_style('leaflet-awesome-markers-css', '/wp-content/plugins/initiatieven-kaart/public/css/leaflet.awesome-markers.css', array(), '1.0.0');
+		wp_enqueue_style('leaflet-awesome-markers-css');
+
+
+		wp_register_style('initiatieven-kaart-public-css', '/wp-content/plugins/initiatieven-kaart/public/css/initiatieven-kaart-public.css', array(), '1.0.0');
+		wp_enqueue_style('initiatieven-kaart-public-css');
+
+
+		// TODO: the correct path for the plugin
+
+		wp_register_script('leaflet-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.js', array('jquery'), '1.7.1', true);
+		wp_enqueue_script('leaflet-js');
+
+		wp_register_script('leaflet-markercluster-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.markercluster.js', array('jquery', 'leaflet-js'), '1.0.0', true);
+		wp_enqueue_script('leaflet-markercluster-js');
+
+		wp_register_script('leaflet-awesome-markers-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.awesome-markers.js', array('jquery', 'leaflet-js'), '1.0.0', true);
+		wp_enqueue_script('leaflet-awesome-markers-js');
+
+			wp_register_script('initiatieven-kaart-public-js', '/wp-content/plugins/initiatieven-kaart/public/js/initiatieven-kaart-public.js', array('jquery', 'leaflet-js', 'leaflet-markercluster-js'), '1.0.0', true);
+				// wp_localize_script('initiatieven-kaart-public-js', 'initiatieven-kaart_js_lang', array(
+				// 	//Viewer
+				// 	'action_fullscreen_activate' => esc_attr__( 'View Fullscreen', 'initiatieven-kaart' ),
+				// 	'action_fullscreen_deactivate' => esc_attr__( 'Exit Fullscreen', 'initiatieven-kaart' ),
+				// 	'action_zoom_in' => esc_attr__( 'Zoom in', 'initiatieven-kaart' ),
+				// 	'action_zoom_out' => esc_attr__( 'Zoom out', 'initiatieven-kaart' ),
+				// ));
+			wp_enqueue_script('initiatieven-kaart-public-js');
+	}
 }
