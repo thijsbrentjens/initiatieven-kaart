@@ -15,7 +15,7 @@ if ( function_exists( 'genesis' ) ) {
 
     <div id="primary" class="content-area">
         <div id="content" class="clearfix">
-					<h3>Initiatieven posts</h3>
+					<h3>Data initiatieven</h3>
 					<ul id="map-items">
 				<?php while ( have_posts() ) : the_post();
 
