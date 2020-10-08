@@ -291,42 +291,5 @@ class Initiatieven_Kaart {
 	// TODO: version? $plugin->version?
 	public function enqueue_scripts() {
 
-		wp_register_style('leaflet-css', '/wp-content/plugins/initiatieven-kaart/public/css/leaflet.css', array(), '1.7.1');
-		wp_enqueue_style('leaflet-css');
-
-		wp_register_style('markercluster-css', '/wp-content/plugins/initiatieven-kaart/public/css/MarkerCluster.css', array(), '1.0.0');
-		wp_enqueue_style('markercluster-css');
-
-		wp_register_style('markercluster-default-css', '/wp-content/plugins/initiatieven-kaart/public/css/MarkerCluster.Default.css', array(), '1.0.0');
-		wp_enqueue_style('markercluster-default-css');
-
-		wp_register_style('leaflet-awesome-markers-css', '/wp-content/plugins/initiatieven-kaart/public/css/leaflet.awesome-markers.css', array(), '1.0.0');
-		wp_enqueue_style('leaflet-awesome-markers-css');
-
-
-		wp_register_style('initiatieven-kaart-public-css', '/wp-content/plugins/initiatieven-kaart/public/css/initiatieven-kaart-public.css', array(), '1.0.0');
-		wp_enqueue_style('initiatieven-kaart-public-css');
-
-
-		// TODO: the correct path for the plugin
-
-		wp_register_script('leaflet-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.js', array('jquery'), '1.7.1', true);
-		wp_enqueue_script('leaflet-js');
-
-		wp_register_script('leaflet-markercluster-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.markercluster.js', array('jquery', 'leaflet-js'), '1.0.0', true);
-		wp_enqueue_script('leaflet-markercluster-js');
-
-		wp_register_script('leaflet-awesome-markers-js', '/wp-content/plugins/initiatieven-kaart/public/js/leaflet.awesome-markers.js', array('jquery', 'leaflet-js'), '1.0.0', true);
-		wp_enqueue_script('leaflet-awesome-markers-js');
-
-			wp_register_script('initiatieven-kaart-public-js', '/wp-content/plugins/initiatieven-kaart/public/js/initiatieven-kaart-public.js', array('jquery', 'leaflet-js', 'leaflet-markercluster-js'), '1.0.0', true);
-				// wp_localize_script('initiatieven-kaart-public-js', 'initiatieven-kaart_js_lang', array(
-				// 	//Viewer
-				// 	'action_fullscreen_activate' => esc_attr__( 'View Fullscreen', 'initiatieven-kaart' ),
-				// 	'action_fullscreen_deactivate' => esc_attr__( 'Exit Fullscreen', 'initiatieven-kaart' ),
-				// 	'action_zoom_in' => esc_attr__( 'Zoom in', 'initiatieven-kaart' ),
-				// 	'action_zoom_out' => esc_attr__( 'Zoom out', 'initiatieven-kaart' ),
-				// ));
-			wp_enqueue_script('initiatieven-kaart-public-js');
 	}
 }

@@ -16,7 +16,7 @@ if ( function_exists( 'genesis' ) ) {
     <div id="primary" class="content-area">
         <div id="content" class="clearfix">
 					<h3>Initiatieven posts</h3>
-					<ul>
+					<ul id="map-items">
 				<?php while ( have_posts() ) : the_post();
 
 					$contenttype     = get_post_type();
@@ -40,7 +40,7 @@ if ( function_exists( 'genesis' ) ) {
 				if ($locationField != false) {
 					// TODO: is the location the center of the map, or better the first marker?
 					// preferably the first marker, need to decide with Paul
-					printf( '<li class="map-object" data-latitude="%s" data-longitude="%s" data-category="%s">', $locationField["lat"], $locationField["lng"], $category );
+					printf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-category="%s">', $locationField["lat"], $locationField["lng"], $category );
 					printf ('<h4>%s</h4>', $title);
 					printf ('<span class="category %s">Categorie: %s</span>', $category, $category);
 					printf ('<a href="%s" class="postdetails">Meer informatie over dit initiatief</a>', $permalink);
@@ -52,7 +52,7 @@ if ( function_exists( 'genesis' ) ) {
 
 			<?php endwhile; ?>
 					</ul>
-          <div id="initiatieven-kaart-map"></div>
+          <!-- <div id="initiatieven-kaart-map" class="archives-map"></div> -->
         </div><!-- #content -->
     </div><!-- #primary -->
 
