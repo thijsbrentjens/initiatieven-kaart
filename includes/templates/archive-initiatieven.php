@@ -2,6 +2,8 @@
 
 if ( function_exists( 'genesis' ) ) {
 
+	echo 'Genesis custom loop! initiatieven_archive_custom_loop';
+
 	/** Replace the standard loop with our custom loop */
 	remove_action( 'genesis_loop', 'genesis_do_loop' );
 	add_action( 'genesis_loop', 'initiatieven_archive_custom_loop' );
@@ -11,53 +13,86 @@ if ( function_exists( 'genesis' ) ) {
 } else {
 	global $post;
 
+
 	get_header(); ?>
 
     <div id="primary" class="content-area">
         <div id="content" class="clearfix">
-					<h3>Data initiatieven</h3>
-					<ul id="map-items">
+            <h3>Data initiatieven</h3>
+            <ul id="map-items">
 				<?php while ( have_posts() ) : the_post();
 
-					$contenttype     = get_post_type();
+					$contenttype = get_post_type();
 					// TODO: check for contenttype being the customtype?
-					// echo $contenttype;
+					echo 'ahem ' . $contenttype;
 
-				// use the location attributes to create data-attributes for the map
-				// second term false: current post
-				// TODO: configurable name for the location field?
-				$locationField = get_field('location', false, false);
-				// TODO: use the lon/lat of the first marker instead of map center
-				$map_item_type = "onbekend";
-				$map_item_typeField = get_field('map-item-type', false, false);
-				$title = isset( $post->post_title ) ? $post->post_title : '';
-				$permalink = get_post_permalink($post->id);
-				if ($map_item_typeField) {
-					$map_item_type = $map_item_typeField;
-				} else {
-					// category --> unknown
-				}
+					// use the location attributes to create data-attributes for the map
+					// second term false: current post
+					// TODO: configurable name for the location field?
+					$locationField = get_field( 'openstreet_map' );
+					echo '<pre>';
+					var_dump( $locationField );
+					echo '</pre>';
 
-				if ($locationField != false) {
-					// TODO: is the location the center of the map, or better the first marker?
-					// preferably the first marker, need to decide with Paul
-					printf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $locationField["lat"], $locationField["lng"], $map_item_type );
-					printf ('<h4>%s</h4>', $title);
-					printf ('<p class="map-item-type %s">Soort initiatief: %s</p>', $map_item_type, $map_item_type);
-					printf ('<p><a href="%s" class="postdetails">Meer informatie over dit initiatief</a></p>', $permalink);
-					echo '</li>';
-				}
-				?>
+					/*
+					 * <div class="leaflet-map" data-height="400" data-map="leaflet" data-map-lng="5.1103163" data-map-lat="52.0925858" data-map-zoom="14" data-map-layers="[&quot;OpenStreetMap.Mapnik&quot;]" data-map-markers="[{&quot;label&quot;:&quot;Stationshal 12B, 3511CE Utrecht, Utrecht The Netherlands&quot;,&quot;default_label&quot;:&quot;Stationshal 12B, 3511CE Utrecht, Utrecht The Netherlands&quot;,&quot;lat&quot;:52.0892107,&quot;lng&quot;:5.10993}]"></div>
+					 */
+
+					// TODO: use the lon/lat of the first marker instead of map center
+					$map_item_type = "onbekend";
+
+					// haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
+					$initatieftypes = get_the_terms( get_the_id(), CT_INITIATIEFTYPE );
+					$title          = isset( $post->post_title ) ? $post->post_title : '';
+					$permalink      = get_post_permalink( $post->id );
+					if ( $map_item_typeField ) {
+						$map_item_type = $map_item_typeField;
+					} else {
+						// category --> unknown
+					}
+
+					if ( $locationField != false ) {
+						// TODO: is the location the center of the map, or better the first marker?
+						// preferably the first marker, need to decide with Paul
+						printf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $locationField["lat"], $locationField["lng"], $map_item_type );
+						printf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
+
+						// iets van een samenvatting, beschrijving tonen hier
+						printf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
+
+						// als er iets aanwezig is voor de taxonomy initatietype,
+                        // dan zetten we alle waarden daarvoor in een <dl>
+						if ( $initatieftypes && ! is_wp_error( $initatieftypes ) ) :
+
+							$classes = array();
+							$labels = array();
+
+							foreach ( $initatieftypes as $term ) {
+								$classes[] = $term->slug;
+								$labels[]  = $term->name;
+							}
+
+							?>
+
+                            <dl class="<?php echo join( " ", $classes ) ?>">
+                                <dt><?php _e( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) ?></dt>
+                                <dd><?php echo join( ", ", $labels ) ?></dd>
+                            </dl>
+						<?php
+						endif;
+
+						echo '</li>';
+					}
+					?>
 
 
-
-			<?php endwhile; ?>
-					</ul>
-          <!-- <div id="initiatieven-kaart-map" class="archives-map"></div> -->
+				<?php endwhile; ?>
+            </ul>
+            <!-- <div id="initiatieven-kaart-map" class="archives-map"></div> -->
         </div><!-- #content -->
     </div><!-- #primary -->
 
-<!-- TODO: now initiate the map here -->
+    <!-- TODO: now initiate the map here -->
 
 	<?php
 
