@@ -38,27 +38,6 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'INITIATIEVEN_KAART_VERSION', '1.0.0' );
 
 /**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-initiatieven-kaart-activator.php
- */
-function activate_initiatieven_kaart() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-initiatieven-kaart-activator.php';
-	Initiatieven_Kaart_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-initiatieven-kaart-deactivator.php
- */
-function deactivate_initiatieven_kaart() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-initiatieven-kaart-deactivator.php';
-	Initiatieven_Kaart_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_initiatieven_kaart' );
-register_deactivation_hook( __FILE__, 'deactivate_initiatieven_kaart' );
-
-/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */

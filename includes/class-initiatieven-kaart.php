@@ -273,7 +273,7 @@ class Initiatieven_Kaart {
 				'has_archive'           => true,
 				'exclude_from_search'   => false,
 				'publicly_queryable'    => true,
-				// TODO: 'rewrite' is not working?
+				// TODO: 'rewrite' is not working locally?
 				// 'rewrite'               => array('slug' => CPT_INITIATIEF ),
 				'rewrite'               => false,
 				'capability_type'       => 'post'
