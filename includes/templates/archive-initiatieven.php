@@ -28,12 +28,12 @@ if ( function_exists( 'genesis' ) ) {
 				// TODO: configurable name for the location field?
 				$locationField = get_field('location', false, false);
 				// TODO: use the lon/lat of the first marker instead of map center
-				$category = "onbekend";
-				$categoryField = get_field('map-item-type', false, false);
+				$map_item_type = "onbekend";
+				$map_item_typeField = get_field('map-item-type', false, false);
 				$title = isset( $post->post_title ) ? $post->post_title : '';
 				$permalink = get_post_permalink($post->id);
-				if ($categoryField) {
-					$category = $categoryField;
+				if ($map_item_typeField) {
+					$map_item_type = $map_item_typeField;
 				} else {
 					// category --> unknown
 				}
@@ -41,9 +41,9 @@ if ( function_exists( 'genesis' ) ) {
 				if ($locationField != false) {
 					// TODO: is the location the center of the map, or better the first marker?
 					// preferably the first marker, need to decide with Paul
-					printf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $locationField["lat"], $locationField["lng"], $category );
+					printf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $locationField["lat"], $locationField["lng"], $map_item_type );
 					printf ('<h4>%s</h4>', $title);
-					printf ('<p class="map-item-type %s">Soort initiatief: %s</p>', $category, $category);
+					printf ('<p class="map-item-type %s">Soort initiatief: %s</p>', $map_item_type, $map_item_type);
 					printf ('<p><a href="%s" class="postdetails">Meer informatie over dit initiatief</a></p>', $permalink);
 					echo '</li>';
 				}

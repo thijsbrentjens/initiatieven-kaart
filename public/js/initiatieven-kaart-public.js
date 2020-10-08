@@ -119,8 +119,9 @@
             icon: category,
             // prefix: 'fa',
 						// TODO: use CSS for styling?
-            iconColor: 'black',
-            markerColor: 'white'
+            iconColor: '#FFF',
+						// TODO: default color? change to rijkshuisstijl? #154273?
+            markerColor: 'cadetblue'
           });
           return L.marker(latlng, {
             icon: customIcon,
@@ -176,7 +177,7 @@
             }
             return L.divIcon({
               html: '<b>' + cluster.getChildCount() + '</b>',
-              className: 'clusterIcon-' + sizeClass,
+              className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
           }
