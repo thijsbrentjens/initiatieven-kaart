@@ -69,6 +69,8 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 
 function led_initiatieven_archive_list( $doreturn = false ) {
 
+    // TODO: misschien de lijst gewoon op alfabetisch volgorde sorteren
+
 	global $post;
 
 	if ( have_posts() ) {
