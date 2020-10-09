@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        http://example.com/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,13 +30,16 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.0' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.1' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-initiatieven-kaart.php';
+
+// in dit bestand staan de veld-definities voor de ACF-velden
+require plugin_dir_path( __FILE__ ) . 'includes/acf-definitions.php';
 
 //========================================================================================================
 
@@ -62,24 +65,49 @@ function run_initiatieven_kaart() {
 run_initiatieven_kaart();
 
 //========================================================================================================
-
-function get_custom_post_type_template( $archive_template ) {
+/*
+ * filter voor overzicht (archive) van de initiatieven
+ */
+function led_template_archive_initiatieven( $archive_template ) {
 	global $post;
 
 	if ( is_post_type_archive ( CPT_INITIATIEF ) ) {
 		// het is een archive voor CPT = CPT_INITIATIEF
-		$archive_template = dirname( __FILE__ ) . '/includes/templates/archive-initiatieven.php';
+		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
 	}
 
 	return $archive_template;
 
 }
 
-add_filter( 'archive_template', 'get_custom_post_type_template' ) ;
+add_filter( 'archive_template', 'led_template_archive_initiatieven' ) ;
+
+//========================================================================================================
+/*
+ * filter voor overzicht (archive) van de initiatieven
+ */
+function led_template_single_initiatief( $archive_template ) {
+	global $post;
+
+	if ( is_singular ( CPT_INITIATIEF ) ) {
+		// het is een single voor CPT = CPT_INITIATIEF
+		$archive_template = dirname( __FILE__ ) . '/templates/single-initiatief.php';
+	}
+
+	return $archive_template;
+
+}
+
+add_filter( 'single_template', 'led_template_single_initiatief' ) ;
 
 //========================================================================================================
 
-function wporg_custom_post_type() {
+/*
+ * Deze functie zorgt voor het custom post type 'initiatief' en voor
+ * twee custom taxonomies: initiatieftype en plaatsnaam; deze
+ * taxonomieen zijn alleen geldig voor CPT 'initiatief'.
+ */
+function led_custom_tax_and_types() {
 
 
 	$args = array(
@@ -131,7 +159,7 @@ function wporg_custom_post_type() {
 
 	register_post_type( CPT_INITIATIEF, $args );
 
-	// Add new taxonomy, make it hierarchical (like categories)
+	// Initiatieftype
 	$labels = array(
 		'name'              => esc_html_x( 'Type initatief', 'taxonomy', 'initiatieven-kaart' ),
 		'singular_name'     => esc_html_x( 'Initatieftype', 'taxonomy singular name', 'initiatieven-kaart' ),
@@ -156,65 +184,77 @@ function wporg_custom_post_type() {
 	);
 
 	register_taxonomy( CT_INITIATIEFTYPE, array( CPT_INITIATIEF ), $args );
-	
-	
+
+	// Gemeente; dit is een taxonomy zodat we initiatieven kunnen groeperen.
+	$labels = array(
+		'name'              => esc_html_x( 'Plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'singular_name'     => esc_html_x( 'Plaatsnaam', 'taxonomy singular name', 'initiatieven-kaart' ),
+		'search_items'      => esc_html_x( 'Search plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'all_items'         => esc_html_x( 'All plaatsnamen', 'taxonomy', 'initiatieven-kaart' ),
+		'parent_item'       => esc_html_x( 'Parent plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'parent_item_colon' => esc_html_x( 'Parent plaatsnaam:', 'taxonomy', 'initiatieven-kaart' ),
+		'edit_item'         => esc_html_x( 'Edit plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'update_item'       => esc_html_x( 'Update plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'add_new_item'      => esc_html_x( 'Add New plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'new_item_name'     => esc_html_x( 'New plaatsnaam Name', 'taxonomy', 'initiatieven-kaart' ),
+		'menu_name'         => esc_html_x( 'Plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+	);
+
+	$args = array(
+		'hierarchical'      => true,
+		'labels'            => $labels,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => CT_INITIATIEF_GEMEENTE ),
+	);
+
+	register_taxonomy( CT_INITIATIEF_GEMEENTE, array( CPT_INITIATIEF ), $args );
+
+
+
 }
 
-add_action('init', 'wporg_custom_post_type');
+// Trigger registering the post type as soon as possible
+add_action('init', 'led_custom_tax_and_types');
+
+//========================================================================================================
+/*
+ * deze functie haalt voor alle inititieftypen de bijbehorende icoontjes op
+ * TODO: EIGENLIJK hoort deze functie thuis in de class Initiatieven_Kaart
+ * maar voor nu heb ik 'm effe hier gefrut
+ * SORRY MENSHEID!!
+ */
+function get_initiatieficons() {
+
+	$arr_initiatief_type_icon = [];
+
+	// alle types langs om voor elk het bijbehorende icoontje op te halen
+	$args  = [
+		'taxonomy'   => CT_INITIATIEFTYPE,
+		'hide_empty' => true,
+		'orderby'    => 'name',
+		'order'      => 'ASC',
+	];
+	$terms = get_terms( $args );
+
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		$count = count( $terms );
+
+		foreach ( $terms as $term ) {
+
+			$initiatief_type_icon = get_field( 'initiatief_type_icon', CT_INITIATIEFTYPE . '_' . $term->term_id );
+
+			if ( $initiatief_type_icon ) {
+				$arr_initiatief_type_icon[ $term->slug ] = $initiatief_type_icon;
+			}
+		}
+	}
+
+	return $arr_initiatief_type_icon;
+
+}
 
 //========================================================================================================
 
-if( function_exists('acf_add_local_field_group') ):
-
-	acf_add_local_field_group(array(
-		'key' => 'group_5f589cb3955cc',
-		'title' => 'Velden voor initiatief',
-		'fields' => array(
-			array(
-				'center_lat' => 51.9179617,
-				'center_lng' => 4.5007038,
-				'zoom' => 14,
-				'key' => 'field_5f58c08e264c0',
-				'label' => 'OpenStreet Map',
-				'name' => 'openstreet_map',
-				'type' => 'open_street_map',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'return_format' => 'raw',
-				'layers' => array(
-					0 => 'OpenStreetMap.Mapnik',
-				),
-				'allow_map_layers' => 1,
-				'height' => 400,
-				'max_markers' => '',
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param' => 'post_type',
-					'operator' => '==',
-					'value' => 'initiatief',
-				),
-			),
-		),
-		'menu_order' => 0,
-		'position' => 'acf_after_title',
-		'style' => 'default',
-		'label_placement' => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen' => '',
-		'active' => true,
-		'description' => '',
-	));
-
-endif;
-
-//========================================================================================================
 

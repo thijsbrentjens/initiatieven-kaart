@@ -60,6 +60,16 @@ class Initiatieven_Kaart {
 	protected $version;
 
 	/**
+	 * set van alle icons die aan een initiatieftype gekoppeld zijn
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      array $icons
+	 */
+	protected $icons;
+
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -82,6 +92,11 @@ class Initiatieven_Kaart {
 		// taxonomie voor initiatief-type
 		if ( ! defined( 'CT_INITIATIEFTYPE' ) ) {
 			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
+		}
+
+		// taxonomie voor gemeente voor een initiatief
+		if ( ! defined( 'CT_INITIATIEF_GEMEENTE' ) ) {
+			define( 'CT_INITIATIEF_GEMEENTE', 'plaatsnaam' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
@@ -231,4 +246,43 @@ class Initiatieven_Kaart {
 	public function enqueue_scripts() {
 
 	}
+
+
+	public function get_icons() {
+//			return $this->icons;
+//		}
+
+		$themakleuren = [];
+
+		// alle tipthema's langs om de kleuren op te halen
+		$args  = [
+			'taxonomy'   => GC_TIPTHEMA,
+			'hide_empty' => true,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		];
+		$terms = get_terms( $args );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			$count = count( $terms );
+
+			foreach ( $terms as $term ) {
+
+				$themakleur = get_field( 'kleur_en_icoon_tipthema', GC_TIPTHEMA . '_' . $term->term_id );
+
+				if ( $themakleur ) {
+
+					$themakleuren[ $term->term_id ] = $themakleur;
+
+				} else {
+					// kleur ontbreekt
+				}
+			}
+		}
+
+		return $themakleuren;
+
+	}
+
+
 }
