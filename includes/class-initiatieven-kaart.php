@@ -35,7 +35,7 @@ class Initiatieven_Kaart {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Initiatieven_Kaart_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Initiatieven_Kaart_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Initiatieven_Kaart {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $initiatieven_kaart    The string used to uniquely identify this plugin.
+	 * @var      string $initiatieven_kaart The string used to uniquely identify this plugin.
 	 */
 	protected $initiatieven_kaart;
 
@@ -55,9 +55,19 @@ class Initiatieven_Kaart {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
+
+	/**
+	 * set van alle icons die aan een initiatieftype gekoppeld zijn
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      array $icons
+	 */
+	protected $icons;
+
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -79,6 +89,16 @@ class Initiatieven_Kaart {
 			define( 'CPT_INITIATIEF', 'initiatief' );
 		}
 
+		// taxonomie voor initiatief-type
+		if ( ! defined( 'CT_INITIATIEFTYPE' ) ) {
+			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
+		}
+
+		// taxonomie voor gemeente voor een initiatief
+		if ( ! defined( 'CT_INITIATIEF_GEMEENTE' ) ) {
+			define( 'CT_INITIATIEF_GEMEENTE', 'plaatsnaam' );
+		}
+
 		$this->initiatieven_kaart = 'initiatieven-kaart';
 
 		$this->load_dependencies();
@@ -86,8 +106,6 @@ class Initiatieven_Kaart {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
-		// register type:
-		$this->registerPostType();
 	}
 
 	/**
@@ -197,8 +215,8 @@ class Initiatieven_Kaart {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_initiatieven_kaart() {
 		return $this->initiatieven_kaart;
@@ -207,8 +225,8 @@ class Initiatieven_Kaart {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Initiatieven_Kaart_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -217,79 +235,16 @@ class Initiatieven_Kaart {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;
-	}
-
-	public function registerPostType() {
-
-		$this->types = array(
-
-			// Custom post types
-			CPT_INITIATIEF => array(
-				'label'                 => esc_html__( CPT_INITIATIEF, 'waymark' ),
-				'description'           => '',
-				'labels'                => array(
-					'name'                  => esc_html__('Initiatieven', 'waymark' ),
-					'singular_name'         => esc_html__('Initiatief', 'waymark' ),
-					'menu_name'             => esc_html__('Initiatieven', 'waymark' ),
-					'name_admin_bar'        => esc_html__('Initiatief', 'waymark' ),
-					'archives'              => esc_html__('Overzicht initiatieven', 'waymark' ),
-					'attributes'            => esc_html__('Eigenschappen initiatief', 'waymark' ),
-					'parent_item_colon'     => esc_html__('Parent Map:', 'waymark' ),
-					'all_items'             => esc_html__('Alle initiatieven', 'waymark' ),
-					'add_new_item'          => esc_html__('Initiatief toevoegen', 'waymark' ),
-					'add_new'               => esc_html__('Toevoegen', 'waymark' ),
-					'new_item'              => esc_html__('Nieuw initiatief', 'waymark' ),
-					'edit_item'             => esc_html__('Bewerk initiatief', 'waymark' ),
-					'update_item'           => esc_html__('Update initiatief', 'waymark' ),
-					'view_item'             => esc_html__('Bekijk initiatief', 'waymark' ),
-					'view_items'            => esc_html__('Bekijk initiatieven', 'waymark' ),
-					'search_items'          => esc_html__('Zoek initiatief', 'waymark' ),
-					'not_found'             => esc_html__('Not found', 'waymark' ),
-					'not_found_in_trash'    => esc_html__('Not found in Trash', 'waymark' ),
-					'featured_image'        => esc_html__('Featured Image', 'waymark' ),
-					'set_featured_image'    => esc_html__('Set featured image', 'waymark' ),
-					'remove_featured_image' => esc_html__('Remove featured image', 'waymark' ),
-					'use_featured_image'    => esc_html__('Use as featured image', 'waymark' ),
-					'insert_into_item'      => esc_html__('Insert into Map', 'waymark' ),
-					'uploaded_to_this_item' => esc_html__('Uploaded to this initiatief', 'waymark' ),
-					'items_list'            => esc_html__('Map list', 'waymark' ),
-					'items_list_navigation' => esc_html__('Maps list navigation', 'waymark' ),
-					'filter_items_list'     => esc_html__('Filter initiatief list', 'waymark' ),
-				),
-				'supports'              => array( 'title', 'author', 'excerpt', 'editor' ),
-				'hierarchical'          => false,
-				'public'                => true,
-				'show_ui'               => true,
-				'show_in_menu'          => true,
-				'menu_position'         => 6,
-				'show_in_admin_bar'     => true,
-				'show_in_nav_menus'     => true,
-				'can_export'            => true,
-				'has_archive'           => true,
-				'exclude_from_search'   => false,
-				'publicly_queryable'    => true,
-				// TODO: 'rewrite' is not working locally?
-				// 'rewrite'               => array('slug' => CPT_INITIATIEF ),
-				'rewrite'               => false,
-				'capability_type'       => 'post'
-			));
-
-			$types = array();
-			foreach($this->types as $type_id => $type_data) {
-				$types[] = $type_id;
-
-				register_post_type($type_id, $type_data);
-			}
-		return True;
 	}
 
 	// TODO: version? $plugin->version?
 	public function enqueue_scripts() {
 
 	}
+
 }
