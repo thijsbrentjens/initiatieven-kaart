@@ -47,6 +47,34 @@ e.g.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place `<?php do_action('initiatieven_kaart_hook'); ?>` in your templates
 
+=== Advanced Custom field OpenStreetmap ===
+Gebruik een ACF OpenStreetmap, met de naam "location"
+
+Soort item / classificatie initaitief: field name: "map-item-type"
+
+=== Initiatieven op een kaart: specs ===
+
+Om initiatieven op de kaart te tonen, is het nodig om de HTML op de juiste manier te annoteren. De pluging doet dit in een archives pagina als voorbeeld met list items.
+
+Er moet ook een container in zitten:
+
+TODO
+
+HTML voorbeeld voor een item:
+
+```
+<li class="map-object" data-latitude="52.0930076" data-longitude="5.1196289" data-category="onbekend">HTML content</li>
+```
+
+Initialiseren:
+```
+
+
+```
+
+Container:  class="map-items"
+
+
 == Frequently Asked Questions ==
 
 = A question that someone might have =
