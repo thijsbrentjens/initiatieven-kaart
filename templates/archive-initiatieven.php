@@ -56,7 +56,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	    $archive_title = $obj->labels->archives;
     }
 	$return = '<h1>' . $archive_title . '</h1>';
-    
+
 	if ( $doreturn ) {
 		return $return;
 	} else {
@@ -127,14 +127,33 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 				endif;
 
-				// TODO: is the location the center of the map, or better the first marker?
-				// preferably the first marker, need to decide with Paul
-				$return .= sprintf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $locationField["lat"], $locationField["lng"], join( " ", $classes ) );
+				// TB: gebruik de lat/lon van de eerste marker als locatie
+				// zie https://github.com/mcguffin/acf-openstreetmap-field/wiki/Usage
+				$bestLatitude = '';
+				$bestLongitude = '';
+				if (count($locationField["markers"]) >= 1):
+					$bestLatitude = $locationField["markers"][0]["lat"];
+					$bestLongitude = $locationField["markers"][0]["lng"];
+				else:
+					// TODO: map center acceptable?
+					$bestLatitude = $locationField["lat"];
+					$bestLongitude = $locationField["lng"];
+				endif;
+
+				$return .= sprintf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $bestLatitude, $bestLongitude, join( " ", $classes ) );
 				$return .= sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
 
 				// iets van een samenvatting, beschrijving tonen hier
 				$return .= sprintf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
 				$return .= sprintf( '%s', $initiatieftype );
+				$return .= '</li>';
+			} else {
+				// geen locationField , wel een list item toevoegen, maar zonder de data attributen voor locatie?
+				// nog bepalen wat te doen, obv daravan evt refactoren met code hierboven
+				$return .= $locationField;
+				$return .= sprintf( '<li class="map-item no-location" data-map-item-type="%s">', join( " ", $classes ) );
+				$return .= sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
+				$return .= sprintf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
 				$return .= '</li>';
 			}
 
