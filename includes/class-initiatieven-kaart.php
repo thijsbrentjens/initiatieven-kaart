@@ -95,8 +95,8 @@ class Initiatieven_Kaart {
 		}
 
 		// taxonomie voor gemeente voor een initiatief
-		if ( ! defined( 'CT_INITIATIEF_GEMEENTE' ) ) {
-			define( 'CT_INITIATIEF_GEMEENTE', 'plaatsnaam' );
+		if ( ! defined( 'CT_INITIATIEF_PROVINCIE' ) ) {
+			define( 'CT_INITIATIEF_PROVINCIE', 'provincie' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';

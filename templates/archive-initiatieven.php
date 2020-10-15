@@ -120,7 +120,7 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 						// als er iets aanwezig is voor de taxonomy initatietype,
 						// dan zetten we alle waarden daarvoor in een <dl>
 						$initiatieftype = '<dl class="' . join( " ", $classes ) . '">';
-						$initiatieftype .= '<dt class="visuallyhidden">' . _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . '</dt>';
+						$initiatieftype .= '<dt>' . _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . '</dt>';
 						$initiatieftype .= $labels;
 						$initiatieftype .= '</dl>';
 					}

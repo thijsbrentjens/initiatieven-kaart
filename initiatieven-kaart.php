@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        http://example.com/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.1
+ * Version:           1.0.2.b
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.1' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.2.b' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -104,7 +104,7 @@ add_filter( 'single_template', 'led_template_single_initiatief' ) ;
 
 /*
  * Deze functie zorgt voor het custom post type 'initiatief' en voor
- * twee custom taxonomies: initiatieftype en plaatsnaam; deze
+ * twee custom taxonomies: initiatieftype en provincie; deze
  * taxonomieen zijn alleen geldig voor CPT 'initiatief'.
  */
 function led_custom_tax_and_types() {
@@ -187,17 +187,17 @@ function led_custom_tax_and_types() {
 
 	// Gemeente; dit is een taxonomy zodat we initiatieven kunnen groeperen.
 	$labels = array(
-		'name'              => esc_html_x( 'Plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'singular_name'     => esc_html_x( 'Plaatsnaam', 'taxonomy singular name', 'initiatieven-kaart' ),
-		'search_items'      => esc_html_x( 'Search plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'all_items'         => esc_html_x( 'All plaatsnamen', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item'       => esc_html_x( 'Parent plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item_colon' => esc_html_x( 'Parent plaatsnaam:', 'taxonomy', 'initiatieven-kaart' ),
-		'edit_item'         => esc_html_x( 'Edit plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'update_item'       => esc_html_x( 'Update plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'add_new_item'      => esc_html_x( 'Add New plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
-		'new_item_name'     => esc_html_x( 'New plaatsnaam Name', 'taxonomy', 'initiatieven-kaart' ),
-		'menu_name'         => esc_html_x( 'Plaatsnaam', 'taxonomy', 'initiatieven-kaart' ),
+		'name'              => esc_html_x( 'Provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'singular_name'     => esc_html_x( 'Provincie', 'taxonomy singular name', 'initiatieven-kaart' ),
+		'search_items'      => esc_html_x( 'Search provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'all_items'         => esc_html_x( 'All provincies', 'taxonomy', 'initiatieven-kaart' ),
+		'parent_item'       => esc_html_x( 'Parent provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'parent_item_colon' => esc_html_x( 'Parent provincie:', 'taxonomy', 'initiatieven-kaart' ),
+		'edit_item'         => esc_html_x( 'Edit provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'update_item'       => esc_html_x( 'Update provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'add_new_item'      => esc_html_x( 'Add New provincie', 'taxonomy', 'initiatieven-kaart' ),
+		'new_item_name'     => esc_html_x( 'New provincie Name', 'taxonomy', 'initiatieven-kaart' ),
+		'menu_name'         => esc_html_x( 'Provincie', 'taxonomy', 'initiatieven-kaart' ),
 	);
 
 	$args = array(
@@ -206,10 +206,10 @@ function led_custom_tax_and_types() {
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
-		'rewrite'           => array( 'slug' => CT_INITIATIEF_GEMEENTE ),
+		'rewrite'           => array( 'slug' => CT_INITIATIEF_PROVINCIE ),
 	);
 
-	register_taxonomy( CT_INITIATIEF_GEMEENTE, array( CPT_INITIATIEF ), $args );
+	register_taxonomy( CT_INITIATIEF_PROVINCIE, array( CPT_INITIATIEF ), $args );
 
 
 
@@ -247,6 +247,9 @@ function get_initiatieficons() {
 
 			if ( $initiatief_type_icon ) {
 				$arr_initiatief_type_icon[ $term->slug ] = $initiatief_type_icon;
+			}
+			else {
+				$arr_initiatief_type_icon[ $term->slug ] = 'onbekend';
 			}
 		}
 	}

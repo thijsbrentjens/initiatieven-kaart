@@ -65,8 +65,9 @@
     color: #fff;
 }
 
-
-/*
-.led-icon {
-  color: black;
-} */
+/* voor de <dl> wat extra styling */
+dl.initiatieftype dd {
+    float: left;
+    width: auto;
+    margin: 0 0 0 .5rem;
+}
