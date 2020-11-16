@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="marker-empty.svg">
+   sodipodi:docname="marker-onbekend.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -60,10 +60,21 @@
      inkscape:label="icon"
      transform="translate(-44.140494,-20.427695)">
     <path
-       style="opacity:1;fill:#275937;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.94117647;paint-order:normal"
+       style="opacity:1;fill:#275937;fill-opacity:1;stroke:#ffffff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.94117647;paint-order:normal"
        d="m 152.88779,75.127975 c 0,41.213955 -51.77915,92.033615 -51.77915,92.033615 0,0 -51.968149,-51.00865 -51.968146,-92.033615 1e-6,-29.118712 21.407939,-49.700282 51.779156,-49.70028 30.37122,1e-6 51.96814,20.581569 51.96814,49.70028 z"
        id="path883"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccsc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:105.81742096px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none"
+       x="70.944717"
+       y="122.26855"
+       id="text2413"><tspan
+         sodipodi:role="line"
+         id="tspan2411"
+         x="70.944717"
+         y="122.26855"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'CartoGothic Std';-inkscape-font-specification:'CartoGothic Std';fill:#ffffff;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none">?</tspan></text>
   </g>
 </svg>

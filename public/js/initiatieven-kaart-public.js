@@ -85,8 +85,7 @@
         // after parsing the location data, create a control to filter
         const typeFilterControl = this.createTypeFilterControl();
         this.getLMap().addControl(typeFilterControl);
-        console.log(this.types);
-
+        
       }
       // TODO: fix clusters
       this.enableClusters(true);
@@ -134,7 +133,7 @@
 
       // icon (wxh): 30 x 40
       // best is to make nice numbers for ratio 3:4
-      const iconHeight = 24;
+      const iconHeight = 32;
       const iconWidth = Math.round(0.75 * iconHeight);
 
       const baseIcon = L.Icon.extend({
@@ -154,11 +153,13 @@
         pointToLayer: function (feature, latlng) {
           // create a customicon
           // TODO: full SVG markers?
-          var category = feature.properties.category ? feature.properties.category : "unknown";
-
+          var category = feature.properties.category ? feature.properties.category : "onbekend";
+          // TODO: multiple?
+          // current:
+          // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new baseIcon({
             // customize according to category
-            iconUrl: 'wp-content/plugins/initiatieven-kaart/public/css/images/marker-empty.svg',
+            iconUrl: `wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
           });
 
           return L.marker(latlng, {
@@ -204,16 +205,15 @@
     createTypeFilterControlContent() {
       // sort by keys
       const typeKeys = Object.keys(this.types);
-      // console.log(typeKeys);
+      console.log(this.types)
       typeKeys.sort();
       for (var k in typeKeys) {
-        // console.log(typeKeys[k]);
         const category = typeKeys[k];
         // const L.DomUtil.create('div', )
         // TODO: config labels for each category
+        // typeFilterControlTxtId
 
       }
-      // console.log("update: " + this.typeFilterControlTxtId);
     }
 
 		toggleListMap(){
