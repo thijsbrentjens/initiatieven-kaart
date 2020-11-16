@@ -14,13 +14,15 @@
 
 [class*='led-icon-']:before {
     display: inline-block;
-    font-family: 'led test';
+    /* font-family: 'led test'; */
     font-style: normal;
     font-weight: normal;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }
+
+/* TODO: other font?  */
 
 /*
  De lijst met classes moet overeenkomen met de opties voor term van
@@ -51,20 +53,33 @@
     width: 100%;
 }
 
-
 .leaflet-marker-icon {
-    background-color: white;
+    /* background-color: white; */
     text-align: center;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     font-size: 1.1em;
 }
 
-
 .clusterIcon {
-    background-color: #436978;
+    background-color: #275937;
     color: #fff;
+    border-radius: 25%;
 }
 
+.clusterIcon-md {
+  /* half the increaseSize from the JS code */
+  padding-top: 3px;
+}
+
+.clusterIcon-lg {
+  /* half the increaseSize from the JS code */
+  padding-top: 6px;
+}
+
+.awesome-marker i {
+        font-size: 18px;
+        margin-top: 8px;
+    }
 
 /*
 .led-icon {
