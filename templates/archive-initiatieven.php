@@ -95,7 +95,7 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 			 * dus bijv. type 'Community' krijgt een icoontje 'community'
 			 */
 			$initatieftypes = get_the_terms( get_the_id(), CT_INITIATIEFTYPE );
-
+			$classes = array();
 			if ( $locationField != false ) {
 				// er zijn locatie-gegevens voor dit initiatief
 
@@ -107,12 +107,12 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 					// NB op dit moment is het praktisch mogelijk om een initiatief aan
 					// MEERDERE initiatieftypes te hangen
 
-					$classes = array();
+
 					$labels  = '';
 
 					foreach ( $initatieftypes as $term ) {
 						// het icoontje dat bij dit initatieftype hoort, staat in de array $initiatieficons
-						$classes[] = $initiatieficons[ $term->slug ];
+						array_push($classes, $initiatieficons[ $term->slug ]);
 						$labels    .= '<dd class="' . $term->slug . '">' . $term->name . '</dd>';
 					}
 

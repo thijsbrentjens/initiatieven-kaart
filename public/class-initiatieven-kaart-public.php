@@ -85,6 +85,8 @@ class Initiatieven_Kaart_Public {
 			wp_register_style('leaflet-awesome-markers-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.awesome-markers.css', array(), '1.0.0');
 			wp_enqueue_style('leaflet-awesome-markers-css');
 
+			wp_register_style('ion-awesome-markers-css', 'http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css', array(), '1.0.0');
+			wp_enqueue_style('ion-awesome-markers-css');
 			wp_enqueue_style( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'css/initiatieven-kaart-public.css', array(), $this->version, 'all' );
 
 	}
