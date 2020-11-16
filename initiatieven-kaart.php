@@ -59,6 +59,10 @@ function run_initiatieven_kaart() {
 
 	add_action('wp_enqueue_scripts', array($plugin, 'enqueue_scripts'));
 
+	// zorg ervoor dat een lijst met initiatieven ALLE initiatieven
+	// in 1 keer toont, zonder paginering, alfabetisch gesorteerd
+	add_action('pre_get_posts', array($plugin, 'load_all_initiatieven'), 999);
+
 
 }
 
@@ -66,7 +70,7 @@ run_initiatieven_kaart();
 
 //========================================================================================================
 /*
- * filter voor overzicht (archive) van de initiatieven
+ * filter voor overzicht (archive + taxonomy) van de initiatieven
  */
 function led_template_archive_initiatieven( $archive_template ) {
 	global $post;
@@ -75,11 +79,16 @@ function led_template_archive_initiatieven( $archive_template ) {
 		// het is een archive voor CPT = CPT_INITIATIEF
 		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
 	}
+	elseif ( ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
+		// het is een overzicht van initiatieven per type of per provincie
+		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
+	}
 
 	return $archive_template;
 
 }
 
+add_filter( 'taxonomy_template', 'led_template_archive_initiatieven' ) ;
 add_filter( 'archive_template', 'led_template_archive_initiatieven' ) ;
 
 //========================================================================================================
