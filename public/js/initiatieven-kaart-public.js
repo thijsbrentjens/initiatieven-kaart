@@ -163,7 +163,9 @@
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new baseIcon({
             // customize according to category
-            iconUrl: `wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
+              // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+              // optreedt.
+            iconUrl: `/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
           });
 
           return L.marker(latlng, {
