@@ -13,6 +13,7 @@
 
 			this.mapElementId = this.mapItemsContainerId + "-mapObject";
       this.typeFilterControlTxtId = "typeFilterControlTxt";
+      this.typeFilterControlContent = "";
 
 			// other props
 			this._map = false;
@@ -85,7 +86,10 @@
         // after parsing the location data, create a control to filter
         const typeFilterControl = this.createTypeFilterControl();
         this.getLMap().addControl(typeFilterControl);
-        
+        // now add the content:
+        const content = this.createTypeFilterControlContent(this.types);
+        // console.log(content)
+
       }
       // TODO: fix clusters
       this.enableClusters(true);
@@ -104,7 +108,7 @@
           const lon = $(elem).data("longitude");
           // TODO: max Width?
           // maxWidth: 800
-          const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "unknown";
+          const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
           // let's create a nice geojson feature
           if (category) {
             if (types[category]) {
@@ -177,8 +181,6 @@
     // TODO: better Leaflet control class for this
     createTypeFilterControl() {
         const _self = this;
-        const content = this.createTypeFilterControlContent(this.types);
-
         var TypeFilterControl =  L.Control.extend({
         options: {
           position: 'topright'
@@ -191,7 +193,7 @@
           container.style.width = '200px';
           container.style.height = 'auto';
           const clusterControlTxt = L.DomUtil.create('div', _self.typeFilterControlTxtId, container);
-          clusterControlTxt.innerHTML = 'Types:';
+          clusterControlTxt.innerHTML = '<h4>Types</h4>';
           clusterControlTxt.id = _self.typeFilterControlTxtId;
           return container;
         },
@@ -199,21 +201,51 @@
       // console.log(typeFilterControl);
       const typeFilterControl = new TypeFilterControl();
       // update the text for this control?
+
       return typeFilterControl;
+    }
+
+    toggleType(_self, category, show) {
+      console.log(category + " -> " + show);
+      var checked = false;
+      if (show == undefined) {
+        checked = false;
+      }
+      if (show) {
+        checked = true;
+      }
+      _self.types[category]["checked"] = checked;
+      // update map and update filter?
+
     }
 
     createTypeFilterControlContent() {
       // sort by keys
       const typeKeys = Object.keys(this.types);
-      console.log(this.types)
+      const _self = this;
+      // console.log(this.types);
       typeKeys.sort();
+      // var filterContent = "<h4>Initiatieven</h4>";
+      var filterContent = $(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
-        // const L.DomUtil.create('div', )
-        // TODO: config labels for each category
-        // typeFilterControlTxtId
-
+        const nrPosts = this.types[category];
+        // TODO: checked?
+        const inputId = `post-${category}`;
+        const checkedTxt = (this.types[category].checked == false) ? "" : "checked";
+        // TODO: the proper object? for a public function? global?
+        var input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+        // note the scope _self
+        $(input).on('change', function() {
+          _self.toggleType(_self, category, _self.types[category].checked)
+        });
+        var li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
+        filterContent.append(li)
+        // filterContent += li;
       }
+      // filterContent += `</ul>`;
+      $("#" + this.typeFilterControlTxtId ).html(filterContent);
+      return filterContent;
     }
 
 		toggleListMap(){
@@ -282,7 +314,7 @@
         _self.clusterLayer = clusterLayer;
       } else {
         if (_self.unclusteredLayers.length > 0) {
-          // remove the clusterlayer?
+          // remove the clusterlayer
           for (const l in _self.unclusteredLayers) {
             _self.getLMap().addLayer(_self.unclusteredLayers[l]);
           }
