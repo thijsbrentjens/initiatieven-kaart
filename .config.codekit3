@@ -9,6 +9,14 @@
 	],
 "creatorBuild": "33081",
 "files": {
+	"/.gitignore": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/.gitignore",
+		"oF": 0
+		},
 	"/.idea": {
 		"ft": 65536,
 		"oA": 1,
@@ -513,16 +521,6 @@
 		"ou": "lpckwebp-none",
 		"q": 100,
 		"rq": 75
-		},
-	"/public/css/initiatieven-kaart-public-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/public/css/initiatieven-kaart-public-min-min.css",
-		"oF": 0,
-		"oS": 3
 		},
 	"/public/css/initiatieven-kaart-public.css": {
 		"aP": 1,
