@@ -51,7 +51,7 @@ function led_initiatief_single_info( $doreturn = false ) {
 
 	$initiatieftype  = '';
 	$return          = '';
-	$plaatsnamen     = array();
+	$provincie       = array();
 	$initiatieficons = get_initiatieficons();
 	$initatieftypes  = get_the_terms( get_the_id(), CT_INITIATIEFTYPE );
 
@@ -62,25 +62,14 @@ function led_initiatief_single_info( $doreturn = false ) {
 	$website               = get_field( 'locatie_website' );
 	$contactpersoon        = get_field( 'locatie_contactpersoon' );
 	$contactgegevens       = get_field( 'locatie_contactgegevens' );
-	$plaatsnaamid          = get_field( 'locatie_plaatsnaam' );
+	$plaatsnaam            = get_field( 'locatie_plaatsnaam' );
 
 
-	if ( $plaatsnaamid ) {
-		// ingewikkeld, moeilijk moeilijk
-		// maar idealiter voert een redacteur via de ACF velden de plaatsnaam in
-		// maar dat HOEF niet. In dat geval hebben we nu een fallback
-		$term = get_term_by( 'id', $plaatsnaamid, CT_INITIATIEF_GEMEENTE );
-		if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
-			$plaatsnamen[] = $term->name;
-		}
-	} else {
-		// dit is de fallback. We halen de gemeentes op uit de
-		// lijst met checkboxes, in plaats van het ACF-veld
-		$terms = get_the_terms( get_the_id(), CT_INITIATIEF_GEMEENTE );
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-			foreach ( $terms as $term ) {
-				$plaatsnamen[] = $term->name;
-			}
+	// bepalen aan welke provincie(s) dit initiatief hangt
+	$terms = get_the_terms( get_the_id(), CT_INITIATIEF_PROVINCIE );
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $term ) {
+			$provincie[] = $term->name;
 		}
 	}
 
@@ -94,18 +83,20 @@ function led_initiatief_single_info( $doreturn = false ) {
 		$labels  = '';
 
 		foreach ( $initatieftypes as $term ) {
+
 			// het icoontje dat bij dit initatieftype hoort, staat in de array $initiatieficons
-			$classes[] = $initiatieficons[ $term->slug ];
-			$labels    .= '<dd class="' . $term->slug . '">' . $term->name . '</dd>';
+			$classes[ $term->slug ] = $initiatieficons[ $term->slug ];
+			$labels                 .= '<dd class="' . $term->slug . '">' . $term->name . '</dd>';
 		}
 
 		if ( $labels ) {
 			// als er iets aanwezig is voor de taxonomy initatietype,
 			// dan zetten we alle waarden daarvoor in een <dl>
 			$initiatieftype = '<dl class="initiatieftype ' . join( " ", $classes ) . '">';
-			$initiatieftype .= '<dt class="visuallyhidden">' . _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . '</dt>';
+			$initiatieftype .= '<dt>' . _x( 'Type initiatief', 'Label type initiatief', 'initiatieven-kaart' ) . '</dt>';
 			$initiatieftype .= $labels;
 			$initiatieftype .= '</dl>';
+
 		}
 
 	endif;
@@ -119,23 +110,28 @@ function led_initiatief_single_info( $doreturn = false ) {
 	}
 
 	// Initiatieftype
-    if ( $initiatieftype ) {
-	    $return .= sprintf( '%s', $initiatieftype );
-    }
+	if ( $initiatieftype ) {
+		$return .= sprintf( '%s', $initiatieftype );
+	}
 
 	// Adresgegevens
-	if ( $plaatsnamen || $straatnaam_huisnummer || $locatie_postcode ) {
+	if ( $provincie || $straatnaam_huisnummer || $plaatsnaam || $locatie_postcode ) {
 		// TODO: schema markup voor locatie
 		$return .= '<h2>' . _x( 'Adres', 'Single initiatief', 'initiatieven-kaart' ) . '</h2>';
+		$adres  = '';
 		if ( $straatnaam_huisnummer ) {
-			$return .= '<p>' . wp_strip_all_tags( $straatnaam_huisnummer ) . '</p>';
+			$adres .= wp_strip_all_tags( $straatnaam_huisnummer ) . '<br>';
 		}
 		if ( $locatie_postcode ) {
-			$return .= '<p>' . wp_strip_all_tags( $locatie_postcode ) . '</p>';
+			$adres .= ( ( $adres ) ? wp_strip_all_tags( $locatie_postcode ) . '<br>' : wp_strip_all_tags( $locatie_postcode ) );
 		}
-		if ( $plaatsnamen ) {
-			$return .= '<p>' . join( ", ", $plaatsnamen ) . '</p>';
+		if ( $plaatsnaam ) {
+			$adres .= ( ( $adres ) ? wp_strip_all_tags( $plaatsnaam ) . '<br>' : wp_strip_all_tags( $plaatsnaam ) );
 		}
+		if ( $provincie ) {
+			$adres .= ( ( $adres ) ? join( ", ", $provincie ) . '<br>' : join( ", ", $provincie ) );
+		}
+		$return .= '<p>' . $adres . '</p>';
 	}
 
 	// Contactgegevens

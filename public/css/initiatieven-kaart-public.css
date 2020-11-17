@@ -85,3 +85,57 @@
 .led-icon {
   color: black;
 } */
+
+/* -----------------------------------------------------------
+ geen lelleke list-items als de kaart getoond wordt
+ */
+#map-items {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+#map-items li {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+/* -----------------------------------------------------------
+de lijst met initiatieftypes
+ */
+dl.initiatieftype {
+    float: none;
+    clear: both;
+    overflow: hidden;
+}
+dl.initiatieftype dt {
+    max-width: inherit;
+    clear: left;
+    float: left;
+    font-weight: bold;
+}
+dl.initiatieftype dd {
+    float: left;
+    clear: right;
+    margin-left: 1rem;
+    max-width: inherit;
+    width: auto;
+}
+
+/* -----------------------------------------------------------
+misschien moet dit naar leaflet.css, maar ik denk dat 1 css-bestand
+beter is, dus eigenlijk hoort alles in dit bestand...
+ */
+.leaflet-popup-content p,
+.leaflet-popup-content h2 {
+    margin-top: 0;
+    margin-bottom: .25rem;
+}
+.leaflet-control ul li {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+.leaflet-control label {
+    margin-left: .5rem;
+}

@@ -117,48 +117,10 @@
                 "maxlength": ""
             },
             {
-                "key": "field_5f8020ca9c2f7",
+                "key": "field_5f87fec245e44",
                 "label": "Plaatsnaam",
                 "name": "locatie_plaatsnaam",
-                "type": "taxonomy",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "taxonomy": "plaatsnaam",
-                "field_type": "radio",
-                "allow_null": 0,
-                "add_term": 1,
-                "save_terms": 0,
-                "load_terms": 0,
-                "return_format": "id",
-                "multiple": 0
-            },
-            {
-                "key": "field_5f8021a69c2f8",
-                "label": "Website",
-                "name": "locatie_website",
-                "type": "url",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": ""
-            },
-            {
-                "key": "field_5f8021bb9c2f9",
-                "label": "Contactpersoon",
-                "name": "locatie_contactpersoon",
-                "type": "textarea",
+                "type": "text",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
@@ -169,28 +131,9 @@
                 },
                 "default_value": "",
                 "placeholder": "",
-                "maxlength": "",
-                "rows": "",
-                "new_lines": ""
-            },
-            {
-                "key": "field_5f8021d09c2fa",
-                "label": "Contactgegevens",
-                "name": "locatie_contactgegevens",
-                "type": "textarea",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "maxlength": "",
-                "rows": "",
-                "new_lines": ""
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
             }
         ],
         "location": [
