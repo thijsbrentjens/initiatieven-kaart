@@ -73,19 +73,19 @@ class Initiatieven_Kaart_Public {
 		 * class.
 		 */
 
-			wp_register_style('leaflet-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.css', array(), '1.7.1');
+			wp_register_style('leaflet-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.css', array(), $this->version);
 			wp_enqueue_style('leaflet-css');
 
-			wp_register_style('markercluster-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.css', array(), '1.0.0');
+			wp_register_style('markercluster-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.css', array(), $this->version);
 			wp_enqueue_style('markercluster-css');
 
-			wp_register_style('markercluster-default-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.Default.css', array(), '1.0.0');
+			wp_register_style('markercluster-default-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.Default.css', array(), $this->version);
 			wp_enqueue_style('markercluster-default-css');
 
-			wp_register_style('leaflet-awesome-markers-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.awesome-markers.css', array(), '1.0.0');
+			wp_register_style('leaflet-awesome-markers-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.awesome-markers.css', array(), $this->version);
 			wp_enqueue_style('leaflet-awesome-markers-css');
 
-			wp_register_style('ion-awesome-markers-css', 'http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css', array(), '1.0.0');
+			wp_register_style('ion-awesome-markers-css', 'http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css', array(), $this->version);
 			wp_enqueue_style('ion-awesome-markers-css');
 			wp_enqueue_style( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'css/initiatieven-kaart-public.css', array(), $this->version, 'all' );
 
