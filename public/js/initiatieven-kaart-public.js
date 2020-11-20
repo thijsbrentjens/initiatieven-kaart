@@ -17,11 +17,34 @@
 
 			// other props
 			this._map = false;
+      this.pointsLayer;
 			this.unclusteredLayers = [];
 			this.clusterLayer = {};
 			this.features = [];
 			// todo: init directly?
       this.types = {};
+      this.clustering = true;
+      // icon (wxh): 30 x 40
+      // best is to make nice numbers for ratio 3:4
+      this.iconHeight = 32;
+      this.iconWidth = Math.round(0.75 * this.iconHeight);
+
+      this.baseIcon = L.Icon.extend({
+        options: {
+            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+            // optreedt.
+            // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
+          shadowUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg`,
+          iconSize: [this.iconWidth, this.iconHeight],
+          iconAnchor: [this.iconWidth / 2, this.iconHeight],
+          // shadow: 40 x 40
+          // shadowsize image is sqaure now, so 2x iconHeight
+          shadowSize: [this.iconHeight, this.iconHeight],
+          shadowAnchor: [this.iconWidth / 3, this.iconHeight],
+          popupAnchor: [0, -1 * this.iconHeight]
+        }
+      })
+
     }
 
     getLMap() {
@@ -93,7 +116,13 @@
 
       }
       // TODO: fix clusters
-      this.enableClusters(true);
+      this.enableClusters(this.clustering);
+    }
+
+    // an internal function to update the layer?
+    pointToLayer(feature, latlng, scope) {
+      // create a customicon
+
     }
 
     parseLocationData() {
@@ -114,9 +143,10 @@
           // let's create a nice geojson feature
           if (category) {
             if (types[category]) {
-              types[category] += 1;
+              types[category]["nrPosts"] += 1;
             } else {
-              types[category] = 1;
+              // default to true for filtering?
+              types[category] = {"nrPosts": 0, "visible": true};
             }
           }
           const feature = {
@@ -135,45 +165,43 @@
       });
       this.features = features;
       this.types = types;
-      // baseIcon:
 
-      // icon (wxh): 30 x 40
-      // best is to make nice numbers for ratio 3:4
-      const iconHeight = 32;
-      const iconWidth = Math.round(0.75 * iconHeight);
+      // recreate the Geojson layer
+      const pointsLayer = this.createPointsLayer(features, _self)
 
-      const baseIcon = L.Icon.extend({
-        options: {
-            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
-            // optreedt.
-            // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
-          shadowUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg`,
-          iconSize: [iconWidth, iconHeight],
-          iconAnchor: [iconWidth / 2, iconHeight],
-          // shadow: 40 x 40
-          // shadowsize image is sqaure now, so 2x iconHeight
-          shadowSize: [iconHeight, iconHeight],
-          shadowAnchor: [iconWidth / 3, iconHeight],
-          popupAnchor: [0, -1 * iconHeight]
-        }
-      })
+      // Set initial zoom to the layer data
+      const bounds = pointsLayer.getBounds();
+      _self.getLMap().fitBounds(bounds)
+      this.pointsLayer = pointsLayer;
+
+      // update the data, for later usage like removal of layers or whatever..
+      this.features = features;
+      return features;
+    }
 
 
-      const pointsLayer = L.geoJSON(features, {
-        pointToLayer: function (feature, latlng) {
-          // create a customicon
+    createPointsLayer(features, _self) {
+      const layer = L.geoJSON(features, {
+        pointToLayer: function(feature, latlng) {
+          // wrapper function
           var category = feature.properties.category ? feature.properties.category : "onbekend";
+          if (_self.types[feature.properties.category]) {
+            if (_self.types[feature.properties.category].visible == true) {
+              // TODO: properly update the clustericons?
+            } else {
+              return false;
+            }
+          }
           // TODO: multiple?
           // current:
           // portaal, datalab, community, onbekend, strategie, visualisatie
-          const customIcon = new baseIcon({
+          const customIcon = new _self.baseIcon({
             // customize according to category
               // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
               // optreedt.
               // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
             iconUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
           });
-
           return L.marker(latlng, {
             icon: customIcon
           });
@@ -181,15 +209,8 @@
       }).bindPopup(function (layer) {
         return layer.feature.properties.popupContent;
       }).addTo(_self.getLMap());
-
-      // Set initial zoom to the layer data
-      _self.getLMap().fitBounds(pointsLayer.getBounds())
-
-      // update the data, for later usage like removal of layers or whatever..
-      this.features = features;
-      return features;
+      return layer;
     }
-
 
     createTypeFilterControl() {
         const _self = this;
@@ -215,15 +236,29 @@
     }
 
     toggleType(_self, category, show) {
-      var checked = false;
+      var visible = false;
       if (show == undefined) {
-        checked = false;
+        visible = false;
       }
       if (show) {
-        checked = true;
+        visible = true;
       }
-      _self.types[category]["checked"] = checked;
+      _self.types[category]["visible"] = visible;
+      // TODO: filter
+      // console.log(_self.pointsLayer);
 
+      // _self.pointToLayer.pointToLayer();
+      // recreate layer?
+      _self.recreatePointsLayer()
+
+    }
+
+    recreatePointsLayer() {
+      this.pointsLayer.remove();
+      this.getLMap().removeLayer(this.clusterLayer);
+      this.pointsLayer = this.createPointsLayer(this.features, this);
+      // enable clustering again? use setting for this?
+      this.enableClusters(this.clustering);
     }
 
     createTypeFilterControlContent() {
@@ -236,15 +271,15 @@
       var filterContent = $(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
-        const nrPosts = this.types[category];
+        const nrPosts = this.types[category].nrPosts;
         // TODO: checked?
         const inputId = `post-${category}`;
-        const checkedTxt = (this.types[category].checked == false) ? "" : "checked";
+        const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
         // TODO: the proper object? for a public function? global?
         var input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
         // note the scope _self
-        $(input).on('change', function() {
-          _self.toggleType(_self, category, _self.types[category].checked)
+        $(input).on('change', function(evt) {
+          _self.toggleType(_self, category, evt.target.checked)
         });
         var li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
         filterContent.append(li)
@@ -277,6 +312,7 @@
       // What if clustering should be disabled too? keep track of unclustered markers?
       // TODO: keyboard enable? what to do onclick?
 			const _self = this;
+      this.clustering = enable;
       if (enable) {
         const clusterLayer = L.markerClusterGroup({
           maxClusterRadius: 32,
