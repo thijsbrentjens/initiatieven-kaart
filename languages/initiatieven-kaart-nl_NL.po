@@ -1,276 +1,308 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Initiatieven Kaart voor LED (digitaleoverheid.nl)\n"
-"POT-Creation-Date: 2020-10-09 13:18+0200\n"
-"PO-Revision-Date: 2020-10-09 13:18+0200\n"
+"POT-Creation-Date: 2020-11-17 01:46+0100\n"
+"PO-Revision-Date: 2020-11-17 01:47+0100\n"
 "Last-Translator: Paul van Buuren <poedit@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <poedit@wbvb.nl>\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: initiatieven-kaart.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: initiatieven-kaart.php:117 initiatieven-kaart.php:119
+#: initiatieven-kaart.php:126 initiatieven-kaart.php:128
 msgctxt "post type"
 msgid "Initiatieven"
 msgstr ""
 
-#: initiatieven-kaart.php:118 initiatieven-kaart.php:120
+#: initiatieven-kaart.php:127 initiatieven-kaart.php:129
 msgctxt "post type"
 msgid "Initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:121
+#: initiatieven-kaart.php:130
 msgctxt "post type"
 msgid "Overzicht initiatieven"
 msgstr "Overzicht initiatieven"
 
-#: initiatieven-kaart.php:122
+#: initiatieven-kaart.php:131
 msgctxt "post type"
 msgid "Eigenschappen initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:123
+#: initiatieven-kaart.php:132
 msgctxt "post type"
 msgid "Parent Map:"
 msgstr ""
 
-#: initiatieven-kaart.php:124
+#: initiatieven-kaart.php:133
 msgctxt "post type"
 msgid "Alle initiatieven"
 msgstr ""
 
-#: initiatieven-kaart.php:125
+#: initiatieven-kaart.php:134
 msgctxt "post type"
 msgid "Initiatief toevoegen"
 msgstr ""
 
-#: initiatieven-kaart.php:126
+#: initiatieven-kaart.php:135
 msgctxt "post type"
 msgid "Toevoegen"
 msgstr ""
 
-#: initiatieven-kaart.php:127
+#: initiatieven-kaart.php:136
 msgctxt "post type"
 msgid "Nieuw initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:128
+#: initiatieven-kaart.php:137
 msgctxt "post type"
 msgid "Bewerk initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:129
+#: initiatieven-kaart.php:138
 msgctxt "post type"
 msgid "Update initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:130
+#: initiatieven-kaart.php:139
 msgctxt "post type"
 msgid "Bekijk initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:131
+#: initiatieven-kaart.php:140
 msgctxt "post type"
 msgid "Bekijk initiatieven"
 msgstr ""
 
-#: initiatieven-kaart.php:132
+#: initiatieven-kaart.php:141
 msgctxt "post type"
 msgid "Zoek initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:133
+#: initiatieven-kaart.php:142
 msgctxt "post type"
 msgid "Not found"
 msgstr ""
 
-#: initiatieven-kaart.php:134
+#: initiatieven-kaart.php:143
 msgctxt "post type"
 msgid "Not found in Trash"
 msgstr ""
 
-#: initiatieven-kaart.php:135
+#: initiatieven-kaart.php:144
 msgctxt "post type"
 msgid "Featured Image"
 msgstr ""
 
-#: initiatieven-kaart.php:136
+#: initiatieven-kaart.php:145
 msgctxt "post type"
 msgid "Set featured image"
 msgstr ""
 
-#: initiatieven-kaart.php:137
+#: initiatieven-kaart.php:146
 msgctxt "post type"
 msgid "Remove featured image"
 msgstr ""
 
-#: initiatieven-kaart.php:138
+#: initiatieven-kaart.php:147
 msgctxt "post type"
 msgid "Use as featured image"
 msgstr ""
 
-#: initiatieven-kaart.php:139
+#: initiatieven-kaart.php:148
 msgctxt "post type"
 msgid "Insert into Map"
 msgstr ""
 
-#: initiatieven-kaart.php:140
+#: initiatieven-kaart.php:149
 msgctxt "post type"
 msgid "Uploaded to this initiatief"
 msgstr ""
 
-#: initiatieven-kaart.php:141
+#: initiatieven-kaart.php:150
 msgctxt "post type"
 msgid "Map list"
 msgstr ""
 
-#: initiatieven-kaart.php:142
+#: initiatieven-kaart.php:151
 msgctxt "post type"
 msgid "Maps list navigation"
 msgstr ""
 
-#: initiatieven-kaart.php:143
+#: initiatieven-kaart.php:152
 msgctxt "post type"
 msgid "Filter initiatief list"
 msgstr ""
 
-#: initiatieven-kaart.php:164
+#: initiatieven-kaart.php:173
 msgctxt "taxonomy"
 msgid "Type initatief"
 msgstr ""
 
-#: initiatieven-kaart.php:165
+#: initiatieven-kaart.php:174
 msgctxt "taxonomy singular name"
 msgid "Initatieftype"
 msgstr ""
 
-#: initiatieven-kaart.php:166
+#: initiatieven-kaart.php:175
 msgctxt "taxonomy"
 msgid "Search initatieftype"
 msgstr "Zoek initatieftype"
 
-#: initiatieven-kaart.php:167
+#: initiatieven-kaart.php:176
 msgctxt "taxonomy"
 msgid "All initatieftypes"
 msgstr "Alle initatieftypes"
 
-#: initiatieven-kaart.php:168
+#: initiatieven-kaart.php:177
 msgctxt "taxonomy"
 msgid "Parent initatieftype"
 msgstr ""
 
-#: initiatieven-kaart.php:169
+#: initiatieven-kaart.php:178
 msgctxt "taxonomy"
 msgid "Parent initatieftype:"
 msgstr ""
 
-#: initiatieven-kaart.php:170
+#: initiatieven-kaart.php:179
 msgctxt "taxonomy"
 msgid "Edit initatieftype"
 msgstr "Bewerk initatieftype"
 
-#: initiatieven-kaart.php:171
+#: initiatieven-kaart.php:180
 msgctxt "taxonomy"
 msgid "Update initatieftype"
 msgstr "Initatieftype bijwerken"
 
-#: initiatieven-kaart.php:172
+#: initiatieven-kaart.php:181
 msgctxt "taxonomy"
 msgid "Add New initatieftype"
 msgstr "Toevoegen"
 
-#: initiatieven-kaart.php:173
+#: initiatieven-kaart.php:182
 msgctxt "taxonomy"
 msgid "New initatieftype Name"
 msgstr ""
 
-#: initiatieven-kaart.php:174
+#: initiatieven-kaart.php:183
 msgctxt "taxonomy"
 msgid "Initatieftype"
 msgstr ""
 
-#: initiatieven-kaart.php:190 initiatieven-kaart.php:200
+#: initiatieven-kaart.php:199 initiatieven-kaart.php:209
 msgctxt "taxonomy"
-msgid "Plaatsnaam"
+msgid "Provincie"
 msgstr ""
 
-#: initiatieven-kaart.php:191
+#: initiatieven-kaart.php:200
 msgctxt "taxonomy singular name"
-msgid "Plaatsnaam"
+msgid "Provincie"
 msgstr ""
 
-#: initiatieven-kaart.php:192
+#: initiatieven-kaart.php:201
 msgctxt "taxonomy"
-msgid "Search plaatsnaam"
-msgstr ""
+msgid "Search provincie"
+msgstr "Zoek provincie"
 
-#: initiatieven-kaart.php:193
+#: initiatieven-kaart.php:202
 msgctxt "taxonomy"
-msgid "All plaatsnamen"
+msgid "All provincies"
 msgstr ""
 
-#: initiatieven-kaart.php:194
+#: initiatieven-kaart.php:203
 msgctxt "taxonomy"
-msgid "Parent plaatsnaam"
+msgid "Parent provincie"
 msgstr ""
 
-#: initiatieven-kaart.php:195
+#: initiatieven-kaart.php:204
 msgctxt "taxonomy"
-msgid "Parent plaatsnaam:"
+msgid "Parent provincie:"
 msgstr ""
 
-#: initiatieven-kaart.php:196
+#: initiatieven-kaart.php:205
 msgctxt "taxonomy"
-msgid "Edit plaatsnaam"
+msgid "Edit provincie"
 msgstr ""
 
-#: initiatieven-kaart.php:197
+#: initiatieven-kaart.php:206
 msgctxt "taxonomy"
-msgid "Update plaatsnaam"
-msgstr ""
+msgid "Update provincie"
+msgstr "Provincie bijwerken"
 
-#: initiatieven-kaart.php:198
+#: initiatieven-kaart.php:207
 msgctxt "taxonomy"
-msgid "Add New plaatsnaam"
-msgstr ""
+msgid "Add New provincie"
+msgstr "Add New provincie"
 
-#: initiatieven-kaart.php:199
+#: initiatieven-kaart.php:208
 msgctxt "taxonomy"
-msgid "New plaatsnaam Name"
+msgid "New provincie Name"
 msgstr ""
 
-#: templates/archive-initiatieven.php:50
-#, fuzzy
-#| msgctxt "post type"
-#| msgid "Overzicht initiatieven"
+#: templates/archive-initiatieven.php:70
+msgid "Andere initiatieftypes"
+msgstr "Andere initiatieftypes"
+
+#: templates/archive-initiatieven.php:73
+msgid "Andere provincies"
+msgstr ""
+
+#: templates/archive-initiatieven.php:76
+msgid "Initiatieftypes"
+msgstr "Initiatieftypes"
+
+#: templates/archive-initiatieven.php:78
+msgid "Provincies"
+msgstr ""
+
+#: templates/archive-initiatieven.php:100
 msgctxt "Archive initiatieven"
 msgid "Initiatieven"
-msgstr "Overzicht initiatieven"
+msgstr "Initiatieven"
 
-#: templates/archive-initiatieven.php:84 templates/archive-initiatieven.php:121
-#: templates/single-initiatief.php:106
+#: templates/archive-initiatieven.php:131
+#, php-format
+msgid "%s initiatief in %s"
+msgid_plural "%s initiatieven in %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/archive-initiatieven.php:133
+#, php-format
+msgid "%s initiatief voor %s"
+msgid_plural "%s initiatieven voor %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/archive-initiatieven.php:176
+#: templates/archive-initiatieven.php:213
 msgctxt "Label type initiatief"
 msgid "Type"
 msgstr ""
 
-#: templates/single-initiatief.php:129
+#: templates/single-initiatief.php:96
+msgctxt "Label type initiatief"
+msgid "Type initiatief"
+msgstr "Type initiatief"
+
+#: templates/single-initiatief.php:120
 msgctxt "Single initiatief"
 msgid "Adres"
 msgstr ""
 
-#: templates/single-initiatief.php:144
+#: templates/single-initiatief.php:140
 msgctxt "Single initiatief"
 msgid "Contact"
 msgstr ""

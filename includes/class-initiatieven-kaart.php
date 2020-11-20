@@ -95,8 +95,8 @@ class Initiatieven_Kaart {
 		}
 
 		// taxonomie voor gemeente voor een initiatief
-		if ( ! defined( 'CT_INITIATIEF_GEMEENTE' ) ) {
-			define( 'CT_INITIATIEF_GEMEENTE', 'plaatsnaam' );
+		if ( ! defined( 'CT_INITIATIEF_PROVINCIE' ) ) {
+			define( 'CT_INITIATIEF_PROVINCIE', 'provincie' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
@@ -247,4 +247,36 @@ class Initiatieven_Kaart {
 
 	}
 
+
+	//========================================================================================================
+	/*
+	 * Deze function wijzigt de main query voor archives van initiatieven, van taxonomie-overzichten
+	 * van initiatieftypes en provincies.
+	 * Door deze wijziging wordt op 1 pagina een overzicht getoond van ALLE initiatieven bij een bepaalde
+	 * initiatieftype / provincie, in plaats van maximaal posts_per_page (meestal 10) en de initiatieven
+	 * worden alfabetisch gesorteerd
+	 */
+	public function load_all_initiatieven( $query ) {
+
+		global $query_vars;
+
+		if ( ! is_admin() && $query->is_main_query() ) {
+
+			if ( is_post_type_archive ( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
+				// geen pagination voor overzichten van:
+				// - initiatieven
+				// - initiatieven per initiatieftype
+				// - initiatieven per provincie
+				$query->set( 'posts_per_page', - 1 );
+				$query->set('orderby', 'title');
+				$query->set('order', 'ASC' );
+				return $query;
+
+			}
+
+		}
+
+		return $query;
+	}
+	//========================================================================================================
 }

@@ -144,7 +144,9 @@
 
       const baseIcon = L.Icon.extend({
         options: {
-          shadowUrl: 'wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg',
+            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+            // optreedt.
+          shadowUrl: '/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg',
           iconSize: [iconWidth, iconHeight],
           iconAnchor: [iconWidth / 2, iconHeight],
           // shadow: 40 x 40
@@ -165,7 +167,9 @@
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new baseIcon({
             // customize according to category
-            iconUrl: `wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
+              // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+              // optreedt.
+            iconUrl: `/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
           });
 
           return L.marker(latlng, {
