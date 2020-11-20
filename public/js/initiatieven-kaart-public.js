@@ -146,7 +146,8 @@
         options: {
             // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
             // optreedt.
-          shadowUrl: '/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg',
+            // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
+          shadowUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg`,
           iconSize: [iconWidth, iconHeight],
           iconAnchor: [iconWidth / 2, iconHeight],
           // shadow: 40 x 40
@@ -157,10 +158,10 @@
         }
       })
 
+
       const pointsLayer = L.geoJSON(features, {
         pointToLayer: function (feature, latlng) {
           // create a customicon
-          // TODO: full SVG markers?
           var category = feature.properties.category ? feature.properties.category : "onbekend";
           // TODO: multiple?
           // current:
@@ -169,7 +170,8 @@
             // customize according to category
               // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
               // optreedt.
-            iconUrl: `/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
+              // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
+            iconUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
           });
 
           return L.marker(latlng, {
@@ -182,12 +184,13 @@
 
       // Set initial zoom to the layer data
       _self.getLMap().fitBounds(pointsLayer.getBounds())
+
       // update the data, for later usage like removal of layers or whatever..
       this.features = features;
       return features;
     }
 
-    // TODO: better Leaflet control class for this
+
     createTypeFilterControl() {
         const _self = this;
         var TypeFilterControl =  L.Control.extend({
@@ -198,7 +201,6 @@
         onAdd: function (map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-item-control-types');
           container.style.backgroundColor = 'white';
-          // TODO: width?
           container.style.width = '200px';
           container.style.height = 'auto';
           const clusterControlTxt = L.DomUtil.create('div', _self.typeFilterControlTxtId, container);
@@ -207,15 +209,12 @@
           return container;
         },
       });
-      // console.log(typeFilterControl);
-      const typeFilterControl = new TypeFilterControl();
-      // update the text for this control?
 
+      const typeFilterControl = new TypeFilterControl();
       return typeFilterControl;
     }
 
     toggleType(_self, category, show) {
-      console.log(category + " -> " + show);
       var checked = false;
       if (show == undefined) {
         checked = false;
@@ -224,7 +223,6 @@
         checked = true;
       }
       _self.types[category]["checked"] = checked;
-      // update map and update filter?
 
     }
 
