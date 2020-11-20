@@ -70,6 +70,7 @@
 
 				}
 
+        // initial zoom will be overwritten by the bounds of the data layer
         const mapObject = L.map(this.mapElementId, {
           'maxZoom': 18,
           scrollWheelZoom: true
@@ -101,6 +102,7 @@
       const features = [];
       // reset the types
       const types = {};
+
       $("." + this.mapItemClass).each(function (cntr, elem) {
 				// for all elements with latitude and longitude, add a marker
         if ($(elem).data("latitude") && $(elem).data("longitude")) {
@@ -173,6 +175,9 @@
       }).bindPopup(function (layer) {
         return layer.feature.properties.popupContent;
       }).addTo(_self.getLMap());
+
+      // Set initial zoom to the layer data
+      _self.getLMap().fitBounds(pointsLayer.getBounds())
       // update the data, for later usage like removal of layers or whatever..
       this.features = features;
       return features;
