@@ -7,6 +7,7 @@
 			this.mapItemsContainerId = "map-items";
       this.mapItemClass = "map-item";
 			this.mapClass = "archives-map";
+      this.clustering = true;
 
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
@@ -23,7 +24,6 @@
 			this.features = [];
 			// todo: init directly?
       this.types = {};
-      this.clustering = true;
       // icon (wxh): 30 x 40
       // best is to make nice numbers for ratio 3:4
       this.iconHeight = 32;
@@ -45,6 +45,8 @@
         }
       })
 
+      this.unspiderfied = false;
+
     }
 
     getLMap() {
@@ -56,6 +58,7 @@
 		}
 
     initMap() {
+      const _self = this;
       // first: detect if there are map-objects available
       if ($("." + this.mapItemClass).length == 0) {
         return false;
@@ -112,8 +115,41 @@
         this.getLMap().addControl(typeFilterControl);
         // now add the content:
         const content = this.createTypeFilterControlContent(this.types);
-        // console.log(content)
+        // on zoom:
 
+        this.getLMap().on("zoomend", function(){
+          // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
+          setTimeout(_self.bindClusterIconEnter, 100);
+        })
+
+
+        _self.previousOpened = null;
+        // use previousopened to set focus back?
+
+        this.getLMap().on("popupopen", function(evt) {
+          console.log(evt.popup);
+          console.log(evt)
+          // _self.previousOpened = evt.popup;
+          let content = evt.popup.getContent();
+          console.log(evt.popup._closeButton)
+          $(evt.popup._closeButton).focus()
+          // parse the content of the popup. Set focus to the first element?
+          // $().focus()
+          // console.log()
+        });
+        this.getLMap().on("popupclose", function(evt) {
+          // TODO: how to gte focus back?
+          console.log(_self.previousOpened);
+          try{
+            _self.previousOpened._icon.focus();
+          } catch(e){
+
+          }
+          // marker.getIcon() to set focus?
+          // parse the content of the popup. Set focus to the first element?
+          // $().focus()
+          // console.log()
+        })
       }
       // TODO: fix clusters
       this.enableClusters(this.clustering);
@@ -209,6 +245,8 @@
       }).bindPopup(function (layer) {
         return layer.feature.properties.popupContent;
       }).addTo(_self.getLMap());
+
+
       return layer;
     }
 
@@ -244,28 +282,30 @@
         visible = true;
       }
       _self.types[category]["visible"] = visible;
-      // TODO: filter
-      // console.log(_self.pointsLayer);
-
-      // _self.pointToLayer.pointToLayer();
-      // recreate layer?
+      // recreate layer
       _self.recreatePointsLayer()
 
     }
 
     recreatePointsLayer() {
+      // TODO: for clusters: refreshClusters()
+      // remove markers from the clusters?
+      // getAllChildMarkers()
       this.pointsLayer.remove();
       this.getLMap().removeLayer(this.clusterLayer);
       this.pointsLayer = this.createPointsLayer(this.features, this);
       // enable clustering again? use setting for this?
       this.enableClusters(this.clustering);
+
+
+
     }
 
     createTypeFilterControlContent() {
       // sort by keys
       const typeKeys = Object.keys(this.types);
       const _self = this;
-      // console.log(this.types);
+
       typeKeys.sort();
       // var filterContent = "<h4>Initiatieven</h4>";
       var filterContent = $(`<ul>`);
@@ -338,6 +378,33 @@
           }
         });
 
+        _self.previousOpened = null;
+        clusterLayer.on('click', function (a) {
+          // an individual marker?
+          // console.log('marker ' + a.layer);
+          _self.previousOpened = a.layer;
+          // TODO: store the element that triggered the
+        });
+
+        _self.unspiderfied = false;
+        clusterLayer.on('clusterclick', function (a) {
+          // make sure that another enter or click closes the clustericon again
+          if (_self.unspiderfied == false) {
+            // when using enter, a click should be triggered too
+            // a.layer.click();
+            // close sluster ai
+            a.layer.unspiderfy();
+          }
+        });
+
+        clusterLayer.on('unspiderfied', function(cluster, markers) {
+          _self.unspiderfied = true;
+        });
+        clusterLayer.on('spiderfied', function(cluster, markers) {
+          _self.unspiderfied = false;
+        });
+
+
         // TODO: is it save to assume that all point layers should be in the clusterlayer?
         // for this map it seems to be like a good selection
         _self.unclusteredLayers = [];
@@ -366,6 +433,37 @@
         _self.clusterLayer = {};
       }
 
+
+      // bind focus events on each marker?
+      $(".leaflet-marker-icon").each(function(elem){
+        $(this).bind("focus", function(event){
+          console.log(this);
+          // console.log(event);
+        })
+      });
+
+      this.bindClusterIconEnter();
+    }
+
+    bindClusterIconEnter()  {
+      // console.log("bind enter events")
+      // // add focusable elements around the markers. Do this for each clusterIcon, also after zoom
+      let eventedIcons = 0;
+      // only if in view?
+      // create a list of icons in the view that should only be accessible by TAB
+      // TODO:
+      $(".clusterIcon").each(function(elem){
+        eventedIcons++;
+        $(this).keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13'){
+              // zoom to clustericon
+              // trigger a click on enter
+              $(this).click();
+          }
+          event.stopPropagation();
+        })
+      });
     }
 
   }
@@ -380,7 +478,8 @@
 				// optional: other map id for styling for example?
 				// TODO: extra styling class?
 				"mapElementId": "initiatieven-kaart-map",
-				"mapClass": "archives-map"
+				"mapClass": "archives-map",
+        "clustering": true
 		  }
 
 			const minConfig = {
@@ -388,7 +487,7 @@
 		    "mapItemClass": "map-item",
 			}
 
-		  const itemsMap = new HTMLItemsMap(minConfig);
+		  const itemsMap = new HTMLItemsMap(fullConfig);
 		  itemsMap.initMap()
 
   });
