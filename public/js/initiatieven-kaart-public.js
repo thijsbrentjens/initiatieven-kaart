@@ -133,9 +133,10 @@
             // find the first link in the contentNode, this is the header
             // or use the _closeButton:
             // $(evt.popup._closeButton).focus()
-            $(evt.popup._contentNode).find("a").focus();
+            // $(evt.popup._contentNode).find("a").focus();
+            // focus on the content element
+            $(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
             // TODO: if "esc" is chosen, close the popup
-
 
         });
         this.getLMap().on("popupclose", function(evt) {
