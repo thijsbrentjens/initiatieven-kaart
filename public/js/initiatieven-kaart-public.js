@@ -8,6 +8,7 @@
       this.mapItemClass = "map-item";
 			this.mapClass = "archives-map";
       this.clustering = true;
+      this.iconSpiderfiedOpacity = 0.75;
 
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
@@ -22,7 +23,6 @@
 			this.unclusteredLayers = [];
 			this.clusterLayer = {};
 			this.features = [];
-			// todo: init directly?
       this.types = {};
       // icon (wxh): 30 x 40
       // best is to make nice numbers for ratio 3:4
@@ -120,38 +120,30 @@
         this.getLMap().on("zoomend", function(){
           // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
           setTimeout(_self.bindClusterIconEnter, 100);
-        })
 
+          _self.bindFocusToIcons();
+        })
 
         _self.previousOpened = null;
         // use previousopened to set focus back?
+        _self.previousFocus = null;
+
 
         this.getLMap().on("popupopen", function(evt) {
-          console.log(evt.popup);
-          console.log(evt)
-          // _self.previousOpened = evt.popup;
-          let content = evt.popup.getContent();
-          console.log(evt.popup._closeButton)
-          $(evt.popup._closeButton).focus()
-          // parse the content of the popup. Set focus to the first element?
-          // $().focus()
-          // console.log()
+            // find the first link in the contentNode, this is the header
+            // or use the _closeButton:
+            // $(evt.popup._closeButton).focus()
+            $(evt.popup._contentNode).find("a").focus();
+            // TODO: if "esc" is chosen, close the popup
+
+
         });
         this.getLMap().on("popupclose", function(evt) {
-          // TODO: how to gte focus back?
-          console.log(_self.previousOpened);
           try{
-            _self.previousOpened._icon.focus();
-          } catch(e){
-
-          }
-          // marker.getIcon() to set focus?
-          // parse the content of the popup. Set focus to the first element?
-          // $().focus()
-          // console.log()
+            _self.previousFocus.focus();
+          } catch(e){ }
         })
       }
-      // TODO: fix clusters
       this.enableClusters(this.clustering);
     }
 
@@ -159,6 +151,18 @@
     pointToLayer(feature, latlng, scope) {
       // create a customicon
 
+    }
+
+    bindFocusToIcons() {
+      // bind focus events on each marker
+      const _self = this;
+      $(".leaflet-marker-icon").each(function(elem){
+        // first remove focus events?
+        $(this).unbind("focus");
+        $(this).bind("focus", function(evt){
+          _self.previousFocus = evt.currentTarget;
+        })
+      });
     }
 
     parseLocationData() {
@@ -173,7 +177,6 @@
         if ($(elem).data("latitude") && $(elem).data("longitude")) {
           const lat = $(elem).data("latitude");
           const lon = $(elem).data("longitude");
-          // TODO: max Width?
           // maxWidth: 800
           const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
           // let's create a nice geojson feature
@@ -223,13 +226,15 @@
           var category = feature.properties.category ? feature.properties.category : "onbekend";
           if (_self.types[feature.properties.category]) {
             if (_self.types[feature.properties.category].visible == true) {
-              // TODO: properly update the clustericons?
+              // TODO: properly update the clustericons: only update counters, but keep same position
+              // For now very hard, maybe next stage
             } else {
               return false;
             }
           }
-          // TODO: multiple?
-          // current:
+          // TODO: multiple categories?
+          // multiple categories are postponed for now (10-12-2020)
+          // current categories:
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new _self.baseIcon({
             // customize according to category
@@ -245,8 +250,6 @@
       }).bindPopup(function (layer) {
         return layer.feature.properties.popupContent;
       }).addTo(_self.getLMap());
-
-
       return layer;
     }
 
@@ -255,7 +258,6 @@
         var TypeFilterControl =  L.Control.extend({
         options: {
           position: 'topright'
-          //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
         },
         onAdd: function (map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-item-control-types');
@@ -263,7 +265,7 @@
           container.style.width = '200px';
           container.style.height = 'auto';
           const clusterControlTxt = L.DomUtil.create('div', _self.typeFilterControlTxtId, container);
-          clusterControlTxt.innerHTML = '<h4>Types</h4>';
+          clusterControlTxt.innerHTML = '';
           clusterControlTxt.id = _self.typeFilterControlTxtId;
           return container;
         },
@@ -296,37 +298,36 @@
       this.pointsLayer = this.createPointsLayer(this.features, this);
       // enable clustering again? use setting for this?
       this.enableClusters(this.clustering);
+      // or: refreshClusters?
 
 
 
     }
 
     createTypeFilterControlContent() {
-      // sort by keys
-      const typeKeys = Object.keys(this.types);
       const _self = this;
 
+      // sort by keys
+      const typeKeys = Object.keys(this.types);
       typeKeys.sort();
-      // var filterContent = "<h4>Initiatieven</h4>";
-      var filterContent = $(`<ul>`);
+
+      let filterContent = $(`<h4>`).html(`Toon initiatieven van:`);
+      let filterContentList = $(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
         const nrPosts = this.types[category].nrPosts;
-        // TODO: checked?
         const inputId = `post-${category}`;
         const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
-        // TODO: the proper object? for a public function? global?
-        var input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+        let input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
         // note the scope _self
         $(input).on('change', function(evt) {
           _self.toggleType(_self, category, evt.target.checked)
         });
-        var li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
-        filterContent.append(li)
-        // filterContent += li;
+        let li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
+        filterContentList.append(li);
       }
-      // filterContent += `</ul>`;
-      $("#" + this.typeFilterControlTxtId ).html(filterContent);
+      // filterContent.append(filterContentList);
+      $("#" + this.typeFilterControlTxtId ).html(filterContent).append(filterContentList);
       return filterContent;
     }
 
@@ -335,7 +336,6 @@
 				// hide the map, show the list
 				$("#"+this.mapElementId).hide();
 				$("#"+this.mapItemsContainerId).show();
-				// TODO: config of id for button?
 				$("#toggleListMapButton").html("Toon de kaart");
 			} else {
 				// the other way around
@@ -348,9 +348,7 @@
 		}
 
     enableClusters(enable) {
-      // Configuration of clustering?
-      // What if clustering should be disabled too? keep track of unclustered markers?
-      // TODO: keyboard enable? what to do onclick?
+      // Configuration of clustering via init function
 			const _self = this;
       this.clustering = enable;
       if (enable) {
@@ -378,37 +376,48 @@
           }
         });
 
-        _self.previousOpened = null;
-        clusterLayer.on('click', function (a) {
-          // an individual marker?
-          // console.log('marker ' + a.layer);
-          _self.previousOpened = a.layer;
-          // TODO: store the element that triggered the
+        clusterLayer.on('click', function (evt) {
+          // an individual marker is clicked, use evt.layer for that
+          // _self.previousOpened = evt.layer;
         });
 
         _self.unspiderfied = false;
-        clusterLayer.on('clusterclick', function (a) {
+        clusterLayer.on('clusterclick', function (evt) {
           // make sure that another enter or click closes the clustericon again
           if (_self.unspiderfied == false) {
-            // when using enter, a click should be triggered too
-            // a.layer.click();
-            // close sluster ai
-            a.layer.unspiderfy();
+            // close cluster
+            evt.layer.unspiderfy();
           }
         });
 
-        clusterLayer.on('unspiderfied', function(cluster, markers) {
+        clusterLayer.on('unspiderfied', function(evt, markers) {
+          // set focus back tot the icon of the marker
+          // need to use internal references, becauase there is no proper getter in Leaflet to get the icon element
+          evt.cluster._icon.focus();
           _self.unspiderfied = true;
         });
-        clusterLayer.on('spiderfied', function(cluster, markers) {
+
+        clusterLayer.on('spiderfied', function(evt) {
+          // get the icons and focus on one of them
+          // overrule the hardcoded opacity of .3 in leaflet.markercluster.js
+          // can't be done with CSS unfortunately
+          // add the focus elements:
+          _self.bindFocusToIcons();
+          evt.cluster.setOpacity(_self.iconSpiderfiedOpacity)
+          if (evt.markers) {
+            if (evt.markers.length > 0) {
+              // focus on the first marker
+              console.log("focus from spiderfied")
+              evt.markers[0]._icon.focus();
+            }
+          }
           _self.unspiderfied = false;
         });
 
-
-        // TODO: is it save to assume that all point layers should be in the clusterlayer?
-        // for this map it seems to be like a good selection
+        // for this map it seems to save to assume that all point layers should be in the clusterlayer
         _self.unclusteredLayers = [];
-
+        // this will keep track of all the subgroup arrays
+        _self.subgroups = {}
         _self.getLMap().eachLayer(function (layer) {
           _self.unclusteredLayers.push(layer);
           if (layer.feature) {
@@ -418,10 +427,13 @@
             }
           }
         });
+        // after forming the groups, add them
+        // mySubGroup = L.featureGroup.subGroup(clusterLayer, arrayOfMarkers);
 
         _self.getLMap().addLayer(clusterLayer);
         // keep track of the clusterLayer too, to make it removable
         _self.clusterLayer = clusterLayer;
+
       } else {
         if (_self.unclusteredLayers.length > 0) {
           // remove the clusterlayer
@@ -433,33 +445,30 @@
         _self.clusterLayer = {};
       }
 
-
-      // bind focus events on each marker?
-      $(".leaflet-marker-icon").each(function(elem){
-        $(this).bind("focus", function(event){
-          console.log(this);
-          // console.log(event);
-        })
-      });
-
+      this.bindFocusToIcons();
       this.bindClusterIconEnter();
+
     }
 
     bindClusterIconEnter()  {
-      // console.log("bind enter events")
-      // // add focusable elements around the markers. Do this for each clusterIcon, also after zoom
+      // add focusable elements around the markers. Do this for each clusterIcon, also after zoom
       let eventedIcons = 0;
-      // only if in view?
-      // create a list of icons in the view that should only be accessible by TAB
-      // TODO:
+      // create a list of icons in the map view that should only be accessible by TAB?
+
       $(".clusterIcon").each(function(elem){
         eventedIcons++;
         $(this).keypress(function(event){
           var keycode = (event.keyCode ? event.keyCode : event.which);
-          if(keycode == '13'){
+          // on enter or spacebar:
+          // TODO: spacebar is nasty, need to interfere with default browser behaviour
+          // 13 = enter, 32 = spacebar
+          // if(keycode == '13' || keycode == '32')
+          if(keycode == '13') {
               // zoom to clustericon
-              // trigger a click on enter
+              // trigger a click on enter.
               $(this).click();
+              event.preventDefault();
+              return false;
           }
           event.stopPropagation();
         })
@@ -479,7 +488,8 @@
 				// TODO: extra styling class?
 				"mapElementId": "initiatieven-kaart-map",
 				"mapClass": "archives-map",
-        "clustering": true
+        "clustering": true,
+        "iconSpiderfiedOpacity" : 0.75
 		  }
 
 			const minConfig = {
