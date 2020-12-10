@@ -99,7 +99,8 @@
         // initial zoom will be overwritten by the bounds of the data layer
         const mapObject = L.map(this.mapElementId, {
           'maxZoom': 18,
-          scrollWheelZoom: true
+          // scrollWheelZoom: true,
+          gestureHandling: true
         }).setView([52.1, 5.2], 7);
 				this.setLMap(mapObject);
 
@@ -299,10 +300,6 @@
       this.pointsLayer = this.createPointsLayer(this.features, this);
       // enable clustering again? use setting for this?
       this.enableClusters(this.clustering);
-      // or: refreshClusters?
-
-
-
     }
 
     createTypeFilterControlContent() {

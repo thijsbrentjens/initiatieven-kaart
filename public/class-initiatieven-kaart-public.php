@@ -89,6 +89,10 @@ class Initiatieven_Kaart_Public {
 			wp_enqueue_style('ion-awesome-markers-css');
 			wp_enqueue_style( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'css/initiatieven-kaart-public.css', array(), $this->version, 'all' );
 
+      wp_register_style('leaflet-gesture-handling-css', plugin_dir_url( __FILE__ ) . 'css/leaflet-gesture-handling.min.css', array(), $this->version);
+			wp_enqueue_style('leaflet-gesture-handling-css');
+
+
 	}
 
 	/**
@@ -111,6 +115,8 @@ class Initiatieven_Kaart_Public {
 		 */
 
  				wp_enqueue_script('leaflet-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.js', array('jquery'), '1.7.1', true);
+
+   				wp_enqueue_script('leaflet-gesture-handling-js', plugin_dir_url( __FILE__ ) . 'js/leaflet-gesture-handling.min.js', array('leaflet-js'),  $this->version, true);
 
  				wp_enqueue_script('leaflet-markercluster-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.markercluster.js', array('jquery', 'leaflet-js'),  $this->version, true);
 
