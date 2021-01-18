@@ -117,7 +117,6 @@
         // now add the content:
         const content = this.createTypeFilterControlContent(this.types);
         // on zoom:
-
         this.getLMap().on("zoomend", function(){
           // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
           setTimeout(_self.bindClusterIconEnter, 100);
@@ -212,7 +211,8 @@
 
       // Set initial zoom to the layer data
       const bounds = pointsLayer.getBounds();
-      _self.getLMap().fitBounds(bounds)
+      // add a margin around the bounds, to avoid points being too close on the edge of the map. Issue #27
+      _self.getLMap().fitBounds(bounds, {padding: [50,50]})
       this.pointsLayer = pointsLayer;
 
       // update the data, for later usage like removal of layers or whatever..
