@@ -131,7 +131,7 @@
         // add the control to zoom to the pointslayer:
         const zoomToAllControl = this.createZoomToAllControl();
         this.getLMap().addControl(zoomToAllControl);
-        
+
         // on zoom:
         this.getLMap().on("zoomend", function(){
           // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
@@ -193,6 +193,7 @@
         if ($(elem).data("latitude") && $(elem).data("longitude")) {
           const lat = $(elem).data("latitude");
           const lon = $(elem).data("longitude");
+
           // maxWidth: 800
           const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
           // let's create a nice geojson feature
@@ -204,11 +205,22 @@
               types[category] = {"nrPosts": 0, "visible": true};
             }
           }
+          // try to find a nice title
+          let title = category;
+          if (category in _self.typeLabels) title = _self.typeLabels[category];
+
+          if ( $(elem).find("h2>a")) {
+            // TODO: savely get the content? What if HTMl chars are in the title?
+            // title = $(elem).find("h2>a").html();
+            // for now: fall back to the label
+          }
+
           const feature = {
             "type": "Feature",
             "properties": {
               "category": category,
-              "popupContent": elem.innerHTML
+              "popupContent": elem.innerHTML,
+              "title": title
             },
             "geometry": {
               "type": "Point",
@@ -267,6 +279,10 @@
         pointToLayer: function(feature, latlng) {
           // wrapper function
           var category = feature.properties.category ? feature.properties.category : "onbekend";
+          var labelTxt = _self.typeLabels[category];
+          if (feature.properties.title) {
+            labelTxt = feature.properties.title;
+          }
           if (_self.types[feature.properties.category]) {
             if (_self.types[feature.properties.category].visible == true) {
               // TODO: properly update the clustericons: only update counters, but keep same position
@@ -286,9 +302,13 @@
               // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
             iconUrl: _self.getIconURL(category),
           });
-          return L.marker(latlng, {
-            icon: customIcon
+          let marker = L.marker(latlng, {
+            icon: customIcon,
+            alt: "Icoon voor initiatief " + labelTxt,
+            title: labelTxt,
+            role: "presentation"
           });
+          return marker
         }
       }).bindPopup(function (layer) {
         return layer.feature.properties.popupContent;
@@ -345,6 +365,13 @@
       this.pointsLayer = this.createPointsLayer(this.features, this);
       // enable clustering again? use setting for this?
       this.enableClusters(this.clustering);
+      // fix accessibility issues Leaflet: quite ugly this way, but faster than in Leaflet itself. If fixes are adequate try to port it to Leaflet core
+      this.fixAccessibilityIssues()
+    }
+
+    fixAccessibilityIssues() {
+      // all icons, add a aria label? role="presentation" or button? add an alt title?
+
     }
 
     createTypeFilterControlContent() {
@@ -420,7 +447,7 @@
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              html: '<b>' + cluster.getChildCount() + '</b>',
+              html: `<span title='Meerdere initiatieven' role='button'>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
