@@ -127,6 +127,11 @@
         this.getLMap().addControl(typeFilterControl);
         // now add the content:
         const content = this.createTypeFilterControlContent(this.types);
+
+        // add the control to zoom to the pointslayer:
+        const zoomToAllControl = this.createZoomToAllControl();
+        this.getLMap().addControl(zoomToAllControl);
+        
         // on zoom:
         this.getLMap().on("zoomend", function(){
           // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
@@ -138,7 +143,6 @@
         _self.previousOpened = null;
         // use previousopened to set focus back?
         _self.previousFocus = null;
-
 
         this.getLMap().on("popupopen", function(evt) {
             // find the first link in the contentNode, this is the header
@@ -229,6 +233,32 @@
       // update the data, for later usage like removal of layers or whatever..
       this.features = features;
       return features;
+    }
+
+    createZoomToAllControl() {
+      let _self = this;
+      var ZoomAllControl = L.Control.extend({
+          options: {
+            position: 'topleft'
+          },
+          onAdd: function (map) {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            const a = L.DomUtil.create('a', 'leaflet-control-zoomall', container);
+            a.innerHTML = '&harr;'; // '&#8596;'
+            // a.innerHTML = `<img src="${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/zoomall.svg"/>`;
+            a.href = '#';
+            a.title = "Toon alles";
+            a.role = "button";
+            a["aria-label"] = "Toon alles";
+            a.onclick = function() {
+              _self.getLMap().fitBounds(_self.pointsLayer.getBounds(), {padding: [50,50]});
+              return false;
+            }
+            // container.append(a);
+            return container;
+          },
+        });
+        return new ZoomAllControl();
     }
 
 
