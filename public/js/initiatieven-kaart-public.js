@@ -10,6 +10,17 @@
       this.clustering = true;
       this.iconSpiderfiedOpacity = 0.75;
 
+      // labels: also Uppercase?
+      this.typeLabels = {
+        "onbekend": "Onbekend",
+        "community": "Community",
+        "datalab": "Datalab",
+        "lab": "Datalab",
+        "portaal": "Portaal",
+        "strategie": "Strategie",
+        "visualisatie": "Visualisatie",
+      }
+
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
 
@@ -243,7 +254,7 @@
               // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
               // optreedt.
               // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
-            iconUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
+            iconUrl: _self.getIconURL(category),
           });
           return L.marker(latlng, {
             icon: customIcon
@@ -253,6 +264,10 @@
         return layer.feature.properties.popupContent;
       }).addTo(_self.getLMap());
       return layer;
+    }
+
+    getIconURL(category) {
+      return `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category.toLowerCase()}.svg`;
     }
 
     createTypeFilterControl() {
@@ -313,6 +328,10 @@
       let filterContentList = $(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
+        let labelTxt = category;
+        if (category in this.typeLabels) {
+          labelTxt = this.typeLabels[category];
+        }
         const nrPosts = this.types[category].nrPosts;
         const inputId = `post-${category}`;
         const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
@@ -321,7 +340,11 @@
         $(input).on('change', function(evt) {
           _self.toggleType(_self, category, evt.target.checked)
         });
-        let li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
+        let imgTitle = `Icoon voor ${labelTxt}`;
+        let img = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', imgTitle).attr('alt', imgTitle);
+        let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
+
+        let li = $(`<li>`).append(input).append(img).append(labelElem);
         filterContentList.append(li);
       }
       // filterContent.append(filterContentList);

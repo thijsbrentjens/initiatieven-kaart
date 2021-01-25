@@ -74,7 +74,7 @@
 
 
 .clusterIcon {
-    background-color: #275937;
+    background-color: #007bc7;
     color: #fff;
     border-radius: 25%;
 }
@@ -111,6 +111,17 @@
     list-style-type: none;
     padding-left: 0;
     margin-left: 0;
+}
+
+.typeFilterControlTxt {
+  line-height: 2em;
+  padding: 0.2em;
+}
+
+.typeFilterControlTxt img {
+  height: 2em;
+  vertical-align: bottom;
+  margin: 0 0.3em 0 0.5em;
 }
 
 /* -----------------------------------------------------------
