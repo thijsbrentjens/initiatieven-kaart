@@ -87,7 +87,7 @@
 					const _self = this;
 					// append after the container
 					// TODO: aria label for the map
-					const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}"></div>`;
+					const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
 					$("#"+this.mapItemsContainerId).after(mapDivHtml);
 
 					// create the toggle button
@@ -98,7 +98,7 @@
 						title: "Wissel tussen het tonen van de kaart en de lijst",
 						onclick (ev) {
 							_self.toggleListMap();
-						},
+						}
 					});
 					// before: toggle
 					$("#"+this.mapItemsContainerId).before(toggleListButton);
@@ -138,6 +138,7 @@
           setTimeout(_self.bindClusterIconEnter, 100);
 
           _self.bindFocusToIcons();
+          _self.fixAccessibilityIssues();
         })
 
         _self.previousOpened = null;
@@ -159,8 +160,10 @@
             _self.previousFocus.focus();
           } catch(e){ }
         })
+
       }
       this.enableClusters(this.clustering);
+      this.fixAccessibilityIssues();
     }
 
     // an internal function to update the layer?
@@ -241,7 +244,6 @@
       // add a margin around the bounds, to avoid points being too close on the edge of the map. Issue #27
       _self.getLMap().fitBounds(bounds, {padding: [50,50]})
       this.pointsLayer = pointsLayer;
-
       // update the data, for later usage like removal of layers or whatever..
       this.features = features;
       return features;
@@ -260,13 +262,12 @@
             // a.innerHTML = `<img src="${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/zoomall.svg"/>`;
             a.href = '#';
             a.title = "Toon alles";
-            a.role = "button";
-            a["aria-label"] = "Toon alles";
             a.onclick = function() {
               _self.getLMap().fitBounds(_self.pointsLayer.getBounds(), {padding: [50,50]});
               return false;
             }
             // container.append(a);
+
             return container;
           },
         });
@@ -302,11 +303,11 @@
               // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
             iconUrl: _self.getIconURL(category),
           });
+          let lbl = "Icoon voor initiatief " + labelTxt;
           let marker = L.marker(latlng, {
             icon: customIcon,
-            alt: "Icoon voor initiatief " + labelTxt,
-            title: labelTxt,
-            role: "presentation"
+            alt: lbl,
+            title: labelTxt
           });
           return marker
         }
@@ -357,21 +358,31 @@
     }
 
     recreatePointsLayer() {
-      // TODO: for clusters: refreshClusters()
-      // remove markers from the clusters?
-      // getAllChildMarkers()
+
       this.pointsLayer.remove();
       this.getLMap().removeLayer(this.clusterLayer);
       this.pointsLayer = this.createPointsLayer(this.features, this);
       // enable clustering again? use setting for this?
       this.enableClusters(this.clustering);
       // fix accessibility issues Leaflet: quite ugly this way, but faster than in Leaflet itself. If fixes are adequate try to port it to Leaflet core
-      this.fixAccessibilityIssues()
+      this.fixAccessibilityIssues();
     }
 
     fixAccessibilityIssues() {
-      // all icons, add a aria label? role="presentation" or button? add an alt title?
+      // tabindex, labels, roles for elements where this apparerently can;t be done at initialization
+      $(".leaflet-marker-icon:not('.clusterIcon')").attr("role", "button").attr("aria-label", "Knop om een initiatief te tonen op deze locatie").attr("tabindex", "0");
+      // clustericon: multiple
+      $(".clusterIcon").attr("role", "button").attr("aria-label", "Knop om meerdere initiatieven te tonen op deze locatie").attr("tabindex", "0");
+      // custom controls:
+      $(".leaflet-control-zoomall").attr("role", "button").attr("aria-label", "Toon alles").attr("tabindex", "0");
 
+      // shadows: explicit hide these
+      $(".leaflet-marker-shadow").attr("aria-hidden", "true");
+
+      $(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
+
+      // no tabindex: the links inside should be accessible only
+      $(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
     }
 
     createTypeFilterControlContent() {
@@ -398,7 +409,7 @@
           _self.toggleType(_self, category, evt.target.checked)
         });
         let imgTitle = `Icoon voor ${labelTxt}`;
-        let img = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', imgTitle).attr('alt', imgTitle);
+        let img = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', imgTitle).attr('alt', imgTitle).attr('aria-hidden', 'true');
         let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
 
         let li = $(`<li>`).append(input).append(img).append(labelElem);
@@ -447,7 +458,8 @@
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              html: `<span title='Meerdere initiatieven' role='button'>${cluster.getChildCount()}</span>`,
+              // html: `<span title='Meerdere initiatieven' tabindex='0' role='button' aria-label='Toont meerdere initiatieven op deze locatie'>${cluster.getChildCount()}</span>`,
+              html: `<span title='Meerdere initiatieven'>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
@@ -465,6 +477,7 @@
           if (_self.unspiderfied == false) {
             // close cluster
             evt.layer.unspiderfy();
+            _self.fixAccessibilityIssues();
           }
         });
 
@@ -473,6 +486,7 @@
           // need to use internal references, becauase there is no proper getter in Leaflet to get the icon element
           evt.cluster._icon.focus();
           _self.unspiderfied = true;
+          _self.fixAccessibilityIssues();
         });
 
         clusterLayer.on('spiderfied', function(evt) {
@@ -484,12 +498,11 @@
           evt.cluster.setOpacity(_self.iconSpiderfiedOpacity)
           if (evt.markers) {
             if (evt.markers.length > 0) {
-              // focus on the first marker
-              console.log("focus from spiderfied")
               evt.markers[0]._icon.focus();
             }
           }
           _self.unspiderfied = false;
+          _self.fixAccessibilityIssues();
         });
 
         // for this map it seems to save to assume that all point layers should be in the clusterlayer
@@ -576,7 +589,7 @@
 			}
 
 		  const itemsMap = new HTMLItemsMap(fullConfig);
-		  itemsMap.initMap()
+		  itemsMap.initMap();
 
   });
 
