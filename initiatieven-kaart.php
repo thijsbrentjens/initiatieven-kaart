@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        http://example.com/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.3' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.4' );
 
 /**
  * The core plugin class that is used to define internationalization,
