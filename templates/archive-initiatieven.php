@@ -284,8 +284,6 @@ function led_initiatieven_show_taxonomy_list( $taxonomy = 'category', $title = '
 			$args['hide_empty'] = true;
 		}
 
-		dovardump2( $args );
-
 		$terms = wp_list_categories( $args );
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
