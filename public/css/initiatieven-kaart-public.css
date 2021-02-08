@@ -1,5 +1,7 @@
-/* start icon test thijs */
 
+:root{
+  --leaflet-control-slight-transparent: rgba(255, 255, 255, 0.8);
+}
 
 /* extra: for focus, needs to be overwritten in LED CSS
  Or provide styling for LED itself, using these selectors */
@@ -163,4 +165,36 @@ beter is, dus eigenlijk hoort alles in dit bestand...
 }
 .leaflet-control label {
     margin-left: .5rem;
+}
+
+.map-item-control-types {
+  background-color: var(--leaflet-control-slight-transparent);
+}
+
+.type-helptext {
+  display: none;
+}
+
+.type-help-btn::before {
+  content: "?";
+  font-weight: bold;
+  text-align: center;
+  margin-left: -0.2em;
+  margin-right: 5em;
+}
+
+.type-help-btn {
+  width: 1.5em;
+  overflow: hidden;
+  margin: 0;
+  height: 2em;
+}
+
+.show-overlay {
+  display: inline-block;
+  width: 200px;
+  right: 200px;
+  position: absolute;
+  background-color: #ffffff;
+  line-height: initial;
 }

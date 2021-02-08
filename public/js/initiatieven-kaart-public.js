@@ -21,6 +21,18 @@
         "visualisatie": "Visualisatie",
       }
 
+      // TODO: refactor, to integrate this with the labels? Or better use the CMS for these helptexts?
+      // helptext:
+      this.typeHelpTexts = {
+        "onbekend": "Er is voor dit initiatief geen type bekend",
+        "community": "Een community is ...",
+        "datalab": "Een datalab is... ",
+        "lab": "Een datalab is... ",
+        "portaal": "Een portaal is...",
+        "strategie": "Strategie gaat over ...",
+        "visualisatie": "Visualisatie gaat over data visualiseren",
+      }
+
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
 
@@ -126,7 +138,7 @@
         const typeFilterControl = this.createTypeFilterControl();
         this.getLMap().addControl(typeFilterControl);
         // now add the content:
-        const content = this.createTypeFilterControlContent(this.types);
+        this.createTypeFilterControlContent(this.types);
 
         // add the control to zoom to the pointslayer:
         const zoomToAllControl = this.createZoomToAllControl();
@@ -141,8 +153,8 @@
           _self.fixAccessibilityIssues();
         })
 
-        _self.previousOpened = null;
-        // use previousopened to set focus back?
+        // _self.previousOpened = null;
+        // we need to keep track of previously focused elements because of the spiderfy functionality in clusters
         _self.previousFocus = null;
 
         this.getLMap().on("popupopen", function(evt) {
@@ -152,7 +164,7 @@
             // $(evt.popup._contentNode).find("a").focus();
             // focus on the content element
             $(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
-            // TODO: if "esc" is chosen, close the popup
+            // TODO: if "esc" is chosen, close the popup?
 
         });
         this.getLMap().on("popupclose", function(evt) {
@@ -258,16 +270,13 @@
           onAdd: function (map) {
             const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
             const a = L.DomUtil.create('a', 'leaflet-control-zoomall', container);
-            a.innerHTML = '&harr;'; // '&#8596;'
-            // a.innerHTML = `<img src="${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/zoomall.svg"/>`;
+            a.innerHTML = '&harr;';
             a.href = '#';
             a.title = "Toon alles";
             a.onclick = function() {
               _self.getLMap().fitBounds(_self.pointsLayer.getBounds(), {padding: [50,50]});
               return false;
             }
-            // container.append(a);
-
             return container;
           },
         });
@@ -287,13 +296,12 @@
           if (_self.types[feature.properties.category]) {
             if (_self.types[feature.properties.category].visible == true) {
               // TODO: properly update the clustericons: only update counters, but keep same position
-              // For now very hard, maybe next stage
+              // For now very hard, maybe next phase
             } else {
               return false;
             }
           }
-          // TODO: multiple categories?
-          // multiple categories are postponed for now (10-12-2020)
+          // TODO: multiple categories for one initiatief? Multiple categories are postponed for now (10-12-2020)
           // current categories:
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new _self.baseIcon({
@@ -329,9 +337,6 @@
         },
         onAdd: function (map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-item-control-types');
-          container.style.backgroundColor = 'white';
-          container.style.width = '200px';
-          container.style.height = 'auto';
           const clusterControlTxt = L.DomUtil.create('div', _self.typeFilterControlTxtId, container);
           clusterControlTxt.innerHTML = '';
           clusterControlTxt.id = _self.typeFilterControlTxtId;
@@ -341,6 +346,62 @@
 
       const typeFilterControl = new TypeFilterControl();
       return typeFilterControl;
+    }
+
+    // content block for the control is created seperately, because of simpler code (don't use Leaflet domutils too much) and
+    createTypeFilterControlContent() {
+      const _self = this;
+
+      // sort by keys, could be labels later
+      const typeKeys = Object.keys(this.types);
+      typeKeys.sort();
+
+      let filterContent = $(`<h4>`).html(`Toon initiatieven van:`);
+      let filterContentList = $(`<ul>`);
+      for (var k in typeKeys) {
+        const category = typeKeys[k];
+        let labelTxt = category;
+        if (category in this.typeLabels) {
+          labelTxt = this.typeLabels[category];
+        }
+        const nrPosts = this.types[category].nrPosts;
+        const inputId = `post-${category}`;
+        const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
+
+        // create the checkbox for type selection
+        let input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+        // note the scope _self: this function is only called from the GUI, so 'this' does not refer to this class. Use _self for that.
+        $(input).on('change', function(evt) {
+          _self.toggleType(_self, category, evt.target.checked)
+        });
+        // create the icon of the type (issue #22)
+        let iconTitle = `Icoon voor ${labelTxt}`;
+        let iconImg = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
+        let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
+
+        // helptext icon
+        let helpTxt = this.typeHelpTexts[category];
+        let helpTxtContainer = "";
+        if (helpTxt != undefined) {
+          let helpButton = $(`<button title="Help tekst" class="type-help-btn">Help</button>`);
+          helpButton.on('click', function(evt) {
+            let visible = $(this).next('.type-helptext').hasClass('show-overlay');
+            // hide all other help texts
+            $('.type-helptext').removeClass('show-overlay');
+            if (!visible) $(this).next('.type-helptext').addClass('show-overlay');
+          });
+          let helpTxtSpan = $(`<span class="type-helptext leaflet-bar">${helpTxt}</span>`).on('click', function(evt) {
+             $(this).removeClass('show-overlay');
+          });
+          helpTxtContainer = $(`<span class="helptext-container"></span>`).append(helpButton).append(helpTxtSpan);
+        }
+        // now glue it together for the list
+        let li = $(`<li>`).append(input).append(iconImg).append(helpTxtContainer).append(labelElem);
+        filterContentList.append(li);
+      }
+      // filterContent.append(filterContentList);
+      $("#" + this.typeFilterControlTxtId ).html(filterContent).append(filterContentList);
+      return filterContent;
     }
 
     toggleType(_self, category, show) {
@@ -354,7 +415,10 @@
       _self.types[category]["visible"] = visible;
       // recreate layer
       _self.recreatePointsLayer()
+    }
 
+    toggleHelpTxt(_self, category) {
+      console.log("in toggleHelpTxt")
     }
 
     recreatePointsLayer() {
@@ -367,6 +431,7 @@
       // fix accessibility issues Leaflet: quite ugly this way, but faster than in Leaflet itself. If fixes are adequate try to port it to Leaflet core
       this.fixAccessibilityIssues();
     }
+
 
     fixAccessibilityIssues() {
       // tabindex, labels, roles for elements where this apparerently can;t be done at initialization
@@ -385,40 +450,6 @@
       $(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
     }
 
-    createTypeFilterControlContent() {
-      const _self = this;
-
-      // sort by keys
-      const typeKeys = Object.keys(this.types);
-      typeKeys.sort();
-
-      let filterContent = $(`<h4>`).html(`Toon initiatieven van:`);
-      let filterContentList = $(`<ul>`);
-      for (var k in typeKeys) {
-        const category = typeKeys[k];
-        let labelTxt = category;
-        if (category in this.typeLabels) {
-          labelTxt = this.typeLabels[category];
-        }
-        const nrPosts = this.types[category].nrPosts;
-        const inputId = `post-${category}`;
-        const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
-        let input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
-        // note the scope _self
-        $(input).on('change', function(evt) {
-          _self.toggleType(_self, category, evt.target.checked)
-        });
-        let imgTitle = `Icoon voor ${labelTxt}`;
-        let img = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', imgTitle).attr('alt', imgTitle).attr('aria-hidden', 'true');
-        let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
-
-        let li = $(`<li>`).append(input).append(img).append(labelElem);
-        filterContentList.append(li);
-      }
-      // filterContent.append(filterContentList);
-      $("#" + this.typeFilterControlTxtId ).html(filterContent).append(filterContentList);
-      return filterContent;
-    }
 
 		toggleListMap(){
 			if ($("#"+this.mapElementId).is(":visible")) {
@@ -569,7 +600,6 @@
   }
 
   // now init the object
-	// this could also be done somewhere else?
   $(function () {
 
 			const fullConfig = {
