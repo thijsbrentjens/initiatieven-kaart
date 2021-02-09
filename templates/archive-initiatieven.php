@@ -232,10 +232,10 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 				$return .= sprintf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $bestLatitude, $bestLongitude, join( " ", $classes ) );
 				$return .= sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
+				$return .= sprintf( '%s', $initiatieftype );
 
 				// iets van een samenvatting, beschrijving tonen hier
 				$return .= sprintf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
-				$return .= sprintf( '%s', $initiatieftype );
 				$return .= '</li>';
 			} else {
 				// geen locationField , wel een list item toevoegen, maar zonder de data attributen voor locatie?
@@ -280,21 +280,31 @@ function led_initiatieven_show_taxonomy_list( $taxonomy = 'category', $title = '
 		);
 
 		if ( $exclude ) {
+			//
 			$args['exclude']    = $exclude;
 			$args['hide_empty'] = true;
 		}
 
 		$terms = wp_list_categories( $args );
+		$terms = get_terms( $args );
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 
+			$return .= '<section class="taxonomy ' . $taxonomy . '">';
 			if ( $title ) {
 				$return .= '<h2>' . $title . '</h2>';
 			}
 
 			$return .= '<ul>';
-			$return .= $terms;
+			foreach ( $terms as $term ) {
+				$return .= '<li><a href="' . get_term_link( $term ) . '">' . $term->name  . '</a>';
+				if ( $term->description ) {
+					$return .= '<br>' . $term->description;
+                }
+				$return .= '</li>';
+            }
 			$return .= '</ul>';
+			$return .= '</section>';
 
 		}
 	}
