@@ -532,6 +532,16 @@
 		"oF": 0,
 		"oS": 3
 		},
+	"/public/css/leaflet-gesture-handling.min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/public/css/leaflet-gesture-handling.min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
 	"/public/css/leaflet.awesome-markers.css": {
 		"aP": 1,
 		"bl": 0,
@@ -614,17 +624,6 @@
 		"oAP": "/public/index.php",
 		"oF": 0
 		},
-	"/public/js/initiatieven-kaart-public-min.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/public/js/initiatieven-kaart-public-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/public/js/initiatieven-kaart-public.js": {
 		"bF": 0,
 		"ft": 64,
@@ -632,6 +631,17 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/public/js/initiatieven-kaart-public-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/public/js/leaflet-gesture-handling.min.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/public/js/leaflet-gesture-handling.min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -702,6 +712,14 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/templates/archive-initiatieven.php",
+		"oF": 0
+		},
+	"/templates/page-initiatieven.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/templates/page-initiatieven.php",
 		"oF": 0
 		},
 	"/templates/single-initiatief.php": {
