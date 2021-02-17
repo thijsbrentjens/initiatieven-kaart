@@ -27,7 +27,7 @@ De Initiatievenkaart probeert aan de Toegankelijkheidseisen te voldoen door:
    1. Dit soort zaken wordt niet makkelijk en netjes in LeafletJS afgehandeld voor alle elementen. Voor nu een functie gemaakt die "achteraf" enkele zaken toevoegt / corrigeert. Zie de Javascript code `public/js/initiatieven-kaart-public.js` en dan de functie `fixAccessibilityIssues()`
 5. focus styles voor iconen en popup sluit buttons
 
-Weet je dingen die beter kunnen? Maak vooral een [Github issue](./issues/new) aan.
+Weet je dingen die beter kunnen? Maak vooral een [Github issue](../../issues/new) aan.
 
 ### Toetsenbordtoegankelijkheid iconen op de kaart
 Focus wordt nu als volgt gezet:
@@ -52,7 +52,7 @@ SVG iconen voor de kaart, geplaatst in de directory `css/images/`. Gebruik het t
 `marker-{type initiatief}.svg`. Bijvoorbeeld: `marker-visualisatie.svg` voor een icoon dat als map-item-type / type initiatief de code `visualisatie` heeft.
 
 ## Suggesties, openstaande punten en doorontwikkeling
-Zie de [Github issues](./issues) voor openstaande punten. Voor issues en suggesties voor verbetering kan je ook daar terecht. Er is op dit moment geen actief en structureel beheer op deze plugin geregeld/voorzien. Dus we geven geen garanties voor het oplossen.
+Zie de [Github issues](../../issues) voor openstaande punten. Voor issues en suggesties voor verbetering kan je ook daar terecht. Er is op dit moment geen actief en structureel beheer op deze plugin geregeld/voorzien. Dus we geven geen garanties voor het oplossen.
 
 De code is beschikbaar onder een open source licentie. Voel je vrij een Pull request te doen als je concrete verbeteringen hebt.
 
