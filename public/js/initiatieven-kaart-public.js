@@ -75,11 +75,6 @@
         return false;
       }
 
-      // use a custon prefix for led
-      L.AwesomeMarkers.Icon.prototype.options.prefix = 'led-icon';
-      // For now: use ion as icon
-      L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
-
       // init the map if it is not available yet
       if (!this.getLMap()) {
         // make sure all elements are avialable

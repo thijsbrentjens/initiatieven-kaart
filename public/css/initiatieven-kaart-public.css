@@ -1,6 +1,7 @@
 
 :root{
   --leaflet-control-slight-transparent: rgba(255, 255, 255, 0.8);
+  --rijksoverheid-blue: #007bc7;
 }
 
 /* extra: for focus, needs to be overwritten in LED CSS
@@ -76,31 +77,22 @@
 
 
 .clusterIcon {
-    background-color: #007bc7;
+    background-color: var(--rijksoverheid-blue);
     color: #fff;
     border-radius: 25%;
     font-weight: bold;
 }
 
 .clusterIcon-md {
-  /* half the increaseSize from the JS code */
+  /* half the increaseSize from the JS code js/initiatieven-kaart-public.js */
   padding-top: 3px;
 }
 
 .clusterIcon-lg {
-  /* half the increaseSize from the JS code */
+  /* the increaseSize from the JS code in js/initiatieven-kaart-public.js */
   padding-top: 6px;
 }
 
-.awesome-marker i {
-        font-size: 18px;
-        margin-top: 8px;
-    }
-
-/*
-.led-icon {
-  color: black;
-} */
 
 /* -----------------------------------------------------------
  geen lelleke list-items als de kaart getoond wordt
