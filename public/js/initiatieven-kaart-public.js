@@ -21,18 +21,6 @@
         "visualisatie": "Visualisatie",
       }
 
-      // TODO: refactor, to integrate this with the labels? Or better use the CMS for these helptexts?
-      // helptext:
-      this.typeHelpTexts = {
-        "onbekend": "Er is voor dit initiatief geen type bekend",
-        "community": "Een community is ...",
-        "datalab": "Een datalab is... ",
-        "lab": "Een datalab is... ",
-        "portaal": "Een portaal is...",
-        "strategie": "Strategie gaat over ...",
-        "visualisatie": "Visualisatie gaat over data visualiseren",
-      }
-
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
 
@@ -379,24 +367,8 @@
         let iconImg = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
         let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
 
-        // helptext icon
-        let helpTxt = this.typeHelpTexts[category];
-        let helpTxtContainer = "";
-        if (helpTxt != undefined) {
-          let helpButton = $(`<button title="Help tekst" class="type-help-btn">Help</button>`);
-          helpButton.on('click', function(evt) {
-            let visible = $(this).next('.type-helptext').hasClass('show-overlay');
-            // hide all other help texts
-            $('.type-helptext').removeClass('show-overlay');
-            if (!visible) $(this).next('.type-helptext').addClass('show-overlay');
-          });
-          let helpTxtSpan = $(`<span class="type-helptext leaflet-bar">${helpTxt}</span>`).on('click', function(evt) {
-             $(this).removeClass('show-overlay');
-          });
-          helpTxtContainer = $(`<span class="helptext-container"></span>`).append(helpButton).append(helpTxtSpan);
-        }
         // now glue it together for the list
-        let li = $(`<li>`).append(input).append(iconImg).append(helpTxtContainer).append(labelElem);
+        let li = $(`<li>`).append(input).append(iconImg).append(labelElem);
         filterContentList.append(li);
       }
       // filterContent.append(filterContentList);
