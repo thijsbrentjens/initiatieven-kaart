@@ -1,7 +1,7 @@
 # Initiatievenkaart
 
 WordPress-plugin voor het op een kaart tonen van organisaties en initiatieven om datagedreven te werken.
-Wordt gebruikt op [digitaleoverheid.nl/initiatievenkaart](https://www.digitaleoverheid.nl/initiatievenkaart)
+Wordt (later) gebruikt op [www.digitaleoverheid.nl/initiatief/](https://www.digitaleoverheid.nl/initiatief/)
 
 ## Afhankelijkheden
 Deze plugin functioneert niet zonder:
