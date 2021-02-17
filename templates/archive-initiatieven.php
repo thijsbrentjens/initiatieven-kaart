@@ -6,7 +6,7 @@ if ( function_exists( 'genesis' ) ) {
 	// Genesis wordt gebruikt als framework
 	// dit geldt voor o.m. het theme voor Digitale Overheid
 
-    // in de breadcrumb zetten we de link naar de algemene kaart
+	// in de breadcrumb zetten we de link naar de algemene kaart
 	add_filter( 'genesis_single_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
 	add_filter( 'genesis_page_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
 	add_filter( 'genesis_archive_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
@@ -66,7 +66,7 @@ function led_initiatieven_taxonomy_list( $doreturn = false ) {
 	$return = '';
 
 	if ( is_tax( CT_INITIATIEFTYPE ) ) {
-	    // toon de lijst van ANDERE initiatieftypes
+		// toon de lijst van ANDERE initiatieftypes
 		$return .= led_initiatieven_show_taxonomy_list( CT_INITIATIEFTYPE, __( 'Andere initiatieftypes', 'taxonomie-lijst', 'initiatieven-kaart' ), $doreturn, get_queried_object_id() );
 	} elseif ( is_tax( CT_INITIATIEF_PROVINCIE ) ) {
 		// toon de lijst van ANDERE provincies
@@ -113,7 +113,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		$return = '<h1>' . $archive_title . '</h1>';
 
 	} elseif ( ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
-	    // we kijken naar een lijst van initiatieven per initiatieftype of provincie
+		// we kijken naar een lijst van initiatieven per initiatieftype of provincie
 
 		$term_id = get_queried_object_id();
 		$term    = get_term( $term_id, ( is_tax( CT_INITIATIEFTYPE ) ? CT_INITIATIEFTYPE : CT_INITIATIEF_PROVINCIE ) );
@@ -127,15 +127,15 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 
 		if ( $count ) {
 			if ( is_tax( CT_INITIATIEF_PROVINCIE ) ) {
-			    // voorzetsels, best belangrijk
+				// voorzetsels, best belangrijk
 				$return = '<h1>' . sprintf( _n( '%s initiatief in %s', "%s initiatieven in %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
 			} else {
 				$return = '<h1>' . sprintf( _n( '%s initiatief voor %s', "%s initiatieven voor %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
 			}
 		} else {
-		    // Niks geen initiatieven niet. Nul, nada, noppes, nihil.
-		    // Zeeland en Drenthe, laat van je HO-REN!
-			$return = '<h1>Geen initiatieven gevonden voor ' . $archive_title . '</h1>';
+			// Niks geen initiatieven niet. Nul, nada, noppes, nihil.
+			// Zeeland en Drenthe, laat van je HO-REN!
+			$return              = '<h1>Geen initiatieven gevonden voor ' . $archive_title . '</h1>';
 			$archive_description = 'Sorry.';
 		}
 
@@ -157,7 +157,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 
 function led_initiatieven_archive_list( $doreturn = false ) {
 
-    // De lijst wordt alfabetisch gesorteerd dankzij 'load_all_initiatieven'
+	// De lijst wordt alfabetisch gesorteerd dankzij 'load_all_initiatieven'
 	// zie:
 	// add_action('pre_get_posts', array($plugin, 'load_all_initiatieven'), 999);
 
@@ -272,7 +272,7 @@ function led_initiatieven_show_taxonomy_list( $taxonomy = 'category', $title = '
 			'taxonomy'           => $taxonomy,
 			'orderby'            => 'name',
 			'order'              => 'ASC',
-			'hide_empty'         => true,
+			'hide_empty'         => false,
 			'ignore_custom_sort' => true,
 			'echo'               => 0,
 			'hierarchical'       => true,
@@ -280,8 +280,9 @@ function led_initiatieven_show_taxonomy_list( $taxonomy = 'category', $title = '
 		);
 
 		if ( $exclude ) {
-			$args['exclude'] = $exclude;
-        }
+			$args['exclude']    = $exclude;
+			$args['hide_empty'] = true;
+		}
 
 		$terms = wp_list_categories( $args );
 
@@ -332,9 +333,10 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 				return '<a href="' . get_post_type_archive_link( CPT_INITIATIEF ) . '">' . $obj->label . '</a>' . $args['sep'] . $term->name;
 			}
 
-            return $crumb;
+			return $crumb;
 		}
 	}
+
 	return $crumb;
 
 }
