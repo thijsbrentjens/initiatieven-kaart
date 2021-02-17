@@ -117,7 +117,8 @@ class Initiatieven_Kaart_Public {
 
 				wp_enqueue_script( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'js/initiatieven-kaart-public.js', array( 'jquery' ), $this->version, false );
 
-        // creates a javascript object Utils: Utils.baseurl = "http://.../../"
+        // creates a javascript object Utils: Utils.baseurl = "http://.../../".
+        // Use to create a nice path to SVG icons for example
         wp_localize_script($this->initiatieven_kaart, 'Utils', array( 'siteurl' => get_option('siteurl') ));
 
 	}

@@ -3,42 +3,47 @@
 
   class HTMLItemsMap {
 
+    // see end of this file for the config object
     constructor(config) {
+      // all options untill Object.assign can be set using the config object
+      // if not provided in the config object, use the defaults below:
 			this.mapItemsContainerId = "map-items";
       this.mapItemClass = "map-item";
 			this.mapClass = "archives-map";
       this.clustering = true;
       this.iconSpiderfiedOpacity = 0.75;
-
-      // labels: also Uppercase?
-      this.typeLabels = {
+      this.typeLegendLabels = {
         "onbekend": "Onbekend",
         "community": "Community",
-        "datalab": "Datalab",
         "lab": "Datalab",
         "portaal": "Portaal",
         "strategie": "Strategie",
         "visualisatie": "Visualisatie",
       }
+      // icon (wxh): 30 x 40
+      // best is to make nice numbers for ratio 3:4
+      // for the icons:
+      this.iconHeight = 32;
+      this.iconWidth = Math.round(0.75 * this.iconHeight);
+
+      // end of the options though the config object
 
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
 
+      // the properties below are required for the map to work properly, don't change these
 			this.mapElementId = this.mapItemsContainerId + "-mapObject";
       this.typeFilterControlTxtId = "typeFilterControlTxt";
       this.typeFilterControlContent = "";
-
-			// other props
+      // the leaflet map object:
 			this._map = false;
+
+      // for the data layers:
       this.pointsLayer;
 			this.unclusteredLayers = [];
 			this.clusterLayer = {};
 			this.features = [];
       this.types = {};
-      // icon (wxh): 30 x 40
-      // best is to make nice numbers for ratio 3:4
-      this.iconHeight = 32;
-      this.iconWidth = Math.round(0.75 * this.iconHeight);
 
       this.baseIcon = L.Icon.extend({
         options: {
@@ -70,23 +75,21 @@
 
     initMap() {
       const _self = this;
-      // first: detect if there are map-objects available
+      // first: detect if there are map elements (a container) available in the HTML, if not: just stop
       if ($("." + this.mapItemClass).length == 0) {
         return false;
       }
 
       // init the map if it is not available yet
       if (!this.getLMap()) {
-        // make sure all elements are avialable
+        // create an HTML element for the map if not available
 				if ($("#"+this.mapElementId).length == 0 ){
 					const _self = this;
 					// append after the container
-					// TODO: aria label for the map
 					const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
 					$("#"+this.mapItemsContainerId).after(mapDivHtml);
 
-					// create the toggle button
-					// TODO: labels
+					// create the toggle map/list button
 					const toggleListButton = Object.assign(document.createElement('button'), {
 						textContent: 'Toon de lijst',
 						id: "toggleListMapButton",
@@ -95,19 +98,18 @@
 							_self.toggleListMap();
 						}
 					});
-					// before: toggle
 					$("#"+this.mapItemsContainerId).before(toggleListButton);
-					// hide the list
+					// hide the HTML list with the map items
 					$("#"+this.mapItemsContainerId).hide();
-
 				}
 
         // initial zoom will be overwritten by the bounds of the data layer
         const mapObject = L.map(this.mapElementId, {
           'maxZoom': 18,
           // scrollWheelZoom: true,
+          // enable the plugin for touch controls and to avoid accidental zooming when scrolling over the map
           gestureHandling: true
-        }).setView([52.1, 5.2], 7);
+        }).setView([52.1, 5.2], 7); // zoomlevel 7 works out nicely with a map of 500px high
 				this.setLMap(mapObject);
 
         const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -117,26 +119,29 @@
         });
         this.getLMap().addLayer(osm);
         const features = this.parseLocationData();
-        // after parsing the location data, create a control to filter
+
+        // after parsing the location data, create a custom control to filter on these items given theur type
         const typeFilterControl = this.createTypeFilterControl();
         this.getLMap().addControl(typeFilterControl);
-        // now add the content:
+        // now add the content based on the types available
         this.createTypeFilterControlContent(this.types);
 
-        // add the control to zoom to the pointslayer:
+        // add the custom control to zoom to the pointslayer:
         const zoomToAllControl = this.createZoomToAllControl();
         this.getLMap().addControl(zoomToAllControl);
 
         // on zoom:
+        // after zooming, we need to explicitly set a few things on the icons created.
+        // can only be done after zooming, because the icons/items on the map may change due to clustering
         this.getLMap().on("zoomend", function(){
-          // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
+          // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM). (Didn't find a nice event or hook instead, so use a timeout)
           setTimeout(_self.bindClusterIconEnter, 100);
 
           _self.bindFocusToIcons();
+          // some accessibility issues need to be fixed for icons
           _self.fixAccessibilityIssues();
         })
 
-        // _self.previousOpened = null;
         // we need to keep track of previously focused elements because of the spiderfy functionality in clusters
         _self.previousFocus = null;
 
@@ -148,6 +153,7 @@
             // focus on the content element
             $(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
             // TODO: if "esc" is chosen, close the popup?
+            // "esc" is tuoghto use, maybe later implement this
 
         });
         this.getLMap().on("popupclose", function(evt) {
@@ -161,57 +167,47 @@
       this.fixAccessibilityIssues();
     }
 
-    // an internal function to update the layer?
-    pointToLayer(feature, latlng, scope) {
-      // create a customicon
-
-    }
-
     bindFocusToIcons() {
-      // bind focus events on each marker
+      // bind focus events on each marker/icon
+      // for now for the spiderfying functions only
       const _self = this;
       $(".leaflet-marker-icon").each(function(elem){
-        // first remove focus events?
+        // first remove other focus events, to avoid stacking them
         $(this).unbind("focus");
         $(this).bind("focus", function(evt){
+          // keep track of the focussed element because of spiderfying and unspiderfying again
           _self.previousFocus = evt.currentTarget;
         })
       });
     }
 
     parseLocationData() {
-      // to avoid scope issues
+      // to avoid scope issues, use _self
       const _self = this;
       const features = [];
       // reset the types
       const types = {};
 
       $("." + this.mapItemClass).each(function (cntr, elem) {
-				// for all elements with latitude and longitude, add a marker
+				// for all elements with latitude and longitude data attributes, add a marker
         if ($(elem).data("latitude") && $(elem).data("longitude")) {
           const lat = $(elem).data("latitude");
           const lon = $(elem).data("longitude");
 
-          // maxWidth: 800
           const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
-          // let's create a nice geojson feature
+          // let's create a nice geojson feature for the data we found
+          // use the list item content as popup content
+          // also: keep track of the number of items for the type we found. This is for the Legend
           if (category) {
             if (types[category]) {
               types[category]["nrPosts"] += 1;
             } else {
-              // default to true for filtering?
               types[category] = {"nrPosts": 0, "visible": true};
             }
           }
           // try to find a nice title
           let title = category;
-          if (category in _self.typeLabels) title = _self.typeLabels[category];
-
-          if ( $(elem).find("h2>a")) {
-            // TODO: savely get the content? What if HTMl chars are in the title?
-            // title = $(elem).find("h2>a").html();
-            // for now: fall back to the label
-          }
+          if (category in _self.typeLegendLabels) title = _self.typeLegendLabels[category];
 
           const feature = {
             "type": "Feature",
@@ -272,19 +268,19 @@
         pointToLayer: function(feature, latlng) {
           // wrapper function
           var category = feature.properties.category ? feature.properties.category : "onbekend";
-          var labelTxt = _self.typeLabels[category];
+          var labelTxt = _self.typeLegendLabels[category];
           if (feature.properties.title) {
             labelTxt = feature.properties.title;
           }
           if (_self.types[feature.properties.category]) {
             if (_self.types[feature.properties.category].visible == true) {
               // TODO: properly update the clustericons: only update counters, but keep same position
-              // For now very hard, maybe next phase
+              // For now very hard, maybe next phase.
             } else {
               return false;
             }
           }
-          // TODO: multiple categories for one initiatief? Multiple categories are postponed for now (10-12-2020)
+          // TODO: multiple categories for one initiatief? Multiple categories are postponed for now (decided in the group 10-12-2020)
           // current categories:
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new _self.baseIcon({
@@ -309,6 +305,7 @@
     }
 
     getIconURL(category) {
+      // Utils.siteurl is set in: public/class-initiatieven-kaart-public.php
       return `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category.toLowerCase()}.svg`;
     }
 
@@ -331,7 +328,7 @@
       return typeFilterControl;
     }
 
-    // content block for the control is created seperately, because of simpler code (don't use Leaflet domutils too much) and
+    // content block for the control is created seperately, because of simpler code (don't use Leaflet domutils too much, jQuery is more commonly used)
     createTypeFilterControlContent() {
       const _self = this;
 
@@ -344,8 +341,8 @@
       for (var k in typeKeys) {
         const category = typeKeys[k];
         let labelTxt = category;
-        if (category in this.typeLabels) {
-          labelTxt = this.typeLabels[category];
+        if (category in this.typeLegendLabels) {
+          labelTxt = this.typeLegendLabels[category];
         }
         const nrPosts = this.types[category].nrPosts;
         const inputId = `post-${category}`;
@@ -384,12 +381,7 @@
       _self.recreatePointsLayer()
     }
 
-    toggleHelpTxt(_self, category) {
-      console.log("in toggleHelpTxt")
-    }
-
     recreatePointsLayer() {
-
       this.pointsLayer.remove();
       this.getLMap().removeLayer(this.clusterLayer);
       this.pointsLayer = this.createPointsLayer(this.features, this);
@@ -416,7 +408,6 @@
       // no tabindex: the links inside should be accessible only
       $(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
     }
-
 
 		toggleListMap(){
 			if ($("#"+this.mapElementId).is(":visible")) {
@@ -447,7 +438,7 @@
             const baseSize = 20;
             const increaseSize = 6;
             var iconSize = L.point(baseSize, baseSize);
-            // TODO: SVG icon for clusters?
+
             if (cluster.getChildCount() >= 10) {
               sizeClass = 'md';
               iconSize = L.point(baseSize + increaseSize, baseSize + increaseSize)
@@ -456,7 +447,6 @@
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              // html: `<span title='Meerdere initiatieven' tabindex='0' role='button' aria-label='Toont meerdere initiatieven op deze locatie'>${cluster.getChildCount()}</span>`,
               html: `<span title='Meerdere initiatieven'>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
@@ -469,6 +459,8 @@
           // _self.previousOpened = evt.layer;
         });
 
+        // for keyboardsupport add some functions to cluster events.
+        // and make sure (some) accessibility issues in the content after interaction are fixed
         _self.unspiderfied = false;
         clusterLayer.on('clusterclick', function (evt) {
           // make sure that another enter or click closes the clustericon again
@@ -539,6 +531,7 @@
 
     }
 
+    // on enter: open/close the cluster
     bindClusterIconEnter()  {
       // add focusable elements around the markers. Do this for each clusterIcon, also after zoom
       let eventedIcons = 0;
@@ -549,12 +542,13 @@
         $(this).keypress(function(event){
           var keycode = (event.keyCode ? event.keyCode : event.which);
           // on enter or spacebar:
-          // TODO: spacebar is nasty, need to interfere with default browser behaviour
+          // TODO: spacebar is nasty, interferes with default browser behaviour
+          // Use ENTER only for now
           // 13 = enter, 32 = spacebar
           // if(keycode == '13' || keycode == '32')
           if(keycode == '13') {
               // zoom to clustericon
-              // trigger a click on enter.
+              // trigger a click on enter ... 
               $(this).click();
               event.preventDefault();
               return false;
@@ -566,27 +560,50 @@
 
   }
 
-  // now init the object
+  /* -----------------------------------
+  Configure and init the map after the page is ready
+  ----------------------------------- */
   $(function () {
 
-			const fullConfig = {
-				"mapItemsContainerId": "map-items",
-		    "mapItemClass": "map-item",
-				// optional: other map id for styling for example?
-				// TODO: extra styling class?
-				"mapElementId": "initiatieven-kaart-map",
-				"mapClass": "archives-map",
-        "clustering": true,
-        "iconSpiderfiedOpacity" : 0.75
-		  }
+    const fullConfig = {
+      // mandatory: the id of the HTML list that contains the map items
+      "mapItemsContainerId": "map-items",
+      // mandatory:  the class for an item in the list that needs to be displayed on the map
+      "mapItemClass": "map-item",
+      // optional: other map id for styling for example
+      "mapElementId": "initiatieven-kaart-map",
+      // optional: the CSS class for the HTML element where the map is created in. If changed, make sure there is a style rule that specifies the height of the HTML element, because otherwise LeafletJS can't generate a map
+      "mapClass": "archives-map",
+      // Clustering creates icons with counters for items that are too close to each other for a good visualisation. On clicking a cluster it zooms to the items of the cluster or "spiderfies" them to show the individual items.
+      "clustering": true,
+      // the Leaflet plugin for clusters requires to set the opacity of a an icon through JavaScript
+      "iconSpiderfiedOpacity" : 0.75,
+      // Optional: labels in the legend for each type. The property name (e.g. "portaal") should be the same as the type code of the item, as defined in the Wordpress taxonomy
+      "typeLegendLabels" : {
+        "onbekend": "Onbekend",
+        "community": "Community",
+        "datalab": "Datalab", // datalab is the old type, because in test/older data this can be present, just put it here
+        "lab": "Datalab",
+        "portaal": "Portaal",
+        "strategie": "Strategie",
+        "visualisatie": "Visualisatie",
+      },
+      // Optional, icon size (width x height): 24 x 32
+      // best is to make nice numbers using the ratio 3:4, given the SVG icons provided
+      "iconWidth": 24,
+      "iconHeight": 32
+    }
 
-			const minConfig = {
-				"mapItemsContainerId": "map-items",
-		    "mapItemClass": "map-item",
-			}
+    /* the minimal config is:
 
-		  const itemsMap = new HTMLItemsMap(fullConfig);
-		  itemsMap.initMap();
+		const minConfig = {
+			"mapItemsContainerId": "map-items",
+	    "mapItemClass": "map-item",
+		}
+
+    */
+	  const itemsMap = new HTMLItemsMap(fullConfig);
+	  itemsMap.initMap();
 
   });
 
