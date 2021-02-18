@@ -79,6 +79,9 @@ class Initiatieven_Kaart {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+
+		$this->template_initiatievenpagina = 'page-initiatieven.php';
+
 		if ( defined( 'INITIATIEVEN_KAART_VERSION' ) ) {
 			$this->version = INITIATIEVEN_KAART_VERSION;
 		} else {
@@ -105,6 +108,8 @@ class Initiatieven_Kaart {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+
+
 
 	}
 
@@ -200,6 +205,10 @@ class Initiatieven_Kaart {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+
+		// add the page template to the templates list
+		add_filter( 'theme_page_templates', array( $this, 'add_page_template' ) );
+
 	}
 
 	/**
@@ -247,6 +256,14 @@ class Initiatieven_Kaart {
 
 	}
 
+	// Pagina-template toevoegen
+	public function add_page_template( $post_templates ) {
+
+		$post_templates[ $this->template_initiatievenpagina ] = _x( 'Initiatieven-pagina', "naam template", 'initiatieven-kaart' );
+		return $post_templates;
+
+	}
+
 
 	//========================================================================================================
 	/*
@@ -262,14 +279,15 @@ class Initiatieven_Kaart {
 
 		if ( ! is_admin() && $query->is_main_query() ) {
 
-			if ( is_post_type_archive ( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
+			if ( is_post_type_archive( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
 				// geen pagination voor overzichten van:
 				// - initiatieven
 				// - initiatieven per initiatieftype
 				// - initiatieven per provincie
 				$query->set( 'posts_per_page', - 1 );
-				$query->set('orderby', 'title');
-				$query->set('order', 'ASC' );
+				$query->set( 'orderby', 'title' );
+				$query->set( 'order', 'ASC' );
+
 				return $query;
 
 			}
