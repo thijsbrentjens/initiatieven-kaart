@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.4' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.5' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -129,7 +129,7 @@ function led_custom_tax_and_types() {
 
 	// ---------------------------------------------------------------------------------------------------
 	// uit customizer de pagina ophalen die het overzicht is van alle initiatieven
-	$optionpage        = get_theme_mod( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview' );
+	$optionpage        = get_theme_mod( 'led_pageid_overview' );
 	$defaultslugforCPT = CPT_INITIATIEF;
 
 	if ( $optionpage ) {
@@ -383,7 +383,7 @@ function led_get_initiatief_permalink( $initiatiefid = 0 ) {
 		return;
 	}
 
-	$led_pageid_overview = get_theme_mod( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview' );
+	$led_pageid_overview = get_theme_mod( 'led_pageid_overview' );
 
 	if ( $led_pageid_overview ) {
 
@@ -412,13 +412,13 @@ function led_append_customizer_field( $wp_customize ) {
 	) );
 
 	// callback
-	$wp_customize->add_setting( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview', array(
+	$wp_customize->add_setting( 'led_pageid_overview', array(
 		'capability'        => 'edit_theme_options',
 		'sanitize_callback' => 'led_sanitize_dropdown_pages',
 	) );
 
 	// field
-	$wp_customize->add_control( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview', array(
+	$wp_customize->add_control( 'led_pageid_overview', array(
 		'type'        => 'dropdown-pages',
 		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
 		'label'       => _x( 'Pagina met alle initiatieven', 'customizer menu', 'initiatieven-kaart' ),
@@ -497,7 +497,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	$archive_description = '';
 	$return              = '';
 	$count               = $wp_query->post_count;
-	$led_pageid_overview = get_theme_mod( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview' );
+	$led_pageid_overview = get_theme_mod( 'led_pageid_overview' );
 
 	if ( is_post_type_archive( CPT_INITIATIEF ) ) {
 
@@ -671,7 +671,7 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 
 	// uit siteopties de pagina ophalen die het overzicht is van alle links
-	$optionpage  = get_theme_mod( 'POEPIE_HIEHIE_TRALALA_led_pageid_overview' );
+	$optionpage  = get_theme_mod( 'led_pageid_overview' );
 	$currentitem = explode( '</span>', $crumb );
 	$parents     = array();
 	$return      = '';
@@ -745,8 +745,10 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 		if ( $termid ) {
 			$term   = get_term( $termid );
 			$return .= $term->name;
+		} elseif ( is_singular( CPT_INITIATIEF ) ) {
+			$return .= get_the_title( $post->ID );
 		} else {
-			$return .= $currentitem[0];
+			//
 		}
 	}
 
