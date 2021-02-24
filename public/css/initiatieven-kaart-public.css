@@ -1,67 +1,50 @@
-/* start icon test thijs */
+/*
+Een paar basiskleuren
+ */
+:root{
+  --leaflet-control-slight-transparent: rgba(255, 255, 255, 0.8);
+  --rijksoverheid-blue: #007bc7;
+}
 
+/* extra: for visible focus, needs to be overwritten in LED CSS.
+ Or provide styling for LED itself, using these selectors */
+.leaflet-marker-icon:focus, a.leaflet-popup-close-button:focus {
+  border: 2px dotted var(--rijksoverheid-blue);
+}
 
 /*
- De lijst met classes moet overeenkomen met de opties voor term van
- de taxonomie initiatieftype. Deze opties maken we aan
- via de ACF plugin
+De kaartgrootte.
  */
-.led-icon-unknown:before, .led-icon-onbekend:before {
-    content: '\0041';
-}
-
-.led-icon-portaal:before {
-    content: '\0042';
-}
-
-.led-icon-lab:before, .led-icon-visualisatie:before {
-    content: '\0043';
-}
-
-.led-icon-strategie:before, .led-icon-community:before {
-    content: '\0044';
-}
-
-/* end icon test thijs */
-
-/* TODO: document styling:  */
 .archives-map {
     height: 500px;
     width: 100%;
 }
 
+
+
 .leaflet-marker-icon {
-    /* background-color: white; */
     text-align: center;
-    /* border-radius: 50%; */
     font-size: 1.1em;
 }
 
+/* Thijs: het kan voor andere styling van de cluster iconen nodig zijn deze styles aan te passen. Let dan op dat de grootte van de iconen in de javascript code wordt bepaald. Dus check ook js/initiatieven-kaart-public.js
+ */
 .clusterIcon {
-    background-color: #01689b;
+    background-color: var(--rijksoverheid-blue);
     color: #fff;
     border-radius: 25%;
 }
 
 .clusterIcon-md {
-  /* half the increaseSize from the JS code */
+  /* half the increaseSize from the JS code js/initiatieven-kaart-public.js */
   padding-top: 3px;
 }
 
 .clusterIcon-lg {
-  /* half the increaseSize from the JS code */
+  /* the increaseSize from the JS code in js/initiatieven-kaart-public.js */
   padding-top: 6px;
 }
 
-.awesome-marker i {
-        font-size: 18px;
-        margin-top: 8px;
-    }
-
-/*
-.led-icon {
-  color: black;
-} */
 
 /* -----------------------------------------------------------
  geen lelleke list-items als de kaart getoond wordt
@@ -75,6 +58,24 @@
     list-style-type: none;
     padding-left: 0;
     margin-left: 0;
+}
+
+/* ---------------------
+De custom controls beetje opmaken en in lijn brengen met standaard Leaflet controls
+ */
+.map-item-control-types {
+  background-color: var(--leaflet-control-slight-transparent);
+}
+
+.typeFilterControlTxt {
+  line-height: 2em;
+  padding: 0.2em;
+}
+
+.typeFilterControlTxt img {
+  height: 2em;
+  vertical-align: bottom;
+  margin: 0 0.3em 0 0.5em;
 }
 
 /* -----------------------------------------------------------
@@ -115,4 +116,13 @@ beter is, dus eigenlijk hoort alles in dit bestand...
 }
 .leaflet-control label {
     margin-left: .5rem;
+}
+
+.show-overlay {
+  display: inline-block;
+  width: 200px;
+  right: 200px;
+  position: absolute;
+  background-color: #ffffff;
+  line-height: initial;
 }

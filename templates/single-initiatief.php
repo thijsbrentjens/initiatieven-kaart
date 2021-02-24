@@ -35,6 +35,7 @@ if ( function_exists( 'genesis' ) ) {
         </div><!-- #content -->
     </div><!-- #primary -->
 
+
 	<?php
 
 	get_sidebar();

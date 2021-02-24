@@ -9,7 +9,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
- * Plugin URI:        http://example.com/initiatieven-kaart-uri/
+ * Plugin URI:        https://digitaleoverheid.nl/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
  * Version:           1.0.4
  * Author:            Thijs Brentjens

@@ -338,7 +338,7 @@ msgid "Initiatieven Kaart voor LED (digitaleoverheid.nl)"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://example.com/initiatieven-kaart-uri/"
+msgid "https://digitaleoverheid.nl/initiatieven-kaart-uri/"
 msgstr ""
 
 #. Description of the plugin/theme

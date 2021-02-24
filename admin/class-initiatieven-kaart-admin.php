@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://digitaleoverheid.nl
  * @since      1.0.0
  *
  * @package    Initiatieven_Kaart
