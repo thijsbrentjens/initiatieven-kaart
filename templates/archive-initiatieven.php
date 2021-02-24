@@ -41,8 +41,6 @@ if ( function_exists( 'genesis' ) ) {
         </div><!-- #content -->
     </div><!-- #primary -->
 
-    <!-- TODO: now initiate the map here -->
-
 	<?php
 
 	get_sidebar();
@@ -175,8 +173,6 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 			$locationField = get_field( 'openstreet_map' );
 			$title         = isset( $post->post_title ) ? $post->post_title : _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' );
 			$permalink     = get_post_permalink( $post->id );
-
-			// TODO: use the lon/lat of the first marker instead of map center
 
 			/*
 			 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
