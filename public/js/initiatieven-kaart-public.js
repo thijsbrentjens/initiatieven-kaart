@@ -7,6 +7,31 @@
 			this.mapItemsContainerId = "map-items";
       this.mapItemClass = "map-item";
 			this.mapClass = "archives-map";
+      this.clustering = true;
+      this.iconSpiderfiedOpacity = 0.75;
+
+      // labels: also Uppercase?
+      this.typeLabels = {
+        "onbekend": "Onbekend",
+        "community": "Community",
+        "datalab": "Datalab",
+        "lab": "Datalab",
+        "portaal": "Portaal",
+        "strategie": "Strategie",
+        "visualisatie": "Visualisatie",
+      }
+
+      // TODO: refactor, to integrate this with the labels? Or better use the CMS for these helptexts?
+      // helptext:
+      this.typeHelpTexts = {
+        "onbekend": "Er is voor dit initiatief geen type bekend",
+        "community": "Een community is ...",
+        "datalab": "Een datalab is... ",
+        "lab": "Een datalab is... ",
+        "portaal": "Een portaal is...",
+        "strategie": "Strategie gaat over ...",
+        "visualisatie": "Visualisatie gaat over data visualiseren",
+      }
 
 			// Overrule config defaults, for now for all properties
 			Object.assign(this, config);
@@ -17,11 +42,34 @@
 
 			// other props
 			this._map = false;
+      this.pointsLayer;
 			this.unclusteredLayers = [];
 			this.clusterLayer = {};
 			this.features = [];
-			// todo: init directly?
       this.types = {};
+      // icon (wxh): 30 x 40
+      // best is to make nice numbers for ratio 3:4
+      this.iconHeight = 32;
+      this.iconWidth = Math.round(0.75 * this.iconHeight);
+
+      this.baseIcon = L.Icon.extend({
+        options: {
+            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+            // optreedt.
+            // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
+          shadowUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg`,
+          iconSize: [this.iconWidth, this.iconHeight],
+          iconAnchor: [this.iconWidth / 2, this.iconHeight],
+          // shadow: 40 x 40
+          // shadowsize image is sqaure now, so 2x iconHeight
+          shadowSize: [this.iconHeight, this.iconHeight],
+          shadowAnchor: [this.iconWidth / 3, this.iconHeight],
+          popupAnchor: [0, -1 * this.iconHeight]
+        }
+      })
+
+      this.unspiderfied = false;
+
     }
 
     getLMap() {
@@ -33,6 +81,7 @@
 		}
 
     initMap() {
+      const _self = this;
       // first: detect if there are map-objects available
       if ($("." + this.mapItemClass).length == 0) {
         return false;
@@ -50,7 +99,7 @@
 					const _self = this;
 					// append after the container
 					// TODO: aria label for the map
-					const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}"></div>`;
+					const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
 					$("#"+this.mapItemsContainerId).after(mapDivHtml);
 
 					// create the toggle button
@@ -61,7 +110,7 @@
 						title: "Wissel tussen het tonen van de kaart en de lijst",
 						onclick (ev) {
 							_self.toggleListMap();
-						},
+						}
 					});
 					// before: toggle
 					$("#"+this.mapItemsContainerId).before(toggleListButton);
@@ -70,9 +119,11 @@
 
 				}
 
+        // initial zoom will be overwritten by the bounds of the data layer
         const mapObject = L.map(this.mapElementId, {
           'maxZoom': 18,
-          scrollWheelZoom: true
+          // scrollWheelZoom: true,
+          gestureHandling: true
         }).setView([52.1, 5.2], 7);
 				this.setLMap(mapObject);
 
@@ -87,12 +138,62 @@
         const typeFilterControl = this.createTypeFilterControl();
         this.getLMap().addControl(typeFilterControl);
         // now add the content:
-        const content = this.createTypeFilterControlContent(this.types);
-        // console.log(content)
+        this.createTypeFilterControlContent(this.types);
+
+        // add the control to zoom to the pointslayer:
+        const zoomToAllControl = this.createZoomToAllControl();
+        this.getLMap().addControl(zoomToAllControl);
+
+        // on zoom:
+        this.getLMap().on("zoomend", function(){
+          // wait a while, not nice, but we need the browser to be ready rendering the items (and updating the DOM)
+          setTimeout(_self.bindClusterIconEnter, 100);
+
+          _self.bindFocusToIcons();
+          _self.fixAccessibilityIssues();
+        })
+
+        // _self.previousOpened = null;
+        // we need to keep track of previously focused elements because of the spiderfy functionality in clusters
+        _self.previousFocus = null;
+
+        this.getLMap().on("popupopen", function(evt) {
+            // find the first link in the contentNode, this is the header
+            // or use the _closeButton:
+            // $(evt.popup._closeButton).focus()
+            // $(evt.popup._contentNode).find("a").focus();
+            // focus on the content element
+            $(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
+            // TODO: if "esc" is chosen, close the popup?
+
+        });
+        this.getLMap().on("popupclose", function(evt) {
+          try{
+            _self.previousFocus.focus();
+          } catch(e){ }
+        })
 
       }
-      // TODO: fix clusters
-      this.enableClusters(true);
+      this.enableClusters(this.clustering);
+      this.fixAccessibilityIssues();
+    }
+
+    // an internal function to update the layer?
+    pointToLayer(feature, latlng, scope) {
+      // create a customicon
+
+    }
+
+    bindFocusToIcons() {
+      // bind focus events on each marker
+      const _self = this;
+      $(".leaflet-marker-icon").each(function(elem){
+        // first remove focus events?
+        $(this).unbind("focus");
+        $(this).bind("focus", function(evt){
+          _self.previousFocus = evt.currentTarget;
+        })
+      });
     }
 
     parseLocationData() {
@@ -101,27 +202,40 @@
       const features = [];
       // reset the types
       const types = {};
+
       $("." + this.mapItemClass).each(function (cntr, elem) {
 				// for all elements with latitude and longitude, add a marker
         if ($(elem).data("latitude") && $(elem).data("longitude")) {
           const lat = $(elem).data("latitude");
           const lon = $(elem).data("longitude");
-          // TODO: max Width?
+
           // maxWidth: 800
           const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
           // let's create a nice geojson feature
           if (category) {
             if (types[category]) {
-              types[category] += 1;
+              types[category]["nrPosts"] += 1;
             } else {
-              types[category] = 1;
+              // default to true for filtering?
+              types[category] = {"nrPosts": 0, "visible": true};
             }
           }
+          // try to find a nice title
+          let title = category;
+          if (category in _self.typeLabels) title = _self.typeLabels[category];
+
+          if ( $(elem).find("h2>a")) {
+            // TODO: savely get the content? What if HTMl chars are in the title?
+            // title = $(elem).find("h2>a").html();
+            // for now: fall back to the label
+          }
+
           const feature = {
             "type": "Feature",
             "properties": {
               "category": category,
-              "popupContent": elem.innerHTML
+              "popupContent": elem.innerHTML,
+              "title": title
             },
             "geometry": {
               "type": "Point",
@@ -133,129 +247,215 @@
       });
       this.features = features;
       this.types = types;
-      // baseIcon:
 
-      // icon (wxh): 30 x 40
-      // best is to make nice numbers for ratio 3:4
-      const iconHeight = 32;
-      const iconWidth = Math.round(0.75 * iconHeight);
+      // recreate the Geojson layer
+      const pointsLayer = this.createPointsLayer(features, _self)
 
-      const baseIcon = L.Icon.extend({
-        options: {
-          shadowUrl: 'wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg',
-          iconSize: [iconWidth, iconHeight],
-          iconAnchor: [iconWidth / 2, iconHeight],
-          // shadow: 40 x 40
-          // shadowsize image is sqaure now, so 2x iconHeight
-          shadowSize: [iconHeight, iconHeight],
-          shadowAnchor: [iconWidth / 3, iconHeight],
-          popupAnchor: [0, -1 * iconHeight]
-        }
-      })
-
-      const pointsLayer = L.geoJSON(features, {
-        pointToLayer: function (feature, latlng) {
-          // create a customicon
-          // TODO: full SVG markers?
-          var category = feature.properties.category ? feature.properties.category : "onbekend";
-          // TODO: multiple?
-          // current:
-          // portaal, datalab, community, onbekend, strategie, visualisatie
-          const customIcon = new baseIcon({
-            // customize according to category
-              // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
-              // optreedt.
-            iconUrl: `/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category}.svg`,
-          });
-
-          return L.marker(latlng, {
-            icon: customIcon
-          });
-        }
-      }).bindPopup(function (layer) {
-        return layer.feature.properties.popupContent;
-      }).addTo(_self.getLMap());
+      // Set initial zoom to the layer data
+      const bounds = pointsLayer.getBounds();
+      // add a margin around the bounds, to avoid points being too close on the edge of the map. Issue #27
+      _self.getLMap().fitBounds(bounds, {padding: [50,50]})
+      this.pointsLayer = pointsLayer;
       // update the data, for later usage like removal of layers or whatever..
       this.features = features;
       return features;
     }
 
-    // TODO: better Leaflet control class for this
+    createZoomToAllControl() {
+      let _self = this;
+      var ZoomAllControl = L.Control.extend({
+          options: {
+            position: 'topleft'
+          },
+          onAdd: function (map) {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            const a = L.DomUtil.create('a', 'leaflet-control-zoomall', container);
+            a.innerHTML = '&harr;';
+            a.href = '#';
+            a.title = "Toon alles";
+            a.onclick = function() {
+              _self.getLMap().fitBounds(_self.pointsLayer.getBounds(), {padding: [50,50]});
+              return false;
+            }
+            return container;
+          },
+        });
+        return new ZoomAllControl();
+    }
+
+
+    createPointsLayer(features, _self) {
+      const layer = L.geoJSON(features, {
+        pointToLayer: function(feature, latlng) {
+          // wrapper function
+          var category = feature.properties.category ? feature.properties.category : "onbekend";
+          var labelTxt = _self.typeLabels[category];
+          if (feature.properties.title) {
+            labelTxt = feature.properties.title;
+          }
+          if (_self.types[feature.properties.category]) {
+            if (_self.types[feature.properties.category].visible == true) {
+              // TODO: properly update the clustericons: only update counters, but keep same position
+              // For now very hard, maybe next phase
+            } else {
+              return false;
+            }
+          }
+          // TODO: multiple categories for one initiatief? Multiple categories are postponed for now (10-12-2020)
+          // current categories:
+          // portaal, datalab, community, onbekend, strategie, visualisatie
+          const customIcon = new _self.baseIcon({
+            // customize according to category
+              // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+              // optreedt.
+              // TB: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
+            iconUrl: _self.getIconURL(category),
+          });
+          let lbl = "Icoon voor initiatief " + labelTxt;
+          let marker = L.marker(latlng, {
+            icon: customIcon,
+            alt: lbl,
+            title: labelTxt
+          });
+          return marker
+        }
+      }).bindPopup(function (layer) {
+        return layer.feature.properties.popupContent;
+      }).addTo(_self.getLMap());
+      return layer;
+    }
+
+    getIconURL(category) {
+      return `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category.toLowerCase()}.svg`;
+    }
+
     createTypeFilterControl() {
         const _self = this;
         var TypeFilterControl =  L.Control.extend({
         options: {
           position: 'topright'
-          //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
         },
         onAdd: function (map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-item-control-types');
-          container.style.backgroundColor = 'white';
-          // TODO: width?
-          container.style.width = '200px';
-          container.style.height = 'auto';
           const clusterControlTxt = L.DomUtil.create('div', _self.typeFilterControlTxtId, container);
-          clusterControlTxt.innerHTML = '<h4>Types</h4>';
+          clusterControlTxt.innerHTML = '';
           clusterControlTxt.id = _self.typeFilterControlTxtId;
           return container;
         },
       });
-      // console.log(typeFilterControl);
-      const typeFilterControl = new TypeFilterControl();
-      // update the text for this control?
 
+      const typeFilterControl = new TypeFilterControl();
       return typeFilterControl;
     }
 
-    toggleType(_self, category, show) {
-      console.log(category + " -> " + show);
-      var checked = false;
-      if (show == undefined) {
-        checked = false;
-      }
-      if (show) {
-        checked = true;
-      }
-      _self.types[category]["checked"] = checked;
-      // update map and update filter?
-
-    }
-
+    // content block for the control is created seperately, because of simpler code (don't use Leaflet domutils too much) and
     createTypeFilterControlContent() {
-      // sort by keys
-      const typeKeys = Object.keys(this.types);
       const _self = this;
-      // console.log(this.types);
+
+      // sort by keys, could be labels later
+      const typeKeys = Object.keys(this.types);
       typeKeys.sort();
-      // var filterContent = "<h4>Initiatieven</h4>";
-      var filterContent = $(`<ul>`);
+
+      let filterContent = $(`<h4>`).html(`Toon initiatieven van:`);
+      let filterContentList = $(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
-        const nrPosts = this.types[category];
-        // TODO: checked?
+        let labelTxt = category;
+        if (category in this.typeLabels) {
+          labelTxt = this.typeLabels[category];
+        }
+        const nrPosts = this.types[category].nrPosts;
         const inputId = `post-${category}`;
-        const checkedTxt = (this.types[category].checked == false) ? "" : "checked";
-        // TODO: the proper object? for a public function? global?
-        var input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
-        // note the scope _self
-        $(input).on('change', function() {
-          _self.toggleType(_self, category, _self.types[category].checked)
+        const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
+
+        // create the checkbox for type selection
+        let input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+        // note the scope _self: this function is only called from the GUI, so 'this' does not refer to this class. Use _self for that.
+        $(input).on('change', function(evt) {
+          _self.toggleType(_self, category, evt.target.checked)
         });
-        var li = $(`<li>`).append(input).append(`<label for="${inputId}">${category} (${nrPosts})</label>`);
-        filterContent.append(li)
-        // filterContent += li;
+        // create the icon of the type (issue #22)
+        let iconTitle = `Icoon voor ${labelTxt}`;
+        let iconImg = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
+        let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
+
+        // helptext icon
+        let helpTxt = this.typeHelpTexts[category];
+        let helpTxtContainer = "";
+        if (helpTxt != undefined) {
+          let helpButton = $(`<button title="Help tekst" class="type-help-btn">Help</button>`);
+          helpButton.on('click', function(evt) {
+            let visible = $(this).next('.type-helptext').hasClass('show-overlay');
+            // hide all other help texts
+            $('.type-helptext').removeClass('show-overlay');
+            if (!visible) $(this).next('.type-helptext').addClass('show-overlay');
+          });
+          let helpTxtSpan = $(`<span class="type-helptext leaflet-bar">${helpTxt}</span>`).on('click', function(evt) {
+             $(this).removeClass('show-overlay');
+          });
+          helpTxtContainer = $(`<span class="helptext-container"></span>`).append(helpButton).append(helpTxtSpan);
+        }
+        // now glue it together for the list
+        let li = $(`<li>`).append(input).append(iconImg).append(helpTxtContainer).append(labelElem);
+        filterContentList.append(li);
       }
-      // filterContent += `</ul>`;
-      $("#" + this.typeFilterControlTxtId ).html(filterContent);
+      // filterContent.append(filterContentList);
+      $("#" + this.typeFilterControlTxtId ).html(filterContent).append(filterContentList);
       return filterContent;
     }
+
+    toggleType(_self, category, show) {
+      var visible = false;
+      if (show == undefined) {
+        visible = false;
+      }
+      if (show) {
+        visible = true;
+      }
+      _self.types[category]["visible"] = visible;
+      // recreate layer
+      _self.recreatePointsLayer()
+    }
+
+    toggleHelpTxt(_self, category) {
+      console.log("in toggleHelpTxt")
+    }
+
+    recreatePointsLayer() {
+
+      this.pointsLayer.remove();
+      this.getLMap().removeLayer(this.clusterLayer);
+      this.pointsLayer = this.createPointsLayer(this.features, this);
+      // enable clustering again? use setting for this?
+      this.enableClusters(this.clustering);
+      // fix accessibility issues Leaflet: quite ugly this way, but faster than in Leaflet itself. If fixes are adequate try to port it to Leaflet core
+      this.fixAccessibilityIssues();
+    }
+
+
+    fixAccessibilityIssues() {
+      // tabindex, labels, roles for elements where this apparerently can;t be done at initialization
+      $(".leaflet-marker-icon:not('.clusterIcon')").attr("role", "button").attr("aria-label", "Knop om een initiatief te tonen op deze locatie").attr("tabindex", "0");
+      // clustericon: multiple
+      $(".clusterIcon").attr("role", "button").attr("aria-label", "Knop om meerdere initiatieven te tonen op deze locatie").attr("tabindex", "0");
+      // custom controls:
+      $(".leaflet-control-zoomall").attr("role", "button").attr("aria-label", "Toon alles").attr("tabindex", "0");
+
+      // shadows: explicit hide these
+      $(".leaflet-marker-shadow").attr("aria-hidden", "true");
+
+      $(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
+
+      // no tabindex: the links inside should be accessible only
+      $(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
+    }
+
 
 		toggleListMap(){
 			if ($("#"+this.mapElementId).is(":visible")) {
 				// hide the map, show the list
 				$("#"+this.mapElementId).hide();
 				$("#"+this.mapItemsContainerId).show();
-				// TODO: config of id for button?
 				$("#toggleListMapButton").html("Toon de kaart");
 			} else {
 				// the other way around
@@ -268,10 +468,9 @@
 		}
 
     enableClusters(enable) {
-      // Configuration of clustering?
-      // What if clustering should be disabled too? keep track of unclustered markers?
-      // TODO: keyboard enable? what to do onclick?
+      // Configuration of clustering via init function
 			const _self = this;
+      this.clustering = enable;
       if (enable) {
         const clusterLayer = L.markerClusterGroup({
           maxClusterRadius: 32,
@@ -290,17 +489,57 @@
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              html: '<b>' + cluster.getChildCount() + '</b>',
+              // html: `<span title='Meerdere initiatieven' tabindex='0' role='button' aria-label='Toont meerdere initiatieven op deze locatie'>${cluster.getChildCount()}</span>`,
+              html: `<span title='Meerdere initiatieven'>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
           }
         });
 
-        // TODO: is it save to assume that all point layers should be in the clusterlayer?
-        // for this map it seems to be like a good selection
-        _self.unclusteredLayers = [];
+        clusterLayer.on('click', function (evt) {
+          // an individual marker is clicked, use evt.layer for that
+          // _self.previousOpened = evt.layer;
+        });
 
+        _self.unspiderfied = false;
+        clusterLayer.on('clusterclick', function (evt) {
+          // make sure that another enter or click closes the clustericon again
+          if (_self.unspiderfied == false) {
+            // close cluster
+            evt.layer.unspiderfy();
+            _self.fixAccessibilityIssues();
+          }
+        });
+
+        clusterLayer.on('unspiderfied', function(evt, markers) {
+          // set focus back tot the icon of the marker
+          // need to use internal references, becauase there is no proper getter in Leaflet to get the icon element
+          evt.cluster._icon.focus();
+          _self.unspiderfied = true;
+          _self.fixAccessibilityIssues();
+        });
+
+        clusterLayer.on('spiderfied', function(evt) {
+          // get the icons and focus on one of them
+          // overrule the hardcoded opacity of .3 in leaflet.markercluster.js
+          // can't be done with CSS unfortunately
+          // add the focus elements:
+          _self.bindFocusToIcons();
+          evt.cluster.setOpacity(_self.iconSpiderfiedOpacity)
+          if (evt.markers) {
+            if (evt.markers.length > 0) {
+              evt.markers[0]._icon.focus();
+            }
+          }
+          _self.unspiderfied = false;
+          _self.fixAccessibilityIssues();
+        });
+
+        // for this map it seems to save to assume that all point layers should be in the clusterlayer
+        _self.unclusteredLayers = [];
+        // this will keep track of all the subgroup arrays
+        _self.subgroups = {}
         _self.getLMap().eachLayer(function (layer) {
           _self.unclusteredLayers.push(layer);
           if (layer.feature) {
@@ -310,10 +549,13 @@
             }
           }
         });
+        // after forming the groups, add them
+        // mySubGroup = L.featureGroup.subGroup(clusterLayer, arrayOfMarkers);
 
         _self.getLMap().addLayer(clusterLayer);
         // keep track of the clusterLayer too, to make it removable
         _self.clusterLayer = clusterLayer;
+
       } else {
         if (_self.unclusteredLayers.length > 0) {
           // remove the clusterlayer
@@ -325,12 +567,39 @@
         _self.clusterLayer = {};
       }
 
+      this.bindFocusToIcons();
+      this.bindClusterIconEnter();
+
+    }
+
+    bindClusterIconEnter()  {
+      // add focusable elements around the markers. Do this for each clusterIcon, also after zoom
+      let eventedIcons = 0;
+      // create a list of icons in the map view that should only be accessible by TAB?
+
+      $(".clusterIcon").each(function(elem){
+        eventedIcons++;
+        $(this).keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          // on enter or spacebar:
+          // TODO: spacebar is nasty, need to interfere with default browser behaviour
+          // 13 = enter, 32 = spacebar
+          // if(keycode == '13' || keycode == '32')
+          if(keycode == '13') {
+              // zoom to clustericon
+              // trigger a click on enter.
+              $(this).click();
+              event.preventDefault();
+              return false;
+          }
+          event.stopPropagation();
+        })
+      });
     }
 
   }
 
   // now init the object
-	// this could also be done somewhere else?
   $(function () {
 
 			const fullConfig = {
@@ -339,7 +608,9 @@
 				// optional: other map id for styling for example?
 				// TODO: extra styling class?
 				"mapElementId": "initiatieven-kaart-map",
-				"mapClass": "archives-map"
+				"mapClass": "archives-map",
+        "clustering": true,
+        "iconSpiderfiedOpacity" : 0.75
 		  }
 
 			const minConfig = {
@@ -347,8 +618,8 @@
 		    "mapItemClass": "map-item",
 			}
 
-		  const itemsMap = new HTMLItemsMap(minConfig);
-		  itemsMap.initMap()
+		  const itemsMap = new HTMLItemsMap(fullConfig);
+		  itemsMap.initMap();
 
   });
 

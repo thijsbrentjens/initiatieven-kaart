@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        http://example.com/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.2.b
+ * Version:           1.0.4
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.2.b' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.4' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -299,7 +299,6 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 	$title         = get_the_title( $postobject->ID );
 	$permalink     = led_get_initiatief_permalink( $postobject->ID );
 
-	// TODO: use the lon/lat of the first marker instead of map center
 	/*
 	 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
 	 * dit is de taxonomie CT_INITIATIEFTYPE

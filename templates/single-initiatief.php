@@ -35,8 +35,6 @@ if ( function_exists( 'genesis' ) ) {
         </div><!-- #content -->
     </div><!-- #primary -->
 
-    <!-- TODO: now initiate the map here -->
-
 	<?php
 
 	get_sidebar();
