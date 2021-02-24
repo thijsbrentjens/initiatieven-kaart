@@ -74,19 +74,19 @@ class Initiatieven_Kaart_Public {
 		 * class.
 		 */
 
-			wp_register_style('leaflet-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.css', array(), $this->version);
-			wp_enqueue_style('leaflet-css');
+		wp_register_style( 'leaflet-css', plugin_dir_url( __FILE__ ) . 'css/leaflet.css', array(), $this->version );
+		wp_enqueue_style( 'leaflet-css' );
 
-			wp_register_style('markercluster-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.css', array(), $this->version);
-			wp_enqueue_style('markercluster-css');
+		wp_register_style( 'markercluster-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.css', array(), $this->version );
+		wp_enqueue_style( 'markercluster-css' );
 
-			wp_register_style('markercluster-default-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.Default.css', array(), $this->version);
-			wp_enqueue_style('markercluster-default-css');
+		wp_register_style( 'markercluster-default-css', plugin_dir_url( __FILE__ ) . 'css/MarkerCluster.Default.css', array(), $this->version );
+		wp_enqueue_style( 'markercluster-default-css' );
 
-			wp_enqueue_style( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'css/initiatieven-kaart-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'css/initiatieven-kaart-public.css', array(), $this->version, 'all' );
 
-      wp_register_style('leaflet-gesture-handling-css', plugin_dir_url( __FILE__ ) . 'css/leaflet-gesture-handling.min.css', array(), $this->version);
-			wp_enqueue_style('leaflet-gesture-handling-css');
+		wp_register_style( 'leaflet-gesture-handling-css', plugin_dir_url( __FILE__ ) . 'css/leaflet-gesture-handling.min.css', array(), $this->version );
+		wp_enqueue_style( 'leaflet-gesture-handling-css' );
 
 
 	}
@@ -110,17 +110,20 @@ class Initiatieven_Kaart_Public {
 		 * class.
 		 */
 
- 				wp_enqueue_script('leaflet-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.js', array('jquery'), '1.7.1', true);
+		wp_enqueue_script( 'leaflet-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.js', array( 'jquery' ), '1.7.1', true );
 
-   			wp_enqueue_script('leaflet-gesture-handling-js', plugin_dir_url( __FILE__ ) . 'js/leaflet-gesture-handling.min.js', array('leaflet-js'),  $this->version, true);
+		wp_enqueue_script( 'leaflet-gesture-handling-js', plugin_dir_url( __FILE__ ) . 'js/leaflet-gesture-handling.min.js', array( 'leaflet-js' ), $this->version, true );
 
- 				wp_enqueue_script('leaflet-markercluster-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.markercluster.js', array('jquery', 'leaflet-js'),  $this->version, true);
+		wp_enqueue_script( 'leaflet-markercluster-js', plugin_dir_url( __FILE__ ) . 'js/leaflet.markercluster.js', array(
+			'jquery',
+			'leaflet-js'
+		), $this->version, true );
 
-				wp_enqueue_script( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'js/initiatieven-kaart-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->initiatieven_kaart, plugin_dir_url( __FILE__ ) . 'js/initiatieven-kaart-public.js', array( 'jquery' ), $this->version, false );
 
-        // creates a javascript object Utils: Utils.baseurl = "http://.../../".
-        // Use to create a nice path to SVG icons for example
-        wp_localize_script($this->initiatieven_kaart, 'Utils', array( 'siteurl' => get_option('siteurl') ));
+		// creates a javascript object Utils: Utils.baseurl = "http://.../../".
+		// Use to create a nice path to SVG icons for example
+		wp_localize_script( $this->initiatieven_kaart, 'Utils', array( 'siteurl' => get_option( 'siteurl' ) ) );
 
 	}
 
