@@ -14,8 +14,10 @@ if ( function_exists( 'genesis' ) ) {
 	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 15 );
 
 	/** standard loop vervangen door custom loop */
-	remove_action( 'genesis_loop', 'genesis_do_loop' );
-	add_action( 'genesis_loop', 'led_initiatieven_archive_list' );
+	if ( is_post_type_archive( CPT_INITIATIEF ) ) {
+		remove_action( 'genesis_loop', 'genesis_do_loop' );
+	}
+	add_action( 'genesis_loop', 'led_initiatieven_page_list', 8 );
 
 	// lijstjes toevoegen met de diverse custom taxonomieen
 	add_action( 'genesis_loop', 'led_initiatieven_taxonomy_list' );
@@ -34,7 +36,7 @@ if ( function_exists( 'genesis' ) ) {
         <div id="content" class="clearfix">
 
 			<?php echo led_initiatieven_archive_title() ?>
-			<?php echo led_initiatieven_archive_list() ?>
+			<?php echo led_initiatieven_page_list() ?>
 			<?php echo led_initiatieven_taxonomy_list() ?>
 
         </div><!-- #content -->
@@ -51,16 +53,28 @@ if ( function_exists( 'genesis' ) ) {
 
 //========================================================================================================
 
-function led_initiatieven_archive_list( $doreturn = false ) {
+function led_initiatieven_page_list( $doreturn = false ) {
 
 	global $post;
 
-	if ( have_posts() ) {
+	$argscount = array(
+		'post_type'      => CPT_INITIATIEF,
+		'post_status'    => 'publish',
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+		'posts_per_page' => - 1,
+	);
+
+	// Assign predefined $args to your query
+	$contentblockpostscount = new WP_query();
+	$contentblockpostscount->query( $argscount );
+
+	if ( $contentblockpostscount->have_posts() ) {
 
 		$initiatieficons = led_get_initiatieficons();
 		$return          = '<ul id="map-items">';
 
-		while ( have_posts() ) : the_post();
+		while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
 
 			$return .= led_get_list_item_archive( $post, $initiatieficons );
 
@@ -68,7 +82,12 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 		$return .= '</ul>';
 
+	} else {
+		$return .= 'geen initiatieven';
 	}
+
+	wp_reset_query();
+	wp_reset_postdata();
 
 	if ( $doreturn ) {
 		return $return;

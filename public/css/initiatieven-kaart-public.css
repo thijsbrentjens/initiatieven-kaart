@@ -3,7 +3,7 @@ Een paar basiskleuren
  */
 :root{
   --leaflet-control-slight-transparent: rgba(255, 255, 255, 0.8);
-  --rijksoverheid-blue: #007bc7;
+  --rijksoverheid-blue: #01689b;
 }
 
 /* extra: for visible focus, needs to be overwritten in LED CSS.
@@ -33,7 +33,6 @@ De kaartgrootte.
     background-color: var(--rijksoverheid-blue);
     color: #fff;
     border-radius: 25%;
-    font-weight: bold;
 }
 
 .clusterIcon-md {
@@ -118,7 +117,6 @@ beter is, dus eigenlijk hoort alles in dit bestand...
 .leaflet-control label {
     margin-left: .5rem;
 }
-
 
 .show-overlay {
   display: inline-block;

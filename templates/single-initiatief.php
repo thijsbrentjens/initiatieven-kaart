@@ -6,6 +6,9 @@ if ( function_exists( 'genesis' ) ) {
 	// Genesis wordt gebruikt als framework
 	// dit geldt voor o.m. het theme voor Digitale Overheid
 
+    // kruimelpad bijwerken
+	add_filter( 'genesis_single_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
+
 	// geen meuk over publicatiedatums etc tonen
 	remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
 
@@ -51,7 +54,7 @@ function led_initiatief_single_info( $doreturn = false ) {
 	$initiatieftype  = '';
 	$return          = '';
 	$provincie       = array();
-	$initiatieficons = get_initiatieficons();
+	$initiatieficons = led_get_initiatieficons();
 	$initatieftypes  = get_the_terms( get_the_id(), CT_INITIATIEFTYPE );
 
 	// haal de waarden op uit de ACF-velden

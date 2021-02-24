@@ -106,3 +106,30 @@ Met deze configuratie, maak een kaart aan en initialiseer alles, zodat data uit 
 const itemsMap = new HTMLItemsMap(fullConfig);
 itemsMap.initMap();
 ```
+
+## De initiatievenlijst tonen via een pagina
+Je kunt de initiatievenlijst ook tonen via een pagina. Dat is het posttype 'pagina' dat standaard in WordPress beschikbaar is. Maak een pagina aan via:
+
+[admin] > Pagina's > Nieuwe pagina
+
+In de pagina-instellingen moet je als template kiezen: 'initiatievenpagina'.
+
+### Wijs de pagina aan als initiatievenoverzicht via de Customizer
+De standaard URL-opbouw voor een initiatief is als volgt:
+
+`[jouwdomein.tld]/initiatief/slug-van-een-initiatief/`
+
+Als je een eigen pagina hebt waarop je de initiatieven toont, kan het handig zijn om de URL pagina aan te wijzen als de basis voor initiatieven. Stel dat jouw pagina deze URL heeft:
+
+`[jouwdomein.tld]/eerste-pagina/tweede-pagina/pagina-met-alle-initiatieven/`
+
+dan kunnen we daar dit van maken:
+
+`[jouwdomein.tld]/eerste-pagina/tweede-pagina/pagina-met-alle-initiatieven/slug-van-een-initiatief/`
+
+Dit doe je via de Customizer, als je admin-rechten hebt op je website, via:
+
+[admin] > Weergave > Customizer > Initiatievenkaart
+
+Kies uit de dropdown-lijst de pagina waarop alle initatieven staan.
+

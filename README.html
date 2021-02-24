@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+
+<h1 id="initiatievenkaart">Initiatievenkaart</h1>
+
+<p>WordPress-plugin voor het op een kaart tonen van organisaties en initiatieven om datagedreven te werken.
+Wordt (later) gebruikt op <a href="https://www.digitaleoverheid.nl/initiatief/">www.digitaleoverheid.nl/initiatief/</a></p>
+
+<h2 id="afhankelijkheden">Afhankelijkheden</h2>
+
+<p>Deze plugin functioneert niet zonder:</p>
+
+<ul>
+<li><a href="https://www.advancedcustomfields.com/pro/">Advanced Custom Fields (PRO)</a> (plugin)</li>
+<li><a href="https://wordpress.org/plugins/acf-openstreetmap-field/">ACF OpenStreetMap Field</a> (plugin)</li>
+<li><a href="https://leafletjs.com/">Leaflet JS</a> en enkele plugins:</li>
+<li> <a href="https://github.com/Leaflet/Leaflet.markercluster">MarkerCluster</a></li>
+<li> <a href="https://github.com/elmarquis/Leaflet.GestureHandling/">Gesture handling</a></li>
+</ul>
+
+<h2 id="contact">Contact</h2>
+
+<p>Code is geschreven door:</p>
+
+<ul>
+<li>Thijs Brentjens (thijs@brentjensgeoict.nl)</li>
+<li>Paul van Buuren (paul@wbvb.nl)</li>
+</ul>
+
+<p>In opdracht van het Leer- en Expertisepunt Datagedreven Werken (LED) van ICTU, Ministerie van Binnenlandse Zaken en Koninkrijksrelaties (BZK).</p>
+
+<h2 id="toegankelijkheid">Toegankelijkheid</h2>
+
+<p>De Initiatievenkaart probeert aan de Toegankelijkheidseisen te voldoen door:</p>
+
+<ol>
+<li>een tekstuele representatie (HTML lijst met data-attributen per item: <code>data-latitude</code>, <code>data-longitude</code> en <code>data-map-item-type</code> als categorie/type item) te gebruiken van de gegevens die op de kaart moeten komen. Via Javascript worden deze gegevens uitgelezen en op de kaart gepresenteerd. De HTML list item content is de popup content</li>
+<li>gebruik van iconen op de kaart om onderscheid te maken tussen type initiatieven (niet alleen kleur). Er zijn SVG iconen beschikbaar voor elk type initiatief</li>
+<li>toetsenbordtoegankelijkheid kaart: de kaart bedienen via het toetsenbord, door met TAB door de items op de kaart te bladeren, popups te openen/sluiten (ENTER) en de tools voor in/uitzoomen te kunnen bedienen.</li>
+<li>semantiek: ARIA labels, titles toegevoegd.</li>
+<li> Dit soort zaken wordt niet makkelijk en netjes in LeafletJS afgehandeld voor alle elementen. Voor nu een functie gemaakt die &#8220;achteraf&#8221; enkele zaken toevoegt / corrigeert. Zie de Javascript code <code>public/js/initiatieven-kaart-public.js</code> en dan de functie <code>fixAccessibilityIssues()</code></li>
+<li>focus styles voor iconen en popup sluit buttons</li>
+</ol>
+
+<p>Weet je dingen die beter kunnen? Maak vooral een <a href="../../issues/new">Github issue</a> aan.</p>
+
+<h3 id="toetsenbordtoegankelijkheidiconenopdekaart">Toetsenbordtoegankelijkheid iconen op de kaart</h3>
+
+<p>Focus wordt nu als volgt gezet:
+Enkelvoudige / ongeclusterde iconen:</p>
+
+<ul>
+<li>na openen popup op de header link (link naar initiatief). NB: dit was oorspronkelijk de sluit button rechts boven</li>
+<li>na sluiten popup: focus terug naar de marker waarvan de popup geopend was</li>
+</ul>
+
+<p>Cluster iconen:</p>
+
+<ul>
+<li>bij openen (enter / klikken):</li>
+<li> zoom naar de initiatieven als het een cluster is waarvan de initiatieven dichtbij elkaar liggen, maar niet op dezelfde plek. <em>of</em></li>
+<li> klap het cluster uit (&#8220;spiderfy&#8221;) en toon de individuele iconen die het cluster vormen, als de initiatieven wel dezelfde locatie hebben. Focus ligt dan op een icoon van dit cluster.</li>
+<li>via TAB / shift+TAB terug te gaan naar het clustericoon. Als daarop enter wordt gedrukt (idem als een &#8220;klik&#8221;), dan komt de focus terug op het clustericoon</li>
+</ul>
+
+<h2 id="styling:cssensvg">Styling: CSS en SVG</h2>
+
+<p>Er is zo min mogelijk specifieke CSS in gebruik voor de kaart. Er zijn een paar classes die nuttig kunnen zijn aan te passen:</p>
+
+<ol>
+<li><code>clusterIcon</code> classes</li>
+<li>de hoogte van de kaart (class: <code>archives-map</code>) is standaard 500px. Leaflet heeft een opgegeven hoogte nodig. Bij 500px hoogte wordt Nederland volledig bij gebruik van WebMercator achtergrondkaarten (zoals OpenStreetMap)</li>
+<li>de focus styles: <code>.leaflet-marker-icon:focus, a.leaflet-popup-close-button:focus</code></li>
+</ol>
+
+<h3 id="svgiconenopdekaart">SVG Iconen op de kaart</h3>
+
+<p>SVG iconen voor de kaart, geplaatst in de directory <code>css/images/</code>. Gebruik het type initiatief in de bestandsnaam, volgens:
+<code>marker-{type initiatief}.svg</code>. Bijvoorbeeld: <code>marker-visualisatie.svg</code> voor een icoon dat als map-item-type / type initiatief de code <code>visualisatie</code> heeft.</p>
+
+<h2 id="suggestiesopenstaandepuntenendoorontwikkeling">Suggesties, openstaande punten en doorontwikkeling</h2>
+
+<p>Zie de <a href="../../issues">Github issues</a> voor openstaande punten. Voor issues en suggesties voor verbetering kan je ook daar terecht. Er is op dit moment geen actief en structureel beheer op deze plugin geregeld/voorzien. Dus we geven geen garanties voor het oplossen.</p>
+
+<p>De code is beschikbaar onder een open source licentie. Voel je vrij een Pull request te doen als je concrete verbeteringen hebt.</p>
+
+<h2 id="configuratievandekaart">Configuratie van de kaart</h2>
+
+<p>Zie <code>js/initiatieven-kaart-public.js</code> voor de volledige code, onderaan het bestand. De configuratie is nodig om de HTML lijst en de te gebruiken items te identificeren. Hiermee wordt de kaart opgebouwd.</p>
+
+<p>Configuratie gaat via een JSON object. Zie hieronder in de voorbeelden per optie beknopt wat een optie doet.</p>
+
+<p>Configuratie voorbeelden:</p>
+
+<pre><code>const fullConfig = {
+  // mandatory: the id of the HTML list that contains the map items
+  &quot;mapItemsContainerId&quot;: &quot;map-items&quot;,
+  // mandatory:  the class for an item in the list that needs to be displayed on the map
+  &quot;mapItemClass&quot;: &quot;map-item&quot;,
+  // optional: other map id for styling for example
+  &quot;mapElementId&quot;: &quot;initiatieven-kaart-map&quot;,
+  // optional: the CSS class for the HTML element where the map is created in. If changed, make sure there is a style rule that specifies the height of the HTML element, because otherwise LeafletJS can't generate a map
+  &quot;mapClass&quot;: &quot;archives-map&quot;,
+  // Clustering creates icons with counters for items that are too close to each other for a good visualisation. On clicking a cluster it zooms to the items of the cluster or &quot;spiderfies&quot; them to show the individual items.
+  &quot;clustering&quot;: true,
+  // the Leaflet plugin for clusters requires to set the opacity of a an icon through JavaScript
+  &quot;iconSpiderfiedOpacity&quot; : 0.75,
+  // Optional: labels in the legend for each type. The property name (e.g. &quot;portaal&quot;) should be the same as the type code of the item, as defined in the Wordpress taxonomy
+  &quot;typeLegendLabels&quot; : {
+    &quot;onbekend&quot;: &quot;Onbekend&quot;,
+    &quot;community&quot;: &quot;Community&quot;,
+    &quot;datalab&quot;: &quot;Datalab&quot;, // datalab is the old type, because in test/older data this can be present, just put it here
+    &quot;lab&quot;: &quot;Datalab&quot;,
+    &quot;portaal&quot;: &quot;Portaal&quot;,
+    &quot;strategie&quot;: &quot;Strategie&quot;,
+    &quot;visualisatie&quot;: &quot;Visualisatie&quot;,
+  },
+  // Optional, icon size (width x height): 24 x 32
+  // best is to make nice numbers using the ratio 3:4, given the SVG icons provided
+  &quot;iconWidth&quot;: 24,
+  &quot;iconHeight&quot;: 32
+}
+
+const minConfig = {
+ 	&quot;mapItemsContainerId&quot;: &quot;map-items&quot;,
+  &quot;mapItemClass&quot;: &quot;map-item&quot;,
+}
+
+</code></pre>
+
+<p>Met deze configuratie, maak een kaart aan en initialiseer alles, zodat data uit de HTML lijst wordt gelezen en een kaart met popups wordt gegenereerd:</p>
+
+<pre><code>const itemsMap = new HTMLItemsMap(fullConfig);
+itemsMap.initMap();
+</code></pre>
+
+<h2 id="deinitiatievenlijsttonenviaeenpagina">De initiatievenlijst tonen via een pagina</h2>
+
+<p>Je kunt de initiatievenlijst ook tonen via een pagina. Dat is het posttype &#8216;pagina&#8217; dat standaard in WordPress beschikbaar is. Maak een pagina aan via:</p>
+
+<p>[admin] &gt; Pagina&#8217;s &gt; Nieuwe pagina</p>
+
+<p>In de pagina-instellingen moet je als template kiezen: &#8216;initiatievenpagina&#8217;.</p>
+
+<h3 id="wijsdepaginaaanalsinitiatievenoverzichtviadecustomizer">Wijs de pagina aan als initiatievenoverzicht via de Customizer</h3>
+
+<p>De standaard URL-opbouw voor een initiatief is als volgt:</p>
+
+<p><code>[jouwdomein.tld]/initiatief/slug-van-een-initiatief/</code></p>
+
+<p>Als je een eigen pagina hebt waarop je de initiatieven toont, kan het handig zijn om de URL pagina aan te wijzen als de basis voor initiatieven. Stel dat jouw pagina deze URL heeft:</p>
+
+<p><code>[jouwdomein.tld]/eerste-pagina/tweede-pagina/pagina-met-alle-initiatieven/</code></p>
+
+<p>dan kunnen we daar dit van maken:</p>
+
+<p><code>[jouwdomein.tld]/eerste-pagina/tweede-pagina/pagina-met-alle-initiatieven/slug-van-een-initiatief/</code></p>
+
+<p>Dit doe je via de Customizer, als je admin-rechten hebt op je website, via:</p>
+
+<p>[admin] &gt; Weergave &gt; Customizer &gt; Initiatievenkaart</p>
+
+<p>Kies uit de dropdown-lijst de pagina waarop alle initatieven staan.</p>
+
+</body>
+</html>
+
