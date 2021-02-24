@@ -64,7 +64,7 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 			$return .= led_get_list_item_archive( $post, $initiatieficons );
 
-    endwhile;
+		endwhile;
 
 		$return .= '</ul>';
 

@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47e01a69-bcca-4331-939f-1c207a7b5106" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/.config.codekit3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/initiatieven-kaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/initiatieven-kaart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/initiatieven-kaart-public.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/initiatieven-kaart-public.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/archive-initiatieven.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/archive-initiatieven.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
