@@ -411,13 +411,34 @@ function led_append_customizer_field( $wp_customize ) {
 		'description' => _x( 'Instellingen voor de initiatievenkaart.', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
-	// callback
+	// add two text fields
+	$wp_customize->add_setting( 'led_list_before', array(
+		'capability'        => 'edit_theme_options',
+		'sanitize_callback' => 'led_sanitize_text_block',
+	) );
+	$wp_customize->add_control( 'led_list_before', array(
+		'type'        => 'textarea',
+		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
+		'label'       => _x( 'Voor de kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Tekst die <em>voor</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
+	) );
+
+	$wp_customize->add_setting( 'led_list_after', array(
+		'capability'        => 'edit_theme_options',
+		'sanitize_callback' => 'led_sanitize_text_block',
+	) );
+	$wp_customize->add_control( 'led_list_after', array(
+		'type'        => 'textarea',
+		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
+		'label'       => _x( 'Na de kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Tekst die <em>na</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
+	) );
+
+	// add dropdown with pages to appoint the new slug for the CPT
 	$wp_customize->add_setting( 'led_pageid_overview', array(
 		'capability'        => 'edit_theme_options',
 		'sanitize_callback' => 'led_sanitize_dropdown_pages',
 	) );
-
-	// field
 	$wp_customize->add_control( 'led_pageid_overview', array(
 		'type'        => 'dropdown-pages',
 		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
@@ -426,9 +447,32 @@ function led_append_customizer_field( $wp_customize ) {
 	) );
 
 
+
 }
 
 add_action( 'customize_register', 'led_append_customizer_field' );
+
+//========================================================================================================
+/*
+only allow for
+<a>, <h2>, <h3>, <br>, <p>, <em>, <strong>
+*/
+function led_sanitize_text_block( $text ) {
+
+	return wp_kses( $text, array(
+		'a'      => array(
+			'href'  => array(),
+			'title' => array()
+		),
+		'h2'     => array(),
+		'h3'     => array(),
+		'br'     => array(),
+		'p'     => array(),
+		'em'     => array(),
+		'strong' => array(),
+	) );
+
+}
 
 //========================================================================================================
 
@@ -756,6 +800,35 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 }
 
+
 //========================================================================================================
 
+function led_initiatieven_list_after( $doreturn = true ) {
 
+	$led_list_after = get_theme_mod( 'led_list_after' );
+	$return         = '<p>' . $led_list_after . '</p>';
+
+	if ( $doreturn ) {
+		return $return;
+	} else {
+		echo $return;
+	}
+
+}
+
+//========================================================================================================
+
+function led_initiatieven_list_before( $doreturn = true ) {
+
+	$led_list_before = get_theme_mod( 'led_list_before' );
+	$return          = '<p>' . $led_list_before . '</p>';
+
+	if ( $doreturn ) {
+		return $return;
+	} else {
+		echo $return;
+	}
+
+}
+
+//========================================================================================================

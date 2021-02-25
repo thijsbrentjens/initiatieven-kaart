@@ -69,10 +69,13 @@ function led_initiatieven_page_list( $doreturn = false ) {
 	$contentblockpostscount = new WP_query();
 	$contentblockpostscount->query( $argscount );
 
+	$return = '';
+	$return .= led_initiatieven_list_before( true );
+
 	if ( $contentblockpostscount->have_posts() ) {
 
 		$initiatieficons = led_get_initiatieficons();
-		$return          = '<ul id="map-items">';
+		$return          .= '<ul id="map-items">';
 
 		while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
 
@@ -85,6 +88,7 @@ function led_initiatieven_page_list( $doreturn = false ) {
 	} else {
 		$return .= 'geen initiatieven';
 	}
+	$return .= led_initiatieven_list_after( true );
 
 	wp_reset_query();
 	wp_reset_postdata();
@@ -97,3 +101,5 @@ function led_initiatieven_page_list( $doreturn = false ) {
 }
 
 //========================================================================================================
+
+

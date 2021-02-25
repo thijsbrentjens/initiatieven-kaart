@@ -55,10 +55,13 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 	global $post;
 
+	$return = '';
+	$return .= led_initiatieven_list_before( true );
+
 	if ( have_posts() ) {
 
 		$initiatieficons = led_get_initiatieficons();
-		$return          = '<ul id="map-items">';
+		$return          .= '<ul id="map-items">';
 
 		while ( have_posts() ) : the_post();
 
@@ -69,6 +72,8 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 		$return .= '</ul>';
 
 	}
+
+	$return .= led_initiatieven_list_after( true );
 
 	if ( $doreturn ) {
 		return $return;
