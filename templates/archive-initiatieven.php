@@ -11,7 +11,7 @@ if ( function_exists( 'genesis' ) ) {
 	add_filter( 'genesis_archive_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
 
 	// titel toevoegen
-	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 15 );
+	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 8 );
 
 	/** standard loop vervangen door custom loop */
 	remove_action( 'genesis_loop', 'genesis_do_loop' );
@@ -56,10 +56,12 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 	global $post;
 
 	$return = '';
-	$return .= led_initiatieven_list_before( true );
 
 	if ( have_posts() ) {
 
+		if ( is_post_type_archive( CPT_INITIATIEF ) ) {
+			$return .= led_initiatieven_list_before( true );
+		}
 		$initiatieficons = led_get_initiatieficons();
 		$return          .= '<ul id="map-items">';
 

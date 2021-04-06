@@ -11,16 +11,20 @@ if ( function_exists( 'genesis' ) ) {
 	add_filter( 'genesis_archive_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
 
 	// titel toevoegen
-	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 15 );
+	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 8 );
 
 	/** standard loop vervangen door custom loop */
-	if ( is_post_type_archive( CPT_INITIATIEF ) ) {
-		remove_action( 'genesis_loop', 'genesis_do_loop' );
-	}
-	add_action( 'genesis_loop', 'led_initiatieven_page_list', 8 );
+	if ( is_post_type_archive( CPT_INITIATIEF ) || is_page() ) {
+		// check is nodig om te voorkomen dat in zoekresultaten rare dingen gebeuren
 
-	// lijstjes toevoegen met de diverse custom taxonomieen
-	add_action( 'genesis_loop', 'led_initiatieven_taxonomy_list' );
+		remove_action( 'genesis_loop', 'genesis_do_loop' );
+
+		// lijstje met initiatieven toevoegen
+		add_action( 'genesis_loop', 'led_initiatieven_page_list', 8 );
+		// lijstjes toevoegen met de diverse custom taxonomieen
+		add_action( 'genesis_loop', 'led_initiatieven_taxonomy_list' );
+    }
+
 
 	// make it so
 	genesis();
@@ -70,11 +74,14 @@ function led_initiatieven_page_list( $doreturn = false ) {
 	$contentblockpostscount->query( $argscount );
 
 	$return = '';
-	$return .= led_initiatieven_list_before( true );
 
 	if ( $contentblockpostscount->have_posts() ) {
 
 		$initiatieficons = led_get_initiatieficons();
+		if ( is_post_type_archive( CPT_INITIATIEF ) ) {
+			$return .= led_initiatieven_list_before( true );
+		}
+
 		$return          .= '<ul id="map-items">';
 
 		while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
