@@ -212,8 +212,10 @@ Authors:
             if (types[category]) {
               types[category]["nrPosts"] += 1;
             } else {
+              // dit is het eerste object in de verzameling. Dus we zetten de teller 'nrPosts'
+              // op 1, niet op 0.
               types[category] = {
-                "nrPosts": 0,
+                "nrPosts": 1,
                 "visible": true
               };
             }
