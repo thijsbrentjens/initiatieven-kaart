@@ -59,6 +59,9 @@ function run_initiatieven_kaart() {
 
 	add_action( 'wp_enqueue_scripts', array( $plugin, 'enqueue_scripts' ) );
 
+	// voor de archives: tonen van ALLE initiatieven, ongeacht het
+	// maximum aantal posts per pagina
+	add_action('pre_get_posts', array($plugin, 'load_all_initiatieven'), 999);
 }
 
 run_initiatieven_kaart();
