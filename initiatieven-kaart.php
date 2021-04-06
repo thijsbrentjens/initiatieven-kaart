@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.5' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.6' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -78,6 +78,7 @@ function led_template_archive_initiatieven( $archive_template ) {
 		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
 	}
 
+	return $archive_template;
 }
 
 add_filter( 'taxonomy_template', 'led_template_archive_initiatieven' );
@@ -89,6 +90,7 @@ add_filter( 'archive_template', 'led_template_archive_initiatieven' );
  */
 function led_template_page_initiatieven( $archive_template ) {
 	global $post;
+
 	$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
 
 	if ( is_singular( CPT_INITIATIEF ) ) {
@@ -129,7 +131,7 @@ function led_custom_tax_and_types() {
 
 	// ---------------------------------------------------------------------------------------------------
 	// uit customizer de pagina ophalen die het overzicht is van alle initiatieven
-	$optionpage        = get_theme_mod( 'led_pageid_overview' );
+	$optionpage        = get_theme_mod( 'customizer_led_pageid_overview' );
 	$defaultslugforCPT = CPT_INITIATIEF;
 
 	if ( $optionpage ) {
@@ -292,6 +294,7 @@ function led_get_initiatieficons() {
 function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 
 	$return = '';
+	$counter = 0;
 
 	// use the location attributes to create data-attributes for the map
 	// second term false: current post
@@ -383,7 +386,7 @@ function led_get_initiatief_permalink( $initiatiefid = 0 ) {
 		return;
 	}
 
-	$led_pageid_overview = get_theme_mod( 'led_pageid_overview' );
+	$led_pageid_overview = get_theme_mod( 'customizer_led_pageid_overview' );
 
 	if ( $led_pageid_overview ) {
 
@@ -405,47 +408,46 @@ function led_get_initiatief_permalink( $initiatiefid = 0 ) {
 function led_append_customizer_field( $wp_customize ) {
 
 	//	eigen sectie voor Theme Customizer
-	$wp_customize->add_section( 'customizer_initiatievenkaart', array(
+	$wp_customize->add_section( 'customizer_led_initiatievenkaart', array(
 		'title'       => _x( 'Initiatievenkaart', 'customizer menu', 'initiatieven-kaart' ),
 		'capability'  => 'edit_theme_options',
 		'description' => _x( 'Instellingen voor de initiatievenkaart.', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
 	// add two text fields
-	$wp_customize->add_setting( 'led_list_before', array(
+	$wp_customize->add_setting( 'led_text_before_list', array(
 		'capability'        => 'edit_theme_options',
 		'sanitize_callback' => 'led_sanitize_text_block',
 	) );
-	$wp_customize->add_control( 'led_list_before', array(
+	$wp_customize->add_control( 'led_text_before_list', array(
 		'type'        => 'textarea',
-		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Voor de kaart', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'Tekst die <em>voor</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
+		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
+		'label'       => _x( 'Tekst <em>voor</em> de kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Tekst die <em>direct voor</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
-	$wp_customize->add_setting( 'led_list_after', array(
+	$wp_customize->add_setting( 'led_text_after_list', array(
 		'capability'        => 'edit_theme_options',
 		'sanitize_callback' => 'led_sanitize_text_block',
 	) );
-	$wp_customize->add_control( 'led_list_after', array(
+	$wp_customize->add_control( 'led_text_after_list', array(
 		'type'        => 'textarea',
-		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Na de kaart', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'Tekst die <em>na</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
+		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
+		'label'       => _x( 'Tekst <em>na</em> de kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Tekst die <em>direct na</em> de kaart staat', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
 	// add dropdown with pages to appoint the new slug for the CPT
-	$wp_customize->add_setting( 'led_pageid_overview', array(
+	$wp_customize->add_setting( 'customizer_led_pageid_overview', array(
 		'capability'        => 'edit_theme_options',
 		'sanitize_callback' => 'led_sanitize_dropdown_pages',
 	) );
-	$wp_customize->add_control( 'led_pageid_overview', array(
+	$wp_customize->add_control( 'customizer_led_pageid_overview', array(
 		'type'        => 'dropdown-pages',
-		'section'     => 'customizer_initiatievenkaart', // Add a default or your own section
+		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
 		'label'       => _x( 'Pagina met alle initiatieven', 'customizer menu', 'initiatieven-kaart' ),
 		'description' => _x( 'In het kruimelpad en in de URL voor een initiatief zal deze pagina terugkomen.', 'customizer menu', 'initiatieven-kaart' ),
 	) );
-
 
 
 }
@@ -467,7 +469,7 @@ function led_sanitize_text_block( $text ) {
 		'h2'     => array(),
 		'h3'     => array(),
 		'br'     => array(),
-		'p'     => array(),
+		'p'      => array(),
 		'em'     => array(),
 		'strong' => array(),
 	) );
@@ -541,7 +543,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	$archive_description = '';
 	$return              = '';
 	$count               = $wp_query->post_count;
-	$led_pageid_overview = get_theme_mod( 'led_pageid_overview' );
+	$led_pageid_overview = get_theme_mod( 'customizer_led_pageid_overview' );
 
 	if ( is_post_type_archive( CPT_INITIATIEF ) ) {
 
@@ -715,7 +717,7 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 
 	// uit siteopties de pagina ophalen die het overzicht is van alle links
-	$optionpage  = get_theme_mod( 'led_pageid_overview' );
+	$optionpage  = get_theme_mod( 'customizer_led_pageid_overview' );
 	$currentitem = explode( '</span>', $crumb );
 	$parents     = array();
 	$return      = '';
@@ -805,8 +807,11 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 function led_initiatieven_list_after( $doreturn = true ) {
 
-	$led_list_after = get_theme_mod( 'led_list_after' );
-	$return         = '<p>' . $led_list_after . '</p>';
+	$led_text_after_list = get_theme_mod( 'led_text_after_list' );
+	$return              = '';
+	if ( $led_text_after_list ) {
+		$return = '<div class="led-initiatievenkaart-warning-after"><p>' . $led_text_after_list . '</p></div>';
+	}
 
 	if ( $doreturn ) {
 		return $return;
@@ -820,8 +825,11 @@ function led_initiatieven_list_after( $doreturn = true ) {
 
 function led_initiatieven_list_before( $doreturn = true ) {
 
-	$led_list_before = get_theme_mod( 'led_list_before' );
-	$return          = '<p>' . $led_list_before . '</p>';
+	$led_text_before_list = get_theme_mod( 'led_text_before_list' );
+	$return               = '';
+	if ( $led_text_before_list ) {
+		$return = '<div class="led-initiatievenkaart-warning-before"><p>' . $led_text_before_list . '</p></div>';
+	}
 
 	if ( $doreturn ) {
 		return $return;
@@ -832,3 +840,4 @@ function led_initiatieven_list_before( $doreturn = true ) {
 }
 
 //========================================================================================================
+
