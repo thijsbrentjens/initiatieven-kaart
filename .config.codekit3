@@ -7,7 +7,7 @@
       "uuidString" : "6252E4C3-2165-4D62-9D3E-95B03373A3A3"
     }
   ],
-  "creatorBuild" : "34018",
+  "creatorBuild" : "34127",
   "files" : {
     "\/.gitignore" : {
       "cB" : 0,
@@ -20,7 +20,7 @@
     "\/.idea" : {
       "ft" : 65536,
       "oA" : 1,
-      "oAP" : "\/build\/.idea",
+      "oAP" : "\/.idea",
       "oF" : 0
     },
     "\/admin\/class-initiatieven-kaart-admin.php" : {
@@ -173,16 +173,6 @@
       "oA" : 0,
       "oAP" : "\/public\/class-initiatieven-kaart-public.php",
       "oF" : 0
-    },
-    "\/public\/css\/images\/.marker-onbekend~imageoptim.svg" : {
-      "ft" : 2097152,
-      "miP" : 0,
-      "oA" : 2,
-      "oAP" : "\/public\/css\/images\/.marker-onbekend~imageoptim.svg",
-      "oF" : 0,
-      "opt" : 0,
-      "plM" : 52780316221407,
-      "prP" : 0
     },
     "\/public\/css\/images\/layers-2x.png" : {
       "ft" : 32768,
@@ -534,18 +524,6 @@
       "q" : 100,
       "rq" : 75
     },
-    "\/public\/css\/initiatieven-kaart-public-min.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/public\/css\/initiatieven-kaart-public-min-min.css",
-      "oF" : 0,
-      "pg" : 0
-    },
     "\/public\/css\/initiatieven-kaart-public.css" : {
       "aP" : 1,
       "bl" : 0,
@@ -558,7 +536,7 @@
       "oF" : 0,
       "pg" : 0
     },
-    "\/public\/css\/leaflet.awesome-markers.css" : {
+    "\/public\/css\/leaflet-gesture-handling.min.css" : {
       "aP" : 1,
       "bl" : 0,
       "ci" : 0,
@@ -566,7 +544,7 @@
       "ft" : 16,
       "ma" : 0,
       "oA" : 0,
-      "oAP" : "\/public\/css\/leaflet.awesome-markers-min.css",
+      "oAP" : "\/public\/css\/leaflet-gesture-handling.min-min.css",
       "oF" : 0,
       "pg" : 0
     },
@@ -659,13 +637,13 @@
       "sC" : 3,
       "tS" : 0
     },
-    "\/public\/js\/leaflet.awesome-markers.js" : {
+    "\/public\/js\/leaflet-gesture-handling.min.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 0,
-      "oAP" : "\/public\/js\/leaflet.awesome-markers-min.js",
+      "oAP" : "\/public\/js\/leaflet-gesture-handling.min-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
@@ -698,6 +676,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/public\/partials\/initiatieven-kaart-public-display.php",
+      "oF" : 0
+    },
+    "\/README.html" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/README.html",
       "oF" : 0
     },
     "\/README.md" : {
@@ -2795,27 +2781,30 @@
 
       ],
       "contentEntries" : [
-        "!(node_modules)\/**\/*.html",
-        "!(node_modules)\/**\/*.htm",
-        "!(node_modules)\/**\/*.shtml",
-        "!(node_modules)\/**\/*.xhtml",
-        "!(node_modules)\/**\/*.php",
-        "!(node_modules)\/**\/*.js",
-        "!(node_modules)\/**\/*.ts",
-        "!(node_modules)\/**\/*.coffee",
-        "!(node_modules)\/**\/*.erb",
-        "!(node_modules)\/**\/*.pug",
-        "!(node_modules)\/**\/*.jade",
-        "!(node_modules)\/**\/*.slim",
-        "!(node_modules)\/**\/*.haml",
-        "!(node_modules)\/**\/*.md",
-        "!(node_modules)\/**\/*.kit"
+        "**\/*.html",
+        "**\/*.htm",
+        "**\/*.shtml",
+        "**\/*.xhtml",
+        "**\/*.php",
+        "**\/*.js",
+        "**\/*.ts",
+        "**\/*.coffee",
+        "**\/*.erb",
+        "**\/*.pug",
+        "**\/*.jade",
+        "**\/*.slim",
+        "**\/*.haml",
+        "**\/*.md",
+        "**\/*.kit"
       ],
       "removeFontFace" : 0,
       "removeKeyframes" : 0,
       "removeVariables" : 0,
       "safelistEntries" : [
 
+      ],
+      "skippedEntries" : [
+        "node_modules\/**"
       ]
     },
     "rollupContext" : "",
@@ -2850,6 +2839,7 @@
     "tsNoImplicitThis" : 0,
     "tsNoImplicitUseStrict" : 0,
     "tsNoLib" : 0,
+    "tsNoPropertyAccessFromIndexSignature" : 0,
     "tsNoResolve" : 0,
     "tsNoStrictGenericChecks" : 0,
     "tsNoUncheckedIndexAccess" : 0,
