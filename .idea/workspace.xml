@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="47e01a69-bcca-4331-939f-1c207a7b5106" name="Default Changelist" comment="">
+    <list default="true" id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/initiatieven-kaart.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initiatieven-kaart.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1id8UYYVk55J60HN1P5hllSt8ZB" />
+  <component name="ProjectId" id="1rWJ7VgPJ9CeV4negZKm2bp0LId" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -26,42 +31,19 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="47e01a69-bcca-4331-939f-1c207a7b5106" name="Default Changelist" comment="" />
-      <created>1602226125463</created>
+      <changelist id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="" />
+      <created>1619085751665</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1602226125463</updated>
-      <workItem from="1602226126692" duration="14480000" />
-      <workItem from="1602606083645" duration="3045000" />
-      <workItem from="1602747903089" duration="4442000" />
-      <workItem from="1605558461126" duration="10779000" />
-      <workItem from="1612453167152" duration="604000" />
-      <workItem from="1612520497681" duration="1056000" />
-      <workItem from="1612780846854" duration="17527000" />
+      <updated>1619085751665</updated>
+      <workItem from="1619085753035" duration="224000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="2007" y="379" width="1087" height="604" key="find.popup" timestamp="1614248389537">
-      <screen x="1440" y="-275" width="2560" height="1415" />
-    </state>
-    <state x="2028" y="-34" width="1087" height="548" key="find.popup/0.23.1440.877/1440.-277.2560.1417@1440.-277.2560.1417" timestamp="1612951525701" />
-    <state x="1881" y="83" width="816" height="735" key="find.popup/0.23.1440.877/1440.-98.1920.1057@1440.-98.1920.1057" timestamp="1612882533257" />
-    <state x="331" y="173" width="612" height="610" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1612943708531" />
-    <state x="2007" y="379" width="1087" height="604" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1614248389537" />
-  </component>
-  <component name="WordPressConfiguration" enabled="true">
-    <wordpressPath>$PROJECT_DIR$/../../..</wordpressPath>
   </component>
 </project>
