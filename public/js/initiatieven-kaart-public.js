@@ -60,7 +60,7 @@ Authors:
           // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
           // optreedt.
           // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
-          shadowUrl: `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-shadow.svg`,
+          shadowUrl: `${Utils.siteurl}/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-shadow.svg`,
           iconSize: [this.iconWidth, this.iconHeight],
           iconAnchor: [this.iconWidth / 2, this.iconHeight],
           // shadow: 40 x 40
@@ -325,7 +325,7 @@ Authors:
 
     getIconURL(category) {
       // Utils.siteurl is set in: public/class-initiatieven-kaart-public.php
-      return `${Utils.siteurl}/wp-content/plugins/initiatieven-kaart/public/css/images/marker-${category.toLowerCase()}.svg`;
+      return `${Utils.siteurl}/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-${category.toLowerCase()}.svg`;
     }
 
     createTypeFilterControl() {
