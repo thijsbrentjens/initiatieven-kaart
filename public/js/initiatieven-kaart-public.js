@@ -8,7 +8,7 @@ Authors:
 
 */
 
-(function ($) {
+(function (jQuery) {
   'use strict';
 
   class HTMLItemsMap {
@@ -86,18 +86,18 @@ Authors:
     initMap() {
       const _self = this;
       // first: detect if there are map elements (a container) available in the HTML, if not: just stop
-      if ($("." + this.mapItemClass).length == 0) {
+      if (jQuery("." + this.mapItemClass).length == 0) {
         return false;
       }
 
       // init the map if it is not available yet
       if (!this.getLMap()) {
         // create an HTML element for the map if not available
-        if ($("#" + this.mapElementId).length == 0) {
+        if (jQuery("#" + this.mapElementId).length == 0) {
           const _self = this;
           // append after the container
           const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
-          $("#" + this.mapItemsContainerId).after(mapDivHtml);
+          jQuery("#" + this.mapItemsContainerId).after(mapDivHtml);
 
           // create the toggle map/list button
           const toggleListButton = Object.assign(document.createElement('button'), {
@@ -108,9 +108,9 @@ Authors:
               _self.toggleListMap();
             }
           });
-          $("#" + this.mapItemsContainerId).before(toggleListButton);
+          jQuery("#" + this.mapItemsContainerId).before(toggleListButton);
           // hide the HTML list with the map items
-          $("#" + this.mapItemsContainerId).hide();
+          jQuery("#" + this.mapItemsContainerId).hide();
         }
 
         // initial zoom will be overwritten by the bounds of the data layer
@@ -158,10 +158,10 @@ Authors:
         this.getLMap().on("popupopen", function (evt) {
           // find the first link in the contentNode, this is the header
           // or use the _closeButton:
-          // $(evt.popup._closeButton).focus()
-          // $(evt.popup._contentNode).find("a").focus();
+          // jQuery(evt.popup._closeButton).focus()
+          // jQuery(evt.popup._contentNode).find("a").focus();
           // focus on the content element
-          $(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
+          jQuery(evt.popup._contentNode).find("div.leaflet-popup-content").focus();
           // TODO: if "esc" is chosen, close the popup?
           // "esc" is tuoghto use, maybe later implement this
 
@@ -181,10 +181,10 @@ Authors:
       // bind focus events on each marker/icon
       // for now for the spiderfying functions only
       const _self = this;
-      $(".leaflet-marker-icon").each(function (elem) {
+      jQuery(".leaflet-marker-icon").each(function (elem) {
         // first remove other focus events, to avoid stacking them
-        $(this).unbind("focus");
-        $(this).bind("focus", function (evt) {
+        jQuery(this).unbind("focus");
+        jQuery(this).bind("focus", function (evt) {
           // keep track of the focussed element because of spiderfying and unspiderfying again
           _self.previousFocus = evt.currentTarget;
         })
@@ -198,13 +198,13 @@ Authors:
       // reset the types
       const types = {};
 
-      $("." + this.mapItemClass).each(function (cntr, elem) {
+      jQuery("." + this.mapItemClass).each(function (cntr, elem) {
         // for all elements with latitude and longitude data attributes, add a marker
-        if ($(elem).data("latitude") && $(elem).data("longitude")) {
-          const lat = $(elem).data("latitude");
-          const lon = $(elem).data("longitude");
+        if (jQuery(elem).data("latitude") && jQuery(elem).data("longitude")) {
+          const lat = jQuery(elem).data("latitude");
+          const lon = jQuery(elem).data("longitude");
 
-          const category = $(elem).data("map-item-type") ? $(elem).data("map-item-type") : "onbekend";
+          const category = jQuery(elem).data("map-item-type") ? jQuery(elem).data("map-item-type") : "onbekend";
           // let's create a nice geojson feature for the data we found
           // use the list item content as popup content
           // also: keep track of the number of items for the type we found. This is for the Legend
@@ -304,7 +304,7 @@ Authors:
           // portaal, datalab, community, onbekend, strategie, visualisatie
           const customIcon = new _self.baseIcon({
             // customize according to category
-            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
+            // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat er geen 404 meer
             // optreedt.
             // Thijs: de URL moet ook de basis bevatten (bij mij lokaal staat er nog /led/ voor). Nog een kleine aanpassing gedaan.
             iconUrl: _self.getIconURL(category),
@@ -355,8 +355,8 @@ Authors:
       const typeKeys = Object.keys(this.types);
       typeKeys.sort();
 
-      let filterContent = $(`<h4>`).html(`Toon initiatieven van:`);
-      let filterContentList = $(`<ul>`);
+      let filterContent = jQuery(`<h3>`).html(`Toon initiatieven van:`);
+      let filterContentList = jQuery(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
         let labelTxt = category;
@@ -368,22 +368,22 @@ Authors:
         const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
 
         // create the checkbox for type selection
-        let input = $(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+        let input = jQuery(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
         // note the scope _self: this function is only called from the GUI, so 'this' does not refer to this class. Use _self for that.
-        $(input).on('change', function (evt) {
+        jQuery(input).on('change', function (evt) {
           _self.toggleType(_self, category, evt.target.checked)
         });
         // create the icon of the type (issue #22)
         let iconTitle = `Icoon voor ${labelTxt}`;
-        let iconImg = $(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
-        let labelElem = $(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
+        let iconImg = jQuery(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
+        let labelElem = jQuery(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
 
         // now glue it together for the list
-        let li = $(`<li>`).append(input).append(iconImg).append(labelElem);
+        let li = jQuery(`<li>`).append(input).append(iconImg).append(labelElem);
         filterContentList.append(li);
       }
       // filterContent.append(filterContentList);
-      $("#" + this.typeFilterControlTxtId).html(filterContent).append(filterContentList);
+      jQuery("#" + this.typeFilterControlTxtId).html(filterContent).append(filterContentList);
       return filterContent;
     }
 
@@ -413,32 +413,32 @@ Authors:
 
     fixAccessibilityIssues() {
       // tabindex, labels, roles for elements where this apparerently can;t be done at initialization
-      $(".leaflet-marker-icon:not('.clusterIcon')").attr("role", "button").attr("aria-label", "Knop om een initiatief te tonen op deze locatie").attr("tabindex", "0");
+      jQuery(".leaflet-marker-icon:not('.clusterIcon')").attr("role", "button").attr("aria-label", "Knop om een initiatief te tonen op deze locatie").attr("tabindex", "0");
       // clustericon: multiple
-      $(".clusterIcon").attr("role", "button").attr("aria-label", "Knop om meerdere initiatieven te tonen op deze locatie").attr("tabindex", "0");
+      jQuery(".clusterIcon").attr("role", "button").attr("aria-label", "Knop om meerdere initiatieven te tonen op deze locatie").attr("tabindex", "0");
       // custom controls:
-      $(".leaflet-control-zoomall").attr("role", "button").attr("aria-label", "Toon alles").attr("tabindex", "0");
+      jQuery(".leaflet-control-zoomall").attr("role", "button").attr("aria-label", "Toon alles").attr("tabindex", "0");
 
       // shadows: explicit hide these
-      $(".leaflet-marker-shadow").attr("aria-hidden", "true");
+      jQuery(".leaflet-marker-shadow").attr("aria-hidden", "true");
 
-      $(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
+      jQuery(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
 
       // no tabindex: the links inside should be accessible only
-      $(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
+      jQuery(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
     }
 
     toggleListMap() {
-      if ($("#" + this.mapElementId).is(":visible")) {
+      if (jQuery("#" + this.mapElementId).is(":visible")) {
         // hide the map, show the list
-        $("#" + this.mapElementId).hide();
-        $("#" + this.mapItemsContainerId).show();
-        $("#toggleListMapButton").html("Toon de kaart");
+        jQuery("#" + this.mapElementId).hide();
+        jQuery("#" + this.mapItemsContainerId).show();
+        jQuery("#toggleListMapButton").html("Toon de kaart");
       } else {
         // the other way around
-        $("#" + this.mapElementId).show();
-        $("#" + this.mapItemsContainerId).hide();
-        $("#toggleListMapButton").html("Toon de lijst");
+        jQuery("#" + this.mapElementId).show();
+        jQuery("#" + this.mapItemsContainerId).hide();
+        jQuery("#toggleListMapButton").html("Toon de lijst");
       }
       this.getLMap().invalidateSize();
       return true;
@@ -556,9 +556,9 @@ Authors:
       let eventedIcons = 0;
       // create a list of icons in the map view that should only be accessible by TAB?
 
-      $(".clusterIcon").each(function (elem) {
+      jQuery(".clusterIcon").each(function (elem) {
         eventedIcons++;
-        $(this).keypress(function (event) {
+        jQuery(this).keypress(function (event) {
           var keycode = (event.keyCode ? event.keyCode : event.which);
           // on enter or spacebar:
           // TODO: spacebar is nasty, interferes with default browser behaviour
@@ -568,7 +568,7 @@ Authors:
           if (keycode == '13') {
             // zoom to clustericon
             // trigger a click on enter ...
-            $(this).click();
+            jQuery(this).click();
             event.preventDefault();
             return false;
           }
@@ -582,7 +582,7 @@ Authors:
   /* -----------------------------------
   Configure and init the map after the page is ready
   ----------------------------------- */
-  $(function () {
+  jQuery(function () {
 
     const fullConfig = {
       // mandatory: the id of the HTML list that contains the map items
@@ -627,3 +627,4 @@ Authors:
   });
 
 })(jQuery);
+
