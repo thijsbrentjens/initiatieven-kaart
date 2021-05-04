@@ -70,6 +70,14 @@
       "oAP" : "\/admin\/partials\/initiatieven-kaart-admin-display.php",
       "oF" : 0
     },
+    "\/ictuwp-plugin-initiatievenkaart.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/ictuwp-plugin-initiatievenkaart.php",
+      "oF" : 0
+    },
     "\/includes\/acf-definitions.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -124,14 +132,6 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/index.php",
-      "oF" : 0
-    },
-    "\/initiatieven-kaart.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/initiatieven-kaart.php",
       "oF" : 0
     },
     "\/languages\/initiatieven-kaart-nl_NL.mo" : {

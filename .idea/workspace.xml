@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/.config.codekit3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/initiatieven-kaart-public.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/initiatieven-kaart-public.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/leaflet-gesture-handling.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/leaflet-gesture-handling.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/leaflet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/leaflet.markercluster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/leaflet.markercluster.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +41,8 @@
       <option name="presentableId" value="Default" />
       <updated>1619085751665</updated>
       <workItem from="1619085753035" duration="1403000" />
+      <workItem from="1619450719760" duration="2487000" />
+      <workItem from="1620157001106" duration="2507000" />
     </task>
     <servers />
   </component>
@@ -44,9 +50,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2419" y="187" width="950" height="490" key="find.popup" timestamp="1619087943464">
+    <state x="2419" y="187" width="950" height="490" key="find.popup" timestamp="1620157720124">
       <screen x="1440" y="-275" width="2560" height="1415" />
     </state>
-    <state x="2419" y="187" width="950" height="490" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1619087943464" />
+    <state x="551" y="311" width="567" height="490" key="find.popup/0.25.1440.875/1440.-275.2560.1415@0.25.1440.875" timestamp="1620157017296" />
+    <state x="2419" y="187" width="950" height="490" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1620157720124" />
   </component>
 </project>
