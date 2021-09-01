@@ -317,6 +317,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 	if ( $locationField != false ) {
 		// er zijn locatie-gegevens voor dit initiatief
 
+		$plaatsnaam     = get_field( 'locatie_plaatsnaam', $postobject->ID );
 		$initiatieftype = '';
 
 		if ( $initatieftypes && ! is_wp_error( $initatieftypes ) ) :
@@ -357,13 +358,13 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 			$bestLongitude = $locationField["lng"];
 		endif;
 
-		$return .= sprintf( '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s">', $bestLatitude, $bestLongitude, join( " ", $classes ) );
-		$return .= sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
-		$return .= sprintf( '%s', $initiatieftype );
+		$return .= sprintf( "\n\n" . '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s" data-map-item-plaats="%s" data-map-item-naam="%s">', $bestLatitude, $bestLongitude, join( " ", $classes ), $plaatsnaam, $title );
+		$return .= sprintf( "\n" . '<h2><a href="%s">%s</a></h2>', $permalink, $title );
+		$return .= sprintf( "\n" .  '%s', $initiatieftype );
 
 		// iets van een samenvatting, beschrijving tonen hier
 		$return .= sprintf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
-		$return .= '</li>';
+		$return .= "\n</li>";
 	} else {
 		// geen locationField , wel een list item toevoegen, maar zonder de data attributen voor locatie?
 		// nog bepalen wat te doen, obv daravan evt refactoren met code hierboven
