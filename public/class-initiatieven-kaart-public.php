@@ -109,7 +109,8 @@ class Initiatieven_Kaart_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		$version = '1.7.1.a';
+		$version = $this->version; // dit is NIET de versie van leaflet.js, maar ons eigen versienummer
+
 		if ( WP_DEBUG ) {
 			$file = plugin_dir_path( __FILE__ ) . 'js/leaflet.js';
 			$version = filemtime($file);
