@@ -113,21 +113,37 @@ Authors:
           jQuery("#" + this.mapItemsContainerId).hide();
         }
 
-        // initial zoom will be overwritten by the bounds of the data layer
+        // NOTE: initial zoom will be overwritten by the bounds of the data layer
         const mapObject = L.map(this.mapElementId, {
           'maxZoom': 18,
           // scrollWheelZoom: true,
           // enable the plugin for touch controls and to avoid accidental zooming when scrolling over the map
           gestureHandling: true
-        }).setView([52.1, 5.2], 7); // zoomlevel 7 works out nicely with a map of 500px high
+        }).setView([52.2, 5.2], 7); // zoomlevel 7 works out nicely with a map of 500px high
         this.setLMap(mapObject);
 
+        // basemap: OpenStreetMap
         const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
         const osm = new L.TileLayer(osmUrl, {
           attribution: osmAttrib
         });
+        // add the layer to the map
+        // comment this line if only BRT is needed:
         this.getLMap().addLayer(osm);
+                
+        // basemap: BRT Achtergrondkaart: basisregistratie topografie, via PDOK/Kadaster
+        const brtUrl = 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png';
+        const brtAttrib = 'Kaartgegevens: © <a href="http://www.cbs.nl">CBS</a>, <a href="http://www.kadaster.nl">Kadaster</a>, <a href="http://openstreetmap.org">OpenStreetMap</a><span class="printhide">-auteurs (<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>).</span>';
+        const brt = new L.TileLayer(brtUrl, {
+          WMTS: false,
+          attribution: brtAttrib,
+          crossOrigin: true
+        });
+        // add the layer to the map
+        this.getLMap().addLayer(brt);
+
+
         const features = this.parseLocationData();
 
         // after parsing the location data, create a custom control to filter on these items given theur type
@@ -642,4 +658,3 @@ Authors:
   });
 
 })(jQuery);
-
