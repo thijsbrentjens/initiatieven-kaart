@@ -16,7 +16,7 @@ Een paar basiskleuren
 De kaartgrootte.
  */
 .archives-map {
-    height: 500px;
+    height: 880px;
     width: 100%;
 }
 
@@ -158,5 +158,3 @@ beter is, dus eigenlijk hoort alles in dit bestand...
 .leaflet-top .leaflet-control-zoomall:before {
   content: '↔'
 }
-
-
