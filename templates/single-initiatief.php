@@ -61,11 +61,7 @@ function led_initiatief_single_info( $doreturn = false ) {
 	$locationField         = get_field( 'openstreet_map' );
 	$straatnaam_huisnummer = get_field( 'locatie_straatnaam_huisnummer' );
 	$locatie_postcode      = get_field( 'locatie_postcode' );
-	$website               = get_field( 'locatie_website' );
-	$contactpersoon        = get_field( 'locatie_contactpersoon' );
-	$contactgegevens       = get_field( 'locatie_contactgegevens' );
 	$plaatsnaam            = get_field( 'locatie_plaatsnaam' );
-
 
 	// bepalen aan welke provincie(s) dit initiatief hangt
 	$terms = get_the_terms( get_the_id(), CT_INITIATIEF_PROVINCIE );
@@ -134,26 +130,6 @@ function led_initiatief_single_info( $doreturn = false ) {
 			$adres .= ( ( $adres ) ? join( ", ", $provincie ) . '<br>' : join( ", ", $provincie ) );
 		}
 		$return .= '<p>' . $adres . '</p>';
-	}
-
-	// Contactgegevens
-	if ( $website || $contactpersoon || $contactgegevens ) {
-		// TODO: schema markup voor contactinformatie
-		$return .= '<h2>' . _x( 'Contact', 'Single initiatief', 'initiatieven-kaart' ) . '</h2>';
-		if ( $website ) {
-			$linktext = $website;
-			$linktext = preg_replace( '|https://|i', '', $linktext );
-			$linktext = preg_replace( '|http://|i', '', $linktext );
-			$linktext = rtrim( $linktext, '/' );;
-
-			$return .= '<p><a href="' . esc_url( $website ) . '">' . $linktext . '</a></p>';
-		}
-		if ( $contactpersoon ) {
-			$return .= '<p>' . wp_strip_all_tags( $contactpersoon ) . '</p>';
-		}
-		if ( $contactgegevens ) {
-			$return .= '<p>' . wp_strip_all_tags( $contactgegevens ) . '</p>';
-		}
 	}
 
 	if ( $doreturn ) {

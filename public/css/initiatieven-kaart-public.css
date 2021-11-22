@@ -24,15 +24,21 @@ De kaartgrootte.
 
 .leaflet-marker-icon {
     text-align: center;
-    font-size: 1.1em;
 }
 
 /* Thijs: het kan voor andere styling van de cluster iconen nodig zijn deze styles aan te passen. Let dan op dat de grootte van de iconen in de javascript code wordt bepaald. Dus check ook js/initiatieven-kaart-public.js
  */
 .clusterIcon {
-    background-color: var(--rijksoverheid-blue);
-    color: #fff;
-    border-radius: 25%;
+  background-color: var(--rijksoverheid-blue);
+  color: #fff;
+  border-radius: 25%;
+}
+.clusterIcon span {
+  background-color: var(--rijksoverheid-blue);
+  color: #fff;
+  display: inline-block;
+  padding-left: .1rem;
+  padding-right: .1rem;
 }
 
 .clusterIcon-md {
@@ -126,3 +132,31 @@ beter is, dus eigenlijk hoort alles in dit bestand...
   background-color: #ffffff;
   line-height: initial;
 }
+
+
+.leaflet-top .leaflet-control-zoom-in,
+.leaflet-top .leaflet-control-zoom-out,
+.leaflet-top .leaflet-control-zoomall {
+  text-indent: -999rem;
+}
+.leaflet-top .leaflet-control-zoom-in:before,
+.leaflet-top .leaflet-control-zoom-out:before,
+.leaflet-top .leaflet-control-zoomall:before {
+  content: '-';
+  display: block;
+  width: 100%;
+  font-size: 1rem;
+  float: left;
+  text-indent: 0;
+}
+.leaflet-top .leaflet-control-zoom-in:before {
+  content: '+'
+}
+.leaflet-top .leaflet-control-zoom-out:before {
+  content: '-'
+}
+.leaflet-top .leaflet-control-zoomall:before {
+  content: '↔'
+}
+
+
