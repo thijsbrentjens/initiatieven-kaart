@@ -64,7 +64,7 @@ function led_initiatief_single_info( $doreturn = false ) {
 	$plaatsnaam            = get_field( 'locatie_plaatsnaam' );
 
 	// bepalen aan welke provincie(s) dit initiatief hangt
-	$terms = get_the_terms( get_the_id(), CT_INITIATIEF_PROVINCIE );
+	$terms = get_the_terms( get_the_id(), CT_PROVINCIE );
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 		foreach ( $terms as $term ) {
 			$provincie[] = $term->name;

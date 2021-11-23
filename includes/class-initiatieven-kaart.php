@@ -92,14 +92,18 @@ class Initiatieven_Kaart {
 			define( 'CPT_INITIATIEF', 'initiatief' );
 		}
 
+		if ( ! defined( 'CPT_PROJECT' ) ) {
+			define( 'CPT_PROJECT', 'innovatieproject' );
+		}
+
 		// taxonomie voor initiatief-type
 		if ( ! defined( 'CT_INITIATIEFTYPE' ) ) {
 			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
 		}
 
 		// taxonomie voor gemeente voor een initiatief
-		if ( ! defined( 'CT_INITIATIEF_PROVINCIE' ) ) {
-			define( 'CT_INITIATIEF_PROVINCIE', 'provincie' );
+		if ( ! defined( 'CT_PROVINCIE' ) ) {
+			define( 'CT_PROVINCIE', 'provincie' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
@@ -278,7 +282,7 @@ class Initiatieven_Kaart {
 
 		if ( ! is_admin() && $query->is_main_query() ) {
 
-			if ( is_post_type_archive( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_INITIATIEF_PROVINCIE ) ) ) {
+			if ( is_post_type_archive( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_PROVINCIE ) ) ) {
 				// geen pagination voor overzichten van:
 				// - initiatieven
 				// - initiatieven per initiatieftype

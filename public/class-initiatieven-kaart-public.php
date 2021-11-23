@@ -194,7 +194,7 @@ class Initiatieven_Kaart_Public {
 		     is_singular( CPT_INITIATIEF ) ||
 		     is_post_type_archive( CPT_INITIATIEF ) ||
 		     is_tax( CT_INITIATIEFTYPE ) ||
-		     is_tax( CT_INITIATIEF_PROVINCIE )
+		     is_tax( CT_PROVINCIE )
 		) {
 			return true;
 		} else {
