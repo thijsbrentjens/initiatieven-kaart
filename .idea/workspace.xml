@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/single-initiatief.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/single-initiatief.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/languages/initiatieven-kaart-nl_NL.mo" beforeDir="false" afterPath="$PROJECT_DIR$/languages/initiatieven-kaart-nl_NL.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/languages/initiatieven-kaart-nl_NL.po" beforeDir="false" afterPath="$PROJECT_DIR$/languages/initiatieven-kaart-nl_NL.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/languages/initiatieven-kaart.pot" beforeDir="false" afterPath="$PROJECT_DIR$/languages/initiatieven-kaart.pot" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +46,7 @@
       <workItem from="1634290472941" duration="317000" />
       <workItem from="1634631194050" duration="127000" />
       <workItem from="1635860537390" duration="2347000" />
-      <workItem from="1637708670180" duration="1719000" />
+      <workItem from="1637708670180" duration="2537000" />
     </task>
     <servers />
   </component>
@@ -55,10 +54,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="218" y="352" width="1035" height="548" key="find.popup" timestamp="1637710618338">
+    <state x="218" y="352" width="1035" height="548" key="find.popup" timestamp="1637710701829">
       <screen x="0" y="25" width="1440" height="875" />
     </state>
     <state x="2211" y="485" width="1006" height="518" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1635862655799" />
-    <state x="218" y="352" width="1035" height="548" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1637710618338" />
+    <state x="218" y="352" width="1035" height="548" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1637710701829" />
   </component>
 </project>
