@@ -131,7 +131,7 @@ Authors:
         // add the layer to the map
         // comment this line if only BRT is needed:
         this.getLMap().addLayer(osm);
-                
+
         // basemap: BRT Achtergrondkaart: basisregistratie topografie, via PDOK/Kadaster
         const brtUrl = 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png';
         const brtAttrib = 'Kaartgegevens: © <a href="http://www.cbs.nl">CBS</a>, <a href="http://www.kadaster.nl">Kadaster</a>, <a href="http://openstreetmap.org">OpenStreetMap</a><span class="printhide">-auteurs (<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>).</span>';
@@ -378,7 +378,7 @@ Authors:
       // sort by keys, could be labels later
       const typeKeys = Object.keys(this.types);
       typeKeys.sort();
-
+// TODO: label vertaalbaar maken
       let filterContent = jQuery(`<h3>`).html(`Toon initiatieven van:`);
       let filterContentList = jQuery(`<ul>`);
       for (var k in typeKeys) {
