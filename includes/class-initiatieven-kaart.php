@@ -101,9 +101,19 @@ class Initiatieven_Kaart {
 			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
 		}
 
-		// taxonomie voor gemeente voor een initiatief
+		// taxonomie voor provincie voor een initiatief
 		if ( ! defined( 'CT_PROVINCIE' ) ) {
 			define( 'CT_PROVINCIE', 'provincie' );
+		}
+
+		// taxonomie voor type organisatie voor een innovatieproject
+		if ( ! defined( 'CT_PROJECTORGANISATIE' ) ) {
+			define( 'CT_PROJECTORGANISATIE', 'organisatie' );
+		}
+
+		// taxonomie voor jaar voor een innovatieproject
+		if ( ! defined( 'CT_PROJECTJAAR' ) ) {
+			define( 'CT_PROJECTJAAR', 'jaar-toekenning' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
