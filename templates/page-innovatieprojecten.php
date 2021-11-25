@@ -14,16 +14,16 @@ if ( function_exists( 'genesis' ) ) {
 	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 8 );
 
 	/** standard loop vervangen door custom loop */
-	if ( is_post_type_archive( CPT_INITIATIEF ) || is_post_type_archive( CPT_PROJECT ) || is_page() ) {
+	if ( is_post_type_archive( CPT_PROJECT ) || is_page() ) {
 		// check is nodig om te voorkomen dat in zoekresultaten rare dingen gebeuren
 
 		remove_action( 'genesis_loop', 'genesis_do_loop' );
 
 		// lijstje met initiatieven toevoegen
-		add_action( 'genesis_loop', 'led_initiatieven_page_list', 8 );
+		add_action( 'genesis_loop', 'led_innovatieprojecten_page_list', 8 );
 		// lijstjes toevoegen met de diverse custom taxonomieen
 		add_action( 'genesis_loop', 'led_initiatieven_taxonomy_list' );
-    }
+	}
 
 
 	// make it so
@@ -36,15 +36,15 @@ if ( function_exists( 'genesis' ) ) {
 
 	get_header(); ?>
 
-    <div id="primary" class="content-area">
-        <div id="content" class="clearfix">
+	<div id="primary" class="content-area">
+		<div id="content" class="clearfix">
 
 			<?php echo led_initiatieven_archive_title() ?>
-			<?php echo led_initiatieven_page_list() ?>
+			<?php echo led_innovatieprojecten_page_list() ?>
 			<?php echo led_initiatieven_taxonomy_list() ?>
 
-        </div><!-- #content -->
-    </div><!-- #primary -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
 
 	<?php
 
@@ -57,12 +57,12 @@ if ( function_exists( 'genesis' ) ) {
 
 //========================================================================================================
 
-function led_initiatieven_page_list( $doreturn = false ) {
+function led_innovatieprojecten_page_list( $doreturn = false ) {
 
 	global $post;
 
 	$argscount = array(
-		'post_type'      => CPT_INITIATIEF,
+		'post_type'      => CPT_PROJECT,
 		'post_status'    => 'publish',
 		'orderby'        => 'title',
 		'order'          => 'ASC',
@@ -78,11 +78,9 @@ function led_initiatieven_page_list( $doreturn = false ) {
 	if ( $contentblockpostscount->have_posts() ) {
 
 		$initiatieficons = led_get_initiatieficons();
-		if ( is_post_type_archive( CPT_INITIATIEF ) ) {
-			$return .= led_initiatieven_list_before( true );
-		}
+		$return .= led_initiatieven_list_before( true );
 
-		$return          .= '<ul id="map-items">';
+		$return .= '<ul id="map-items">';
 
 		while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
 
