@@ -29,6 +29,9 @@ Authors:
         "portaal": "Portaal",
         "strategie": "Strategie",
         "visualisatie": "Visualisatie",
+        "gemeente": "Gemeente",
+        "visualisatie": "Visualisatie",
+        "visualisatie": "Visualisatie",
       }
       // icon (wxh): 30 x 40
       // best is to make nice numbers for ratio 3:4

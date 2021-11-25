@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        https://digitaleoverheid.nl/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.4
+ * Version:           1.0.9
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.8' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.9' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -419,7 +419,7 @@ function led_get_initiatieficons() {
 /*
  * deze functie haalt formatteert een list-item voor de lijst met initiatieven
  */
-function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
+function led_get_list_item_archive( $postobject, $initiatieficons = array(), $categorytype = CT_INITIATIEFTYPE ) {
 
 	$return  = '';
 
@@ -428,6 +428,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 	$locationField = get_field( 'openstreet_map', $postobject->ID );
 	$title         = get_the_title( $postobject->ID );
 	$permalink     = led_get_initiatief_permalink( $postobject->ID );
+	$initatieftypes = array();
 
 	/*
 	 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
@@ -435,7 +436,9 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 	 * aan elke waarde hiervan zou een icoontje moeten hangen
 	 * dus bijv. type 'Community' krijgt een icoontje 'community'
 	 */
-	$initatieftypes = get_the_terms( $postobject->ID, CT_INITIATIEFTYPE );
+	if ( $categorytype ) {
+		$initatieftypes = get_the_terms( $postobject->ID, $categorytype );
+	}
 	$classes        = array();
 
 	if ( $locationField != false ) {
@@ -454,7 +457,9 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 
 			foreach ( $initatieftypes as $term ) {
 				// het icoontje dat bij dit initatieftype hoort, staat in de array $initiatieficons
-				array_push( $classes, $initiatieficons[ $term->slug ] );
+				if ( isset( $initiatieficons[ $term->slug ])) {
+					array_push( $classes, $initiatieficons[ $term->slug ] );
+				}
 				$labels .= '<dd class="' . $term->slug . '">' . $term->name . '</dd>';
 			}
 
@@ -491,7 +496,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array() ) {
 		$return .= "\n</li>";
 	} else {
 		// geen locationField , wel een list item toevoegen, maar zonder de data attributen voor locatie?
-		// nog bepalen wat te doen, obv daravan evt refactoren met code hierboven
+		// nog bepalen wat te doen, obv daarvan evt refactoren met code hierboven
 		$return .= $locationField;
 		$return .= sprintf( '<li class="map-item no-location" data-map-item-type="%s">', join( " ", $classes ) );
 		$return .= sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );

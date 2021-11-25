@@ -84,7 +84,7 @@ function led_innovatieprojecten_page_list( $doreturn = false ) {
 
 		while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
 
-			$return .= led_get_list_item_archive( $post, $initiatieficons );
+			$return .= led_get_list_item_archive( $post, $initiatieficons, CT_PROJECTORGANISATIE );
 
 		endwhile;
 
