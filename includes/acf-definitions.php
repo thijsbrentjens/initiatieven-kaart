@@ -347,4 +347,72 @@ if( function_exists('acf_add_local_field_group') ):
 		'description' => '',
 	));
 
+
+		acf_add_local_field_group(array(
+			'key' => 'group_61ae455e70588',
+			'title' => 'kleur marker',
+			'fields' => array(
+				array(
+					'key' => 'field_61ae456e12c28',
+					'label' => 'kleur marker',
+					'name' => 'organisatie_type_icon',
+					'type' => 'radio',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+
+						'rhs-paars' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-paars.svg" alt="" height="20"> paars',
+						'rhs-robijnrood' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-robijnrood.svg" alt="" height="20"> robijnrood',
+						'rhs-rood' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-rood.svg" alt="" height="20"> rood',
+						'rhs-roze' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-roze.svg" alt="" height="20"> roze',
+						'rhs-violet' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-violet.svg" alt="" height="20"> violet',
+						'rhs-oranje' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-oranje.svg" alt="" height="20"> oranje',
+						'rhs-mosgroen' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-mosgroen.svg" alt="" height="20"> mosgroen',
+						'rhs-mintgroen' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-mintgroen.svg" alt="" height="20"> mintgroen',
+						'rhs-donkerblauw' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-donkerblauw.svg" alt="" height="20"> donkerblauw',
+						'rhs-donkerbruin' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-donkerbruin.svg" alt="" height="20"> donkerbruin',
+						'rhs-donkergeel' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-donkergeel.svg" alt="" height="20"> donkergeel',
+						'rhs-donkergroen' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-donkergroen.svg" alt="" height="20"> donkergroen',
+						'rhs-groen' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-groen.svg" alt="" height="20"> groen',
+						'rhs-hemelblauw' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-hemelblauw.svg" alt="" height="20"> hemelblauw',
+						'rhs-lichtblauw' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-lichtblauw.svg" alt="" height="20"> lichtblauw',
+
+					),
+					'allow_null' => 0,
+					'other_choice' => 0,
+					'default_value' => 'rhs-lichtblauw',
+					'layout' => 'vertical',
+					'return_format' => 'value',
+					'save_other_choice' => 0,
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'taxonomy',
+						'operator' => '==',
+						'value' => 'organisatie',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+			'show_in_rest' => 0,
+		));
+
+
+
+
 endif;
