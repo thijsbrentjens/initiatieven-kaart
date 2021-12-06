@@ -80,7 +80,8 @@ class Initiatieven_Kaart {
 	 */
 	public function __construct() {
 
-		$this->template_initiatievenpagina = 'page-initiatieven.php';
+		$this->template_initiatievenpagina     = 'page-initiatieven.php';
+		$this->template_innovatieprojectpagina = 'page-innovatieproject.php';
 
 		if ( defined( 'INITIATIEVEN_KAART_VERSION' ) ) {
 			$this->version = INITIATIEVEN_KAART_VERSION;
@@ -122,7 +123,6 @@ class Initiatieven_Kaart {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 
 
 	}
@@ -273,7 +273,9 @@ class Initiatieven_Kaart {
 	// Pagina-template toevoegen
 	public function add_page_template( $post_templates ) {
 
-		$post_templates[ $this->template_initiatievenpagina ] = _x( 'Initiatieven-pagina', "naam template", 'initiatieven-kaart' );
+		$post_templates[ $this->template_initiatievenpagina ]     = _x( 'Initiatieven-pagina', "naam template", 'initiatieven-kaart' );
+		$post_templates[ $this->template_innovatieprojectpagina ] = _x( 'Innovatiebudget-pagina', "naam template", 'initiatieven-kaart' );
+
 		return $post_templates;
 
 	}
