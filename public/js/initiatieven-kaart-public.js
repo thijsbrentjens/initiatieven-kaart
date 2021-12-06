@@ -360,7 +360,7 @@ Authors:
       const _self = this;
       var TypeFilterControl = L.Control.extend({
         options: {
-          position: 'topright'
+          position: 'bottomright'
         },
         onAdd: function (map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-item-control-types');
