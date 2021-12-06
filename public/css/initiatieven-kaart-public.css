@@ -84,27 +84,7 @@ De custom controls beetje opmaken en in lijn brengen met standaard Leaflet contr
   margin: 0 0.3em 0 0.5em;
 }
 
-/* -----------------------------------------------------------
-de lijst met initiatieftypes
- */
-dl.initiatieftype {
-    float: none;
-    clear: both;
-    overflow: hidden;
-}
-dl.initiatieftype dt {
-    max-width: inherit;
-    clear: left;
-    float: left;
-    font-weight: bold;
-}
-dl.initiatieftype dd {
-    float: left;
-    clear: right;
-    margin-left: 1rem;
-    max-width: inherit;
-    width: auto;
-}
+
 
 /* -----------------------------------------------------------
 misschien moet dit naar leaflet.css, maar ik denk dat 1 css-bestand
