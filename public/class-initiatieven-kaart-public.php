@@ -158,7 +158,69 @@ class Initiatieven_Kaart_Public {
 
 			// creates a javascript object Utils: Utils.baseurl = "http://.../../".
 			// Use to create a nice path to SVG icons for example
-			wp_localize_script( $this->initiatieven_kaart, 'Utils', array( 'siteurl' => get_option( 'siteurl' ) ) );
+
+			$utilities = array();
+
+			// alle types langs om voor elk het bijbehorende icoontje op te halen
+			$args  = [
+				'taxonomy'   => CT_INITIATIEFTYPE,
+				'hide_empty' => true,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+			];
+			$terms = get_terms( $args );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+
+				foreach ( $terms as $term ) {
+
+					$initiatief_type_icon = get_field( 'initiatief_type_icon', CT_INITIATIEFTYPE . '_' . $term->term_id );
+					if ( $initiatief_type_icon ) {
+						$utilities[ $term->name ] = $initiatief_type_icon;
+					} else {
+						$utilities[ $term->name ] = 'rhs-donkerblauw';
+					}
+
+				}
+			}
+
+
+			// alle types langs om voor elk het bijbehorende icoontje op te halen
+			$args  = [
+				'taxonomy'   => CT_PROJECTORGANISATIE,
+				'hide_empty' => true,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+			];
+			$terms = get_terms( $args );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$count = count( $terms );
+
+				foreach ( $terms as $term ) {
+
+					$initiatief_type_icon = get_field( 'organisatie_type_icon', CT_INITIATIEFTYPE . '_' . $term->term_id );
+					if ( $initiatief_type_icon ) {
+						$utilities[ $term->name ] = $initiatief_type_icon;
+					} else {
+						$utilities[ $term->name ] = 'rhs-donkerblauw';
+					}
+
+				}
+			}
+
+			$utilities['siteurl']   = get_option( 'siteurl' );
+			$utilities['pluginurl'] = plugin_dir_url( __FILE__ );
+
+			if ( is_post_type_archive( CPT_INITIATIEF ) ) {
+				// voor de inititatievenkaart
+				$utilities['legendatitel'] = esc_html_x( 'Type initatief', 'taxonomy', 'initiatieven-kaart' );
+			} else {
+				// voor de innovatiebudgetkaart
+				$utilities['legendatitel'] = esc_html_x( 'Type organisatie', 'taxonomy', 'initiatieven-kaart' );
+			}
+
+			wp_localize_script( $this->initiatieven_kaart, 'Utils', $utilities );
 
 		}
 
@@ -166,14 +228,14 @@ class Initiatieven_Kaart_Public {
 
 	public function is_page_with_map() {
 
-		$is_page_with_map       = false;
+		$is_page_with_map    = false;
 		$led_pageid_overview = get_theme_mod( 'customizer_led_pageid_overview' );
 		// todo pagina uit settings voor innovatie-kaart
-		$innovatieproject_pageid_overview = get_theme_mod( 'customizer_innovatieproject_overview' );
-		$currentpageid       = false;
-		$page_template       = false;
+		$innovatieproject_pageid_overview = get_theme_mod( 'customizer_innovatieproject_pageid_overview' );
+		$currentpageid                    = false;
+		$page_template                    = false;
 
-		if ( is_admin()) {
+		if ( is_admin() ) {
 			return false;
 		}
 
@@ -182,14 +244,14 @@ class Initiatieven_Kaart_Public {
 			$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
 			$currentpageid = get_queried_object_id();
 
-			if ( 'page-initiatieven.php' == $page_template ) {
+			if ( 'page-initiatieven.php' == $page_template || 'page-innovatieproject.php' == $page_template ) {
 				// deze pagina heeft het pagina template voor de initiatievenkaart
 				$is_page_with_map = true;
 			} else {
 				if ( $led_pageid_overview === $currentpageid ) {
 					// deze pagina is ingesteld als de centrale pagina voor initiatieven
 					$is_page_with_map = true;
-				} elseif ( $innovatieproject_pageid_overview === $currentpageid )  {
+				} elseif ( $innovatieproject_pageid_overview === $currentpageid ) {
 					// deze pagina is ingesteld als de centrale pagina voor innovatieprojecten
 					$is_page_with_map = true;
 				}
