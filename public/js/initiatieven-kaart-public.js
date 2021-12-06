@@ -30,8 +30,6 @@ Authors:
         "strategie": "Strategie",
         "visualisatie": "Visualisatie",
         "gemeente": "Gemeente",
-        "visualisatie": "Visualisatie",
-        "visualisatie": "Visualisatie",
       }
       // icon (wxh): 30 x 40
       // best is to make nice numbers for ratio 3:4
@@ -63,7 +61,7 @@ Authors:
           // PvB: ik heb de iconUrl aangepast en ervoor gezorgd dat der geen 404 meer
           // optreedt.
           // TB: ik heb het nog iets verder aangepast: rekening houden met een langer pad (bij mij draait deze installatie bijvoorbeeld op http://...domein../led/). De siteurl wordt door WP weggeschreven in een javascript object via de public class: public/class-initiatieven-kaart-public.php
-          shadowUrl: `${Utils.siteurl}/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-shadow.svg`,
+          shadowUrl: `${Utils.pluginurl}css/images/marker-shadow.svg`,
           iconSize: [this.iconWidth, this.iconHeight],
           iconAnchor: [this.iconWidth / 2, this.iconHeight],
           // shadow: 40 x 40
@@ -188,7 +186,8 @@ Authors:
         this.getLMap().on("popupclose", function (evt) {
           try {
             _self.previousFocus.focus();
-          } catch (e) {}
+          } catch (e) {
+          }
         })
 
       }
@@ -248,7 +247,7 @@ Authors:
           if (category in _self.typeLegendLabels) title = _self.typeLegendLabels[category];
 
           var label = '';
-          if ( category && plaatsnaam && initiatiefnaam ) {
+          if (category && plaatsnaam && initiatiefnaam) {
 //            label = '[[ ' + initiatiefnaam + ' in ' + plaatsnaam + ']]';
             label = initiatiefnaam;
           }
@@ -351,8 +350,10 @@ Authors:
     }
 
     getIconURL(category) {
-      // Utils.siteurl is set in: public/class-initiatieven-kaart-public.php
-      return `${Utils.siteurl}/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-${category.toLowerCase()}.svg`;
+      // Utils.pluginurl wordt meegegeven via wp_localize_script
+      // net als het icoontje bij de categorie
+      var cat = Utils[category];
+      return `${Utils.pluginurl}css/images/marker-${cat}.svg`;
     }
 
     createTypeFilterControl() {
@@ -381,8 +382,8 @@ Authors:
       // sort by keys, could be labels later
       const typeKeys = Object.keys(this.types);
       typeKeys.sort();
-// TODO: label vertaalbaar maken
-      let filterContent = jQuery(`<h3>`).html(`Toon initiatieven van:`);
+      let filterContent = jQuery(`<h3>`).html(Utils.legendatitel);
+    // TODO: lijstje in een fieldset zetten
       let filterContentList = jQuery(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
@@ -402,7 +403,7 @@ Authors:
         });
         // create the icon of the type (issue #22)
         let iconTitle = `Icoon voor ${labelTxt}`;
-        let iconImg = jQuery(`<img>`).attr('src', this.getIconURL(category)).attr('title', iconTitle).attr('alt', iconTitle).attr('aria-hidden', 'true');
+        let iconImg = jQuery(`<img>`).attr('src', this.getIconURL(category)).attr('alt', iconTitle).attr('aria-hidden', 'true');
         let labelElem = jQuery(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
 
         // now glue it together for the list
@@ -457,7 +458,6 @@ Authors:
       jQuery(".leaflet-control-zoom-out").removeAttr("title").removeAttr("aria-label").text('Zoom uit');
       // custom controls:
       jQuery(".leaflet-control-zoomall").attr("role", "button").attr("tabindex", "0");
-
 
 
     }
