@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/.config.codekit3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf-definitions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf-definitions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/class-initiatieven-kaart-public.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/initiatieven-kaart-public.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/initiatieven-kaart-public.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/page-innovatieprojecten.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page-innovatieprojecten.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/archive-innovatieprojecten.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/archive-innovatieprojecten.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +62,11 @@
       <workItem from="1634290472941" duration="317000" />
       <workItem from="1634631194050" duration="127000" />
       <workItem from="1635860537390" duration="2347000" />
-      <workItem from="1637708670180" duration="21877000" />
+      <workItem from="1637708670180" duration="24423000" />
+      <workItem from="1638203152134" duration="594000" />
+      <workItem from="1638432423393" duration="597000" />
+      <workItem from="1638539102079" duration="212000" />
+      <workItem from="1638542838258" duration="17252000" />
     </task>
     <servers />
   </component>
@@ -66,11 +74,11 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2211" y="485" width="1006" height="548" key="find.popup" timestamp="1637839976972">
-      <screen x="1440" y="-275" width="2560" height="1415" />
+    <state x="298" y="97" width="1035" height="554" key="find.popup" timestamp="1638831268512">
+      <screen x="0" y="25" width="1440" height="875" />
     </state>
-    <state x="2211" y="485" width="1006" height="548" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1637839976972" />
-    <state x="218" y="352" width="1035" height="548" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1637741307893" />
+    <state x="2211" y="485" width="1006" height="548" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1637840346346" />
+    <state x="298" y="97" width="1035" height="554" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1638831268512" />
     <state x="2385" y="49" width="670" height="676" key="search.everywhere.popup" timestamp="1637835899181">
       <screen x="1440" y="-275" width="2560" height="1415" />
     </state>

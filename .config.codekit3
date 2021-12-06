@@ -7,7 +7,7 @@
       "uuidString" : "6252E4C3-2165-4D62-9D3E-95B03373A3A3"
     }
   ],
-  "creatorBuild" : "34214",
+  "creatorBuild" : "34264",
   "files" : {
     "\/.gitignore" : {
       "cB" : 0,
@@ -85,6 +85,22 @@
       "oA" : 0,
       "oAP" : "\/includes\/acf-definitions.php",
       "oF" : 0
+    },
+    "\/includes\/acf-export-2021-11-24.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/includes\/acf-export-2021-11-24-min.json",
+      "oF" : 0,
+      "oO" : 0,
+      "oS" : 1
+    },
+    "\/includes\/acf-export-2021-11-25.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/includes\/acf-export-2021-11-25-min.json",
+      "oF" : 0,
+      "oO" : 0,
+      "oS" : 1
     },
     "\/includes\/class-initiatieven-kaart-i18n.php" : {
       "cB" : 0,
@@ -308,6 +324,14 @@
       "oAP" : "\/LICENSE.txt",
       "oF" : 0
     },
+    "\/OUD_initiatieven-kaart-nl_NL.po" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/OUD_initiatieven-kaart-nl_NL.po",
+      "oF" : 0
+    },
     "\/public\/class-initiatieven-kaart-public.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -439,12 +463,12 @@
     },
     "\/public\/css\/images\/marker-onbekend.png" : {
       "ft" : 32768,
-      "iS" : 14809,
+      "iS" : 5907,
       "oA" : 0,
       "oAP" : "\/public\/css\/images\/marker-onbekend.png",
       "oF" : 0,
-      "oIPL" : 1,
-      "opt" : 1,
+      "oIPL" : 0,
+      "opt" : 0,
       "oT" : 1,
       "ou" : "lpckwebp-none",
       "q" : 100,
@@ -478,6 +502,374 @@
       "miP" : 0,
       "oA" : 2,
       "oAP" : "\/public\/css\/images\/marker-portaal.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-bruin.png" : {
+      "ft" : 32768,
+      "iS" : 14777,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-bruin.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-bruin.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-bruin.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-donkerblauw.png" : {
+      "ft" : 32768,
+      "iS" : 14753,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkerblauw.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-donkerblauw.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkerblauw.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-donkerbruin.png" : {
+      "ft" : 32768,
+      "iS" : 14806,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkerbruin.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-donkerbruin.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkerbruin.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-donkergeel.png" : {
+      "ft" : 32768,
+      "iS" : 13882,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkergeel.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-donkergeel.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkergeel.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-donkergroen.png" : {
+      "ft" : 32768,
+      "iS" : 14809,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkergroen.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-donkergroen.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-donkergroen.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-groen.png" : {
+      "ft" : 32768,
+      "iS" : 14788,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-groen.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-groen.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-groen.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-hemelblauw.png" : {
+      "ft" : 32768,
+      "iS" : 14664,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-hemelblauw.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-hemelblauw.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-hemelblauw.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-lichtblauw.png" : {
+      "ft" : 32768,
+      "iS" : 14326,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-lichtblauw.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-lichtblauw.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-lichtblauw.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-mintgroen.png" : {
+      "ft" : 32768,
+      "iS" : 14501,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-mintgroen.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-mintgroen.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-mintgroen.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-mosgroen.png" : {
+      "ft" : 32768,
+      "iS" : 14858,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-mosgroen.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-mosgroen.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-mosgroen.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-oranje.png" : {
+      "ft" : 32768,
+      "iS" : 14741,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-oranje.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-oranje.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-oranje.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-paars.png" : {
+      "ft" : 32768,
+      "iS" : 14807,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-paars.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-paars.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-paars.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-robijnrood.png" : {
+      "ft" : 32768,
+      "iS" : 14750,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-robijnrood.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-robijnrood.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-robijnrood.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-rood.png" : {
+      "ft" : 32768,
+      "iS" : 14865,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-rood.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-rood.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-rood.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-roze.png" : {
+      "ft" : 32768,
+      "iS" : 14446,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-roze.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-roze.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-roze.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-rhs-violet.png" : {
+      "ft" : 32768,
+      "iS" : 14670,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-rhs-violet.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-rhs-violet.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-rhs-violet.svg",
       "oF" : 0,
       "opt" : 0,
       "plM" : 52780316221407,
@@ -768,6 +1160,17 @@
       "oAP" : "\/public\/index.php",
       "oF" : 0
     },
+    "\/public\/js\/initiatieven-kaart-public-min.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 0,
+      "oAP" : "\/public\/js\/initiatieven-kaart-public-min-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
     "\/public\/js\/initiatieven-kaart-public.js" : {
       "bF" : 0,
       "ft" : 64,
@@ -855,6 +1258,14 @@
       "oAP" : "\/templates\/archive-initiatieven.php",
       "oF" : 0
     },
+    "\/templates\/archive-innovatieprojecten.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/templates\/archive-innovatieprojecten.php",
+      "oF" : 0
+    },
     "\/templates\/page-initiatieven.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -863,12 +1274,28 @@
       "oAP" : "\/templates\/page-initiatieven.php",
       "oF" : 0
     },
+    "\/templates\/page-innovatieprojecten.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/templates\/page-innovatieprojecten.php",
+      "oF" : 0
+    },
     "\/templates\/single-initiatief.php" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/templates\/single-initiatief.php",
+      "oF" : 0
+    },
+    "\/templates\/single-innovatieproject.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/templates\/single-innovatieproject.php",
       "oF" : 0
     },
     "\/uninstall.php" : {
@@ -2038,6 +2465,9 @@
       },
       "no-unused-labels" : {
         "active" : 1
+      },
+      "no-unused-private-class-members" : {
+        "active" : 0
       },
       "no-unused-vars" : {
         "active" : 1,
