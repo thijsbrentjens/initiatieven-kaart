@@ -382,12 +382,21 @@ Authors:
       // sort by keys, could be labels later
       const typeKeys = Object.keys(this.types);
       typeKeys.sort();
-      let filterContent = jQuery(`<h3>`).html(Utils.legendatitel);
-    // TODO: lijstje in een fieldset zetten
-      let filterContentList = jQuery(`<ul>`);
+      var addCheckboxes = false;
+      var legendatitel = Utils.legendatitel;
+      if (Object.keys(this.types).length > 1) {
+        addCheckboxes = true;
+      }
+      let filter_fieldset = jQuery(`<fieldset>`);
+      let filter_legend = jQuery(`<legend class="legendatitel">`).html(legendatitel);
+      filter_fieldset.append(filter_legend);
+
+      // TODO: lijstje in een fieldset zetten
+      let filter_filteritems = jQuery(`<ul>`);
       for (var k in typeKeys) {
         const category = typeKeys[k];
         let labelTxt = category;
+        var filter_checkbox = '(' + addCheckboxes + ')';
         if (category in this.typeLegendLabels) {
           labelTxt = this.typeLegendLabels[category];
         }
@@ -395,24 +404,31 @@ Authors:
         const inputId = `post-${category}`;
         const checkedTxt = (this.types[category].visible == false) ? "" : "checked";
 
-        // create the checkbox for type selection
-        let input = jQuery(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
-        // note the scope _self: this function is only called from the GUI, so 'this' does not refer to this class. Use _self for that.
-        jQuery(input).on('change', function (evt) {
-          _self.toggleType(_self, category, evt.target.checked)
-        });
+        if (addCheckboxes == true) {
+          // create the checkbox for type selection
+          filter_checkbox = jQuery(`<input type="checkbox" id="${inputId}" ${checkedTxt}/>`);
+          // note the scope _self: this function is only called from the GUI, so 'this' does not refer to this class. Use _self for that.
+          jQuery(filter_checkbox).on('change', function (evt) {
+            _self.toggleType(_self, category, evt.target.checked)
+          });
+
+        }
+
         // create the icon of the type (issue #22)
         let iconTitle = `Icoon voor ${labelTxt}`;
         let iconImg = jQuery(`<img>`).attr('src', this.getIconURL(category)).attr('alt', iconTitle).attr('aria-hidden', 'true');
         let labelElem = jQuery(`<label for="${inputId}">${labelTxt} (${nrPosts})</label>`);
 
         // now glue it together for the list
-        let li = jQuery(`<li>`).append(input).append(iconImg).append(labelElem);
-        filterContentList.append(li);
+        let li = jQuery(`<li>`).append(filter_checkbox).append(iconImg).append(labelElem);
+        filter_filteritems.append(li);
       }
-      // filterContent.append(filterContentList);
-      jQuery("#" + this.typeFilterControlTxtId).html(filterContent).append(filterContentList);
-      return filterContent;
+
+      filter_fieldset.append(filter_filteritems);
+
+      // filter_fieldset.append(filter_filteritems);
+      jQuery("#" + this.typeFilterControlTxtId).html(filter_fieldset);
+      return filter_fieldset;
     }
 
     toggleType(_self, category, show) {
