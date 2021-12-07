@@ -288,13 +288,18 @@ class Initiatieven_Kaart {
 	 * initiatieftype / provincie, in plaats van maximaal posts_per_page (meestal 10) en de initiatieven
 	 * worden alfabetisch gesorteerd
 	 */
-	public function load_all_initiatieven( $query ) {
+	public function load_all_initiatieven_innovatieprojecten( $query ) {
 
 		global $query_vars;
 
 		if ( ! is_admin() && $query->is_main_query() ) {
 
-			if ( is_post_type_archive( CPT_INITIATIEF ) || ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_PROVINCIE ) ) ) {
+			if ( is_post_type_archive( CPT_INITIATIEF ) ||
+			     is_post_type_archive( CPT_PROJECT ) ||
+			     ( is_tax( CT_INITIATIEFTYPE ) ) ||
+			     ( is_tax( CT_PROVINCIE ) ) ||
+			     ( is_tax( CT_PROJECTORGANISATIE ) ) ||
+			     ( is_tax( CT_PROJECTJAAR ) ) ) {
 				// geen pagination voor overzichten van:
 				// - initiatieven
 				// - initiatieven per initiatieftype
