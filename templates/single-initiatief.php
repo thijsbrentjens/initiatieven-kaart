@@ -6,7 +6,7 @@ if ( function_exists( 'genesis' ) ) {
 	// Genesis wordt gebruikt als framework
 	// dit geldt voor o.m. het theme voor Digitale Overheid
 
-    // kruimelpad bijwerken
+	// kruimelpad bijwerken
 	add_filter( 'genesis_single_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
 
 	// geen meuk over publicatiedatums etc tonen
@@ -25,15 +25,15 @@ if ( function_exists( 'genesis' ) ) {
 
 	get_header(); ?>
 
-    <div id="primary" class="content-area">
-        <div id="content" class="clearfix">
+	<div id="primary" class="content-area">
+		<div id="content" class="clearfix">
 
-            <h1><?php the_title() ?></h1>
+			<h1><?php the_title() ?></h1>
 			<?php the_content() ?>
 			<?php echo led_initiatief_single_info() ?>
 
-        </div><!-- #content -->
-    </div><!-- #primary -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
 
 
 	<?php
@@ -83,7 +83,7 @@ function led_initiatief_single_info( $doreturn = false ) {
 		foreach ( $initatieftypes as $term ) {
 
 			// het icoontje dat bij dit initatieftype hoort, staat in de array $initiatieficons
-			$classes[ $term->slug ] = $initiatieficons[ $term->slug ];
+			$classes[ $term->slug ] = $initiatieficons[ $term->slug ]['slug'];
 			$labels                 .= '<dd class="' . $term->slug . '">' . $term->name . '</dd>';
 		}
 
