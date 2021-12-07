@@ -476,6 +476,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 	$title          = get_the_title( $postobject->ID );
 	$permalink      = led_get_initiatief_permalink( $postobject->ID );
 	$initatieftypes = array();
+	$label          = 'type';
 
 	/*
 	 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
@@ -485,6 +486,8 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 	 */
 	if ( $categorytype ) {
 		$initatieftypes = get_the_terms( $postobject->ID, $categorytype );
+		$type           = get_taxonomy( $categorytype );
+		$label          = $type->labels->singular_name;
 	}
 	$classes = array();
 
@@ -521,7 +524,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 				// als er iets aanwezig is voor de taxonomy initatietype,
 				// dan zetten we alle waarden daarvoor in een <dl>
 				$initiatieftype = '<div class="initiatieftype ' . join( " ", $classes ) . '">';
-				$initiatieftype .= _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . ': ';
+				$initiatieftype .= $label . ': ';
 				$initiatieftype .= $labels;
 				$initiatieftype .= '</div>';
 			}
@@ -1204,7 +1207,7 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 function led_initiatieven_list_after( $doreturn = true ) {
 
-	if ( is_post_type_archive( CPT_PROJECT ) ) {
+	if ( is_post_type_archive( CPT_PROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
 		$led_text_after_list = get_theme_mod( 'innovatiebudget_text_after_list' );
 	} else {
 		$led_text_after_list = get_theme_mod( 'led_text_after_list' );
@@ -1227,7 +1230,7 @@ function led_initiatieven_list_after( $doreturn = true ) {
 
 function led_initiatieven_list_before( $doreturn = true ) {
 
-	if ( is_post_type_archive( CPT_PROJECT ) ) {
+	if ( is_post_type_archive( CPT_PROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
 		$led_text_before_list = get_theme_mod( 'innovatiebudget_text_before_list' );
 	} else {
 		$led_text_before_list = get_theme_mod( 'led_text_before_list' );
