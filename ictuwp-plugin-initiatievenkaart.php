@@ -11,7 +11,7 @@
  * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
  * Plugin URI:        https://digitaleoverheid.nl/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.9
+ * Version:           1.0.10.a
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.9' );
+define( 'INITIATIEVEN_KAART_VERSION', '1.0.10.a' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -501,22 +501,29 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 			// MEERDERE initiatieftypes te hangen
 
 			$labels = '';
+			$counter = 0;
 
 			foreach ( $initatieftypes as $term ) {
+				$counter++;
 				// het icoontje dat bij dit initatieftype hoort, staat in de array $initiatieficons
 				if ( isset( $initiatieficons[ $term->slug ] ) ) {
 					array_push( $classes, $initiatieficons[ $term->slug ]['name'] );
 				} else {
 					array_push( $classes, $term->slug );
 				}
-				$labels .= '<div class="' . $term->slug . '">' . $term->name . '</div>';
+				if ( $counter > 1) {
+					$labels .= ', ';
+				}
+
+//				$labels .= '<div class="' . $term->slug . '">' . $term->name . '</div>';
+				$labels .= '<span class="' . $term->slug . '">' . $term->name . '</span>';
 			}
 
 			if ( $labels ) {
 				// als er iets aanwezig is voor de taxonomy initatietype,
 				// dan zetten we alle waarden daarvoor in een <dl>
 				$initiatieftype = '<div class="initiatieftype ' . join( " ", $classes ) . '">';
-				$initiatieftype .= '<div>' . _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . '</div>';
+				$initiatieftype .= _x( 'Type', 'Label type initiatief', 'initiatieven-kaart' ) . ': ';
 				$initiatieftype .= $labels;
 				$initiatieftype .= '</div>';
 			}
@@ -735,7 +742,7 @@ function led_sanitize_project_pagina( $page_id, $setting ) {
 
 
 			$args = array(
-				'rewrite'           => array( 'slug' => $permalink . '/' . CT_PROJECTORGANISATIE ),
+				'rewrite' => array( 'slug' => $permalink . '/' . CT_PROJECTORGANISATIE ),
 			);
 
 			// herregistreren
@@ -839,10 +846,34 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	$archive_description = '';
 	$return              = '';
 	$count               = $wp_query->post_count;
-	$led_pageid_overview = get_theme_mod( 'customizer_led_pageid_overview' );
 
-	if ( is_post_type_archive( CPT_INITIATIEF ) || is_page() ) {
+	if ( is_page() ) {
 
+	} elseif ( is_post_type_archive( CPT_PROJECT ) ) {
+		$customizer_innovatieproject_pageid_overview = get_theme_mod( 'customizer_innovatieproject_pageid_overview' );
+		if ( $customizer_innovatieproject_pageid_overview ) {
+
+			$content_post        = get_post( $customizer_innovatieproject_pageid_overview );
+			$archive_title       = get_the_title( $customizer_innovatieproject_pageid_overview );
+			$content             = $content_post->post_content;
+			$archive_description = apply_filters( 'the_content', $content );
+
+		} else {
+			// anders is de paginatitel het label dat we aan het CPT hebben gegeven
+			// info ophalen voor custom post type CPT_INITIATIEF
+			$obj = get_post_type_object( CPT_PROJECT );
+
+			if ( $obj->labels->singular_name ) {
+				$archive_title = $obj->labels->archives;
+			}
+
+		}
+
+		$return = '<h1>' . $archive_title . '</h1>';
+
+	} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
+
+		$led_pageid_overview = get_theme_mod( 'customizer_led_pageid_overview' );
 		// als er een pagina is aangewezen als overview voor de initiatieven, neem
 		// dan die titel over
 		if ( $led_pageid_overview ) {
@@ -1049,7 +1080,7 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 	}
 
 	if ( $page_initatieven ) {
-		echo 'poepjes! ';
+
 		// haal de ancestors op voor deze pagina
 		$ancestors = get_post_ancestors( $page_initatieven );
 		if ( is_post_type_archive( CPT_INITIATIEF ) ) {
@@ -1136,7 +1167,7 @@ function led_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 		if ( $termid ) {
 			$term   = get_term( $termid );
 			$return .= $term->name;
-		} elseif ( is_singular( CPT_INITIATIEF ) ) {
+		} elseif ( is_singular( CPT_PROJECT ) || is_singular( CPT_INITIATIEF ) ) {
 			$return .= get_the_title( $post->ID );
 		} else {
 			//
