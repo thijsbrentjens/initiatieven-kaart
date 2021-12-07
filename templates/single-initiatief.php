@@ -7,7 +7,7 @@ if ( function_exists( 'genesis' ) ) {
 	// dit geldt voor o.m. het theme voor Digitale Overheid
 
 	// kruimelpad bijwerken
-	add_filter( 'genesis_single_crumb', 'led_initiatieven_filter_breadcrumb', 10, 2 );
+	add_filter( 'genesis_single_crumb', 'projecten_initiatieven_filter_breadcrumb', 10, 2 );
 
 	// geen meuk over publicatiedatums etc tonen
 	remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
