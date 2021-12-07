@@ -247,6 +247,17 @@
       "q" : 100,
       "rq" : 75
     },
+    "\/leaflet\/leaflet-src.esm-min.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 0,
+      "oAP" : "\/leaflet\/leaflet-src.esm-min-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
     "\/leaflet\/leaflet-src.esm.js" : {
       "bF" : 0,
       "ft" : 64,
@@ -412,6 +423,29 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
+    "\/public\/css\/images\/marker-g.png" : {
+      "ft" : 32768,
+      "iS" : 18752,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-g.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-g.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-g.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
     "\/public\/css\/images\/marker-icon-2x.png" : {
       "ft" : 32768,
       "iS" : 2464,
@@ -461,6 +495,29 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
+    "\/public\/css\/images\/marker-o.png" : {
+      "ft" : 32768,
+      "iS" : 17674,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-o.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-o.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-o.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
     "\/public\/css\/images\/marker-onbekend.png" : {
       "ft" : 32768,
       "iS" : 5907,
@@ -484,6 +541,29 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
+    "\/public\/css\/images\/marker-p.png" : {
+      "ft" : 32768,
+      "iS" : 16873,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-p.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-p.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-p.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
     "\/public\/css\/images\/marker-portaal.png" : {
       "ft" : 32768,
       "iS" : 26211,
@@ -502,6 +582,29 @@
       "miP" : 0,
       "oA" : 2,
       "oAP" : "\/public\/css\/images\/marker-portaal.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/public\/css\/images\/marker-r.png" : {
+      "ft" : 32768,
+      "iS" : 15404,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-r.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-r.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-r.svg",
       "oF" : 0,
       "opt" : 0,
       "plM" : 52780316221407,
@@ -967,6 +1070,29 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
+    "\/public\/css\/images\/marker-w.png" : {
+      "ft" : 32768,
+      "iS" : 17712,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/images\/marker-w.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 100,
+      "rq" : 75
+    },
+    "\/public\/css\/images\/marker-w.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/public\/css\/images\/marker-w.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
     "\/public\/css\/images\/markers-matte.png" : {
       "ft" : 32768,
       "iS" : 14323,
@@ -1057,6 +1183,18 @@
       "ou" : "lpckwebp-none",
       "q" : 100,
       "rq" : 75
+    },
+    "\/public\/css\/initiatieven-kaart-public-min.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/public\/css\/initiatieven-kaart-public-min-min.css",
+      "oF" : 0,
+      "pg" : 0
     },
     "\/public\/css\/initiatieven-kaart-public.css" : {
       "aP" : 1,

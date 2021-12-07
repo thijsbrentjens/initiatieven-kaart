@@ -367,6 +367,11 @@ if( function_exists('acf_add_local_field_group') ):
 					),
 					'choices' => array(
 
+						'r' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-r.svg" alt="" height="20"> R',
+						'p' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-p.svg" alt="" height="20"> P',
+						'g' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-g.svg" alt="" height="20"> G',
+						'o' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-o.svg" alt="" height="20"> O',
+						'w' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-w.svg" alt="" height="20"> W',
 						'rhs-paars' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-paars.svg" alt="" height="20"> paars',
 						'rhs-robijnrood' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-robijnrood.svg" alt="" height="20"> robijnrood',
 						'rhs-rood' => '<img src="/wp-content/plugins/ictuwp-plugin-initiatievenkaart/public/css/images/marker-rhs-rood.svg" alt="" height="20"> rood',
