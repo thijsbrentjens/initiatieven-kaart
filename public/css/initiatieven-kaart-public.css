@@ -2,7 +2,7 @@
 Een paar basiskleuren
  */
 :root{
-  --leaflet-control-slight-transparent: rgba(255, 255, 255, 0.8);
+  --leaflet-control-slight-transparent: rgba(255, 255, 255, 1);
   --rijksoverheid-blue: #01689b;
 }
 
@@ -71,6 +71,15 @@ De custom controls beetje opmaken en in lijn brengen met standaard Leaflet contr
  */
 .map-item-control-types {
   background-color: var(--leaflet-control-slight-transparent);
+  padding: .5rem;
+}
+.map-item-control-types ul {
+  margin: 0;
+  padding: 0;
+}
+.map-item-control-types h3 {
+  margin: .25rem 0;
+  padding: 0;
 }
 
 .typeFilterControlTxt {
