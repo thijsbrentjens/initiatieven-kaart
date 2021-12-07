@@ -262,7 +262,9 @@ class Initiatieven_Kaart_Public {
 		     is_post_type_archive( CPT_INITIATIEF ) ||
 		     is_post_type_archive( CPT_PROJECT ) ||
 		     is_tax( CT_INITIATIEFTYPE ) ||
-		     is_tax( CT_PROVINCIE )
+		     is_tax( CT_PROVINCIE ) ||
+		     is_tax( CT_PROJECTORGANISATIE ) ||
+		     is_tax( CT_PROJECTJAAR )
 		) {
 			return true;
 		} else {
