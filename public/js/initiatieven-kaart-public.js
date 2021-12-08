@@ -396,7 +396,7 @@ Authors:
       for (var k in typeKeys) {
         const category = typeKeys[k];
         let labelTxt = category;
-        var filter_checkbox = '(' + addCheckboxes + ')';
+        var filter_checkbox = '';
         if (category in this.typeLegendLabels) {
           labelTxt = this.typeLegendLabels[category];
         }
