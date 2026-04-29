@@ -8,7 +8,7 @@
  * @package           Initiatieven_Kaart
  *
  * @wordpress-plugin
- * Plugin Name:       Initiatieven Kaart voor LED (digitaleoverheid.nl)
+ * Plugin Name:       ICTU / WP / DO - initiatievenkaart
  * Plugin URI:        https://digitaleoverheid.nl/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
  * Version:           1.0.12
