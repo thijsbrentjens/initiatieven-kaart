@@ -97,7 +97,7 @@ Authors:
         if (jQuery("#" + this.mapElementId).length == 0) {
           const _self = this;
           // append after the container
-          const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
+          const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0"></div>`;
           jQuery("#" + this.mapItemsContainerId).after(mapDivHtml);
 
           // create the toggle map/list button
@@ -467,7 +467,7 @@ Authors:
       jQuery(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
 
       // no tabindex: the links inside should be accessible only
-      jQuery(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
+      jQuery(".leaflet-control-attribution").attr("tabindex", "0");
 
       // zoom-knoppen een fatsoenlijke tekst geven
       jQuery(".leaflet-control-zoom-in").removeAttr("title").removeAttr("aria-label").text('Zoom in');
@@ -516,7 +516,7 @@ Authors:
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              html: `<span aria-label="${cluster.getChildCount()} initiatieven">${cluster.getChildCount()}</span>`,
+              html: `<span>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
