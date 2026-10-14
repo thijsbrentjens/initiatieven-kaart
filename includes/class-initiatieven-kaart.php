@@ -107,6 +107,11 @@ class Initiatieven_Kaart {
 			define( 'CT_PROJECTJAAR', 'jaar-toekenning' );
 		}
 
+		// taxonomie voor jaar voor een innovatieproject
+		if ( ! defined( 'QUERYVAR_SHOW_MAP' ) ) {
+			define( 'QUERYVAR_SHOW_MAP', 'showmap' );
+		}
+
 		$this->initiatieven_kaart = 'initiatieven-kaart';
 
 		$this->load_dependencies();

@@ -11,7 +11,7 @@
  * Plugin Name:       ICTU / WP / DO - initiatievenkaart
  * Plugin URI:        https://digitaleoverheid.nl/initiatieven-kaart-uri/
  * Description:       Toont LED initiatieven op een kaart
- * Version:           1.0.13
+ * Version:           2.0.1
  * Author:            Thijs Brentjens
  * Author URI:        https://brentjensgeoict.nl
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INITIATIEVEN_KAART_VERSION', '1.0.13' );
+define( 'INITIATIEVEN_KAART_VERSION', '2.0.1' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -132,7 +132,7 @@ add_filter( 'template_include', 'led_template_page_initiatieven' );
  * twee custom taxonomies: initiatieftype en provincie; deze
  * taxonomieen zijn alleen geldig voor CPT 'initiatief'.
  */
-function led_custom_tax_and_types() {
+function innovatiebudget_cpt_and_taxonomies() {
 
 
 	// ---------------------------------------------------------------------------------------------------
@@ -243,11 +243,17 @@ function led_custom_tax_and_types() {
 
 	register_taxonomy( CT_PROJECTJAAR, array( CPT_INNOVATIEPROJECT ), $args );
 
+	add_filter( 'query_vars', function ( $vars ) {
+		$vars[] = QUERYVAR_SHOW_MAP;
+
+		return $vars;
+	} );
+
 
 }
 
 // Trigger registering the post type as soon as possible
-add_action( 'init', 'led_custom_tax_and_types' );
+add_action( 'init', 'innovatiebudget_cpt_and_taxonomies' );
 
 //========================================================================================================
 /*
@@ -433,47 +439,11 @@ function led_append_customizer_field( $wp_customize ) {
 
 	//	eigen sectie voor Theme Customizer
 	$wp_customize->add_section( 'customizer_led_initiatievenkaart', array(
-		'title'       => _x( 'Initiatievenkaart / innovatie-kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'title'       => _x( 'Kaart innovatiebudget', 'customizer menu', 'initiatieven-kaart' ),
 		'capability'  => 'edit_theme_options',
-		'description' => _x( 'Instellingen voor de pagina met lijst van initiatieven.', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Instellingen voor de pagina met lijst van innovatieprojecten.', 'customizer menu', 'initiatieven-kaart' ),
 	) );
-
-	// add two text fields
-	$wp_customize->add_setting( 'led_text_before_list', array(
-		'capability'        => 'edit_theme_options',
-		'sanitize_callback' => 'led_sanitize_text_block',
-	) );
-	$wp_customize->add_control( 'led_text_before_list', array(
-		'type'        => 'textarea',
-		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Tekst vóór de data-initiatiefkaart', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'Tekst die <em>direct voor</em> de data-initiatiefkaart staat', 'customizer menu', 'initiatieven-kaart' ),
-	) );
-
-	$wp_customize->add_setting( 'led_text_after_list', array(
-		'capability'        => 'edit_theme_options',
-		'sanitize_callback' => 'led_sanitize_text_block',
-	) );
-	$wp_customize->add_control( 'led_text_after_list', array(
-		'type'        => 'textarea',
-		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Tekst ná de de data-initiatiefkaart', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'Tekst die <em>direct na</em> de data-initiatiefkaart staat', 'customizer menu', 'initiatieven-kaart' ),
-	) );
-
-	// add dropdown with pages to appoint the new slug for the CPT
-	$wp_customize->add_setting( 'customizer_led_pageid_overview', array(
-		'capability'        => 'edit_theme_options',
-		'sanitize_callback' => 'led_sanitize_initiatief_pagina',
-	) );
-	$wp_customize->add_control( 'customizer_led_pageid_overview', array(
-		'type'        => 'dropdown-pages',
-		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Pagina met alle initiatieven', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'In het kruimelpad en in de URL voor een initiatief zal deze pagina terugkomen.', 'customizer menu', 'initiatieven-kaart' ),
-	) );
-
-
+	
 	// settings voor de pagina met innovatiebudgetprojecten
 	// add two text fields
 	$wp_customize->add_setting( 'innovatiebudget_text_before_list', array(
@@ -483,8 +453,8 @@ function led_append_customizer_field( $wp_customize ) {
 	$wp_customize->add_control( 'innovatiebudget_text_before_list', array(
 		'type'        => 'textarea',
 		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Tekst vóór de innovatie-kaart', 'customizer menu', 'initiatieven-kaart' ),
-		'description' => _x( 'Tekst die <em>direct voor</em> de innovatie-kaart staat', 'customizer menu', 'initiatieven-kaart' ),
+		'label'       => _x( 'Tekst vóór de innovatieprojecten-kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'description' => _x( 'Tekst die <em>direct voor</em> de innovatieprojecten-kaart staat', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
 	$wp_customize->add_setting( 'innovatiebudget_text_after_list', array(
@@ -494,7 +464,7 @@ function led_append_customizer_field( $wp_customize ) {
 	$wp_customize->add_control( 'innovatiebudget_text_after_list', array(
 		'type'        => 'textarea',
 		'section'     => 'customizer_led_initiatievenkaart', // Add a default or your own section
-		'label'       => _x( 'Tekst ná de innovatie-kaart', 'customizer menu', 'initiatieven-kaart' ),
+		'label'       => _x( 'Tekst ná de innovatieprojecten-kaart', 'customizer menu', 'initiatieven-kaart' ),
 		'description' => _x( 'Tekst die <em>direct na</em> de data-initiatiefkaart staat', 'customizer menu', 'initiatieven-kaart' ),
 	) );
 
@@ -894,17 +864,10 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 function led_initiatieven_list_after( $doreturn = true ) {
 
-	$page_template = get_page_template_slug( get_the_id() );
-
-	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_INNOVATIEPROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
-		$led_text_after_list = get_theme_mod( 'innovatiebudget_text_after_list' );
-	} else {
-		$led_text_after_list = get_theme_mod( 'led_text_after_list' );
-	}
-
-	$return = '';
-	if ( $led_text_after_list ) {
-		$return = '<div class="led-initiatievenkaart-warning-after"><p>' . $led_text_after_list . '</p></div>';
+	$text_after_list = get_theme_mod( 'innovatiebudget_text_after_list' );
+	$return          = '';
+	if ( $text_after_list ) {
+		$return = '<div class="led-initiatievenkaart-warning-after"><p>' . $text_after_list . '</p></div>';
 	}
 
 	if ( $doreturn ) {
@@ -919,17 +882,10 @@ function led_initiatieven_list_after( $doreturn = true ) {
 
 function led_initiatieven_list_before( $doreturn = true ) {
 
-	$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
-
-	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_INNOVATIEPROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
-		$led_text_before_list = get_theme_mod( 'innovatiebudget_text_before_list' );
-	} else {
-		$led_text_before_list = get_theme_mod( 'led_text_before_list' );
-	}
-
-	$return = '';
-	if ( $led_text_before_list ) {
-		$return = '<div class="led-initiatievenkaart-warning-before"><p>' . $led_text_before_list . '</p></div>';
+	$text_before_list = get_theme_mod( 'innovatiebudget_text_before_list' );
+	$return           = '';
+	if ( $text_before_list ) {
+		$return = '<div class="led-initiatievenkaart-warning-before"><p>' . $text_before_list . '</p></div>';
 	}
 
 	if ( $doreturn ) {
