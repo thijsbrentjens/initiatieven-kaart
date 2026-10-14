@@ -134,10 +134,6 @@ add_filter( 'template_include', 'led_template_page_initiatieven' );
  */
 function innovatiebudget_cpt_and_taxonomies() {
 
-
-	// ---------------------------------------------------------------------------------------------------
-
-
 	// ---------------------------------------------------------------------------------------------------
 	$slug_innovatieprojecten = CPT_INNOVATIEPROJECT;
 
@@ -173,7 +169,14 @@ function innovatiebudget_cpt_and_taxonomies() {
 			'items_list_navigation' => esc_html_x( 'Maps list navigation', 'post type', 'initiatieven-kaart' ),
 			'filter_items_list'     => esc_html_x( 'Filter initiatief list', 'post type', 'initiatieven-kaart' ),
 		),
-		'supports'            => array( 'title', 'author', 'excerpt', 'editor' ),
+		'supports'            => array(
+			'title',
+			'author',
+			'excerpt',
+			'editor',
+			'genesis-simple-sidebars', // adds the sidebar selector metabox
+			'genesis-layouts',         // optional: layout selector per post
+		),
 		'hierarchical'        => false,
 		'public'              => true,
 		'show_ui'             => true,
@@ -443,7 +446,7 @@ function led_append_customizer_field( $wp_customize ) {
 		'capability'  => 'edit_theme_options',
 		'description' => _x( 'Instellingen voor de pagina met lijst van innovatieprojecten.', 'customizer menu', 'initiatieven-kaart' ),
 	) );
-	
+
 	// settings voor de pagina met innovatiebudgetprojecten
 	// add two text fields
 	$wp_customize->add_setting( 'innovatiebudget_text_before_list', array(
