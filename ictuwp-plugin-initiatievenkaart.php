@@ -73,22 +73,16 @@ run_initiatieven_kaart();
 function led_template_archive_initiatieven( $archive_template ) {
 	global $post;
 
-	if ( is_search() )  {
+	if ( is_search() ) {
 		return $archive_template;
 	}
 
-	if ( is_post_type_archive( CPT_INITIATIEF ) ) {
-		// het is een archive voor CPT = CPT_INITIATIEF
-		$archive_template = dirname( __FILE__ ) . '/templates/page-initiatieven.php';
-	} elseif ( is_post_type_archive( CPT_PROJECT ) ) {
-		// het is een archive voor CPT = CPT_PROJECT
+	if ( is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
+		// het is een archive voor CPT = CPT_INNOVATIEPROJECT
 		$archive_template = dirname( __FILE__ ) . '/templates/page-innovatieprojecten.php';
 	} elseif ( ( is_tax( CT_PROJECTORGANISATIE ) ) || ( is_tax( CT_PROJECTJAAR ) ) ) {
 		// het is een overzicht van innovatieprojecten per type of per provincie
 		$archive_template = dirname( __FILE__ ) . '/templates/archive-innovatieprojecten.php';
-	} elseif ( ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_PROVINCIE ) ) ) {
-		// het is een overzicht van initiatieven per type of per provincie
-		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
 	}
 
 	return $archive_template;
@@ -104,43 +98,25 @@ add_filter( 'archive_template', 'led_template_archive_initiatieven' );
 function led_template_page_initiatieven( $archive_template ) {
 	global $post;
 
-	if ( is_search() )  {
+	if ( is_search() ) {
 		return $archive_template;
 	}
 
 	$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
 
-	if ( is_singular( CPT_INITIATIEF ) ) {
-		// het is een single voor CPT = CPT_INITIATIEF
-		$archive_template = dirname( __FILE__ ) . '/templates/single-initiatief.php';
-
-	} elseif ( is_singular( CPT_PROJECT ) ) {
-		// het is een single voor CPT = CPT_INITIATIEF
+	if ( is_singular( CPT_INNOVATIEPROJECT ) ) {
+		// het is een single voor CPT = CPT_INNOVATIEPROJECT
 		$archive_template = dirname( __FILE__ ) . '/templates/single-innovatieproject.php';
 
-	} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
-		// het is een overzicht van initiatieven per type of per provincie
-		$archive_template = dirname( __FILE__ ) . '/templates/page-initiatieven.php';
-
-	} elseif ( is_post_type_archive( CPT_PROJECT ) ) {
+	} elseif ( is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
 
 		// het is een overzicht van initiatieven per type of per provincie
 		$archive_template = dirname( __FILE__ ) . '/templates/page-innovatieprojecten.php';
-
-	} elseif ( is_tax( CT_INITIATIEFTYPE ) || is_tax( CT_PROVINCIE ) ) {
-
-		// het is een overzicht van initiatieven per type of per provincie
-		$archive_template = dirname( __FILE__ ) . '/templates/archive-initiatieven.php';
 
 	} elseif ( 'page-innovatieproject.php' == $page_template ) {
 
 		// het is een overzicht van innovatieprojecten
 		$archive_template = dirname( __FILE__ ) . '/templates/page-innovatieprojecten.php';
-
-	} elseif ( 'page-initiatieven.php' == $page_template ) {
-
-		// het is een overzicht van initiatieven per type of per provincie
-		$archive_template = dirname( __FILE__ ) . '/templates/page-initiatieven.php';
 
 	}
 
@@ -160,115 +136,13 @@ function led_custom_tax_and_types() {
 
 
 	// ---------------------------------------------------------------------------------------------------
-	$slug_initatieven = CPT_INITIATIEF;
-
-	$args = array(
-		'label'               => esc_html__( CPT_INITIATIEF, 'initiatieven-kaart' ),
-		'description'         => '',
-		'labels'              => array(
-			'name'                  => esc_html_x( 'Initiatieven', 'post type', 'initiatieven-kaart' ),
-			'singular_name'         => esc_html_x( 'Initiatief', 'post type', 'initiatieven-kaart' ),
-			'menu_name'             => esc_html_x( 'Initiatieven', 'post type', 'initiatieven-kaart' ),
-			'name_admin_bar'        => esc_html_x( 'Initiatief', 'post type', 'initiatieven-kaart' ),
-			'archives'              => esc_html_x( 'Overzicht initiatieven', 'post type', 'initiatieven-kaart' ),
-			'attributes'            => esc_html_x( 'Eigenschappen initiatief', 'post type', 'initiatieven-kaart' ),
-			'parent_item_colon'     => esc_html_x( 'Parent Map:', 'post type', 'initiatieven-kaart' ),
-			'all_items'             => esc_html_x( 'Alle initiatieven', 'post type', 'initiatieven-kaart' ),
-			'add_new_item'          => esc_html_x( 'Initiatief toevoegen', 'post type', 'initiatieven-kaart' ),
-			'add_new'               => esc_html_x( 'Toevoegen', 'post type', 'initiatieven-kaart' ),
-			'new_item'              => esc_html_x( 'Nieuw initiatief', 'post type', 'initiatieven-kaart' ),
-			'edit_item'             => esc_html_x( 'Bewerk initiatief', 'post type', 'initiatieven-kaart' ),
-			'update_item'           => esc_html_x( 'Update initiatief', 'post type', 'initiatieven-kaart' ),
-			'view_item'             => esc_html_x( 'Bekijk initiatief', 'post type', 'initiatieven-kaart' ),
-			'view_items'            => esc_html_x( 'Bekijk initiatieven', 'post type', 'initiatieven-kaart' ),
-			'search_items'          => esc_html_x( 'Zoek initiatief', 'post type', 'initiatieven-kaart' ),
-			'not_found'             => esc_html_x( 'Not found', 'post type', 'initiatieven-kaart' ),
-			'not_found_in_trash'    => esc_html_x( 'Not found in Trash', 'post type', 'initiatieven-kaart' ),
-			'featured_image'        => esc_html_x( 'Featured Image', 'post type', 'initiatieven-kaart' ),
-			'set_featured_image'    => esc_html_x( 'Set featured image', 'post type', 'initiatieven-kaart' ),
-			'remove_featured_image' => esc_html_x( 'Remove featured image', 'post type', 'initiatieven-kaart' ),
-			'use_featured_image'    => esc_html_x( 'Use as featured image', 'post type', 'initiatieven-kaart' ),
-			'insert_into_item'      => esc_html_x( 'Insert into Map', 'post type', 'initiatieven-kaart' ),
-			'uploaded_to_this_item' => esc_html_x( 'Uploaded to this initiatief', 'post type', 'initiatieven-kaart' ),
-			'items_list'            => esc_html_x( 'Map list', 'post type', 'initiatieven-kaart' ),
-			'items_list_navigation' => esc_html_x( 'Maps list navigation', 'post type', 'initiatieven-kaart' ),
-			'filter_items_list'     => esc_html_x( 'Filter initiatief list', 'post type', 'initiatieven-kaart' ),
-		),
-		'supports'            => array( 'title', 'author', 'excerpt', 'editor' ),
-		'hierarchical'        => false,
-		'public'              => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'show_in_admin_bar'   => true,
-		'show_in_nav_menus'   => true,
-		'can_export'          => true,
-		'has_archive'         => true,
-		'exclude_from_search' => false,
-		'publicly_queryable'  => true,
-		'rewrite'             => array( 'slug' => $slug_initatieven ),
-		'capability_type'     => 'post'
-	);
-
-	register_post_type( CPT_INITIATIEF, $args );
-
-	// Initiatieftype
-	$labels = array(
-		'name'              => esc_html_x( 'Type initiatief', 'taxonomy', 'initiatieven-kaart' ),
-		'singular_name'     => esc_html_x( 'Initiatieftype', 'taxonomy singular name', 'initiatieven-kaart' ),
-		'search_items'      => esc_html_x( 'Search initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-		'all_items'         => esc_html_x( 'All initiatieftypes', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item'       => esc_html_x( 'Parent initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item_colon' => esc_html_x( 'Parent initiatieftype:', 'taxonomy', 'initiatieven-kaart' ),
-		'edit_item'         => esc_html_x( 'Edit initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-		'update_item'       => esc_html_x( 'Update initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-		'add_new_item'      => esc_html_x( 'Add New initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-		'new_item_name'     => esc_html_x( 'New initiatieftype Name', 'taxonomy', 'initiatieven-kaart' ),
-		'menu_name'         => esc_html_x( 'Initiatieftype', 'taxonomy', 'initiatieven-kaart' ),
-	);
-
-	$args = array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_admin_column' => true,
-		'query_var'         => true,
-		'rewrite'           => array( 'slug' => CT_INITIATIEFTYPE ),
-	);
-
-	register_taxonomy( CT_INITIATIEFTYPE, array( CPT_INITIATIEF ), $args );
-
-	// Provincie; dit is een taxonomy zodat we initiatieven kunnen groeperen.
-	$labels = array(
-		'name'              => esc_html_x( 'Provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'singular_name'     => esc_html_x( 'Provincie', 'taxonomy singular name', 'initiatieven-kaart' ),
-		'search_items'      => esc_html_x( 'Search provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'all_items'         => esc_html_x( 'All provincies', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item'       => esc_html_x( 'Parent provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'parent_item_colon' => esc_html_x( 'Parent provincie:', 'taxonomy', 'initiatieven-kaart' ),
-		'edit_item'         => esc_html_x( 'Edit provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'update_item'       => esc_html_x( 'Update provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'add_new_item'      => esc_html_x( 'Add New provincie', 'taxonomy', 'initiatieven-kaart' ),
-		'new_item_name'     => esc_html_x( 'New provincie Name', 'taxonomy', 'initiatieven-kaart' ),
-		'menu_name'         => esc_html_x( 'Provincie', 'taxonomy', 'initiatieven-kaart' ),
-	);
-
-	$args = array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_admin_column' => true,
-		'query_var'         => true,
-		'rewrite'           => array( 'slug' => CT_PROVINCIE ),
-	);
-
-	register_taxonomy( CT_PROVINCIE, array( CPT_INITIATIEF ), $args );
 
 
 	// ---------------------------------------------------------------------------------------------------
-	$slug_innovatieprojecten = CPT_PROJECT;
+	$slug_innovatieprojecten = CPT_INNOVATIEPROJECT;
 
 	$args = array(
-		'label'               => esc_html__( CPT_PROJECT, 'initiatieven-kaart' ),
+		'label'               => esc_html__( CPT_INNOVATIEPROJECT, 'initiatieven-kaart' ),
 		'description'         => '',
 		'labels'              => array(
 			'name'                  => esc_html_x( 'Innovatieprojecten', 'post type', 'initiatieven-kaart' ),
@@ -314,7 +188,7 @@ function led_custom_tax_and_types() {
 		'capability_type'     => 'post'
 	);
 
-	register_post_type( CPT_PROJECT, $args );
+	register_post_type( CPT_INNOVATIEPROJECT, $args );
 
 
 	// Type organisatie; dit is een taxonomy zodat we innovatieprojecten kunnen groeperen.
@@ -341,7 +215,7 @@ function led_custom_tax_and_types() {
 		'rewrite'           => array( 'slug' => CT_PROJECTORGANISATIE ),
 	);
 
-	register_taxonomy( CT_PROJECTORGANISATIE, array( CPT_PROJECT ), $args );
+	register_taxonomy( CT_PROJECTORGANISATIE, array( CPT_INNOVATIEPROJECT ), $args );
 
 	// Type organisatie; dit is een taxonomy zodat we innovatieprojecten kunnen groeperen.
 	$labels = array(
@@ -367,7 +241,7 @@ function led_custom_tax_and_types() {
 		'rewrite'           => array( 'slug' => CT_PROJECTJAAR ),
 	);
 
-	register_taxonomy( CT_PROJECTJAAR, array( CPT_PROJECT ), $args );
+	register_taxonomy( CT_PROJECTJAAR, array( CPT_INNOVATIEPROJECT ), $args );
 
 
 }
@@ -385,37 +259,6 @@ add_action( 'init', 'led_custom_tax_and_types' );
 function led_get_initiatieficons() {
 
 	$arr_initiatief_type_icon = [];
-
-	// alle types langs om voor elk het bijbehorende icoontje op te halen
-	$args  = [
-		'taxonomy'   => CT_INITIATIEFTYPE,
-		'hide_empty' => true,
-		'orderby'    => 'name',
-		'order'      => 'ASC',
-	];
-	$terms = get_terms( $args );
-
-	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-		$count = count( $terms );
-
-		foreach ( $terms as $term ) {
-
-			$initiatief_type_icon = get_field( 'initiatief_type_icon', CT_INITIATIEFTYPE . '_' . $term->term_id );
-
-			$array = array(
-				'slug' => $term->slug,
-				'name' => $term->name,
-				'icon' => 'onbekend',
-			);
-
-			if ( $initiatief_type_icon ) {
-				$array['icon'] = $initiatief_type_icon;
-			}
-
-			$arr_initiatief_type_icon[ $term->slug ] = $array;
-
-		}
-	}
 
 
 	// alle types langs om voor elk het bijbehorende icoontje op te halen
@@ -457,7 +300,7 @@ function led_get_initiatieficons() {
 /*
  * deze functie formatteert een list-item voor de lijst met initiatieven
  */
-function led_get_list_item_archive( $postobject, $initiatieficons = array(), $categorytype = CT_INITIATIEFTYPE ) {
+function led_get_list_item_archive( $postobject, $initiatieficons = array(), $categorytype = CT_PROJECTORGANISATIE ) {
 
 	$return = '';
 
@@ -471,7 +314,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 
 	/*
 	 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
-	 * dit is de taxonomie CT_INITIATIEFTYPE
+	 * dit is de taxonomie $categorytype
 	 * aan elke waarde hiervan zou een icoontje moeten hangen
 	 * dus bijv. type 'Community' krijgt een icoontje 'community'
 	 */
@@ -759,7 +602,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	global $wp_query;
 	global $post;
 
-	if ( is_search() )  {
+	if ( is_search() ) {
 		return;
 	}
 
@@ -770,12 +613,12 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 	$customizer_pageid_innovatieproject = get_theme_mod( 'customizer_innovatieproject_pageid_overview' );
 	$customizer_pageid_led              = get_theme_mod( 'customizer_led_pageid_overview' );
 
-	if ( is_page() || is_post_type_archive( CPT_PROJECT ) ) {
+	if ( is_page() || is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
 
-		if ( is_post_type_archive( CPT_PROJECT ) ) {
+		if ( is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
 			// anders is de paginatitel het label dat we aan het CPT hebben gegeven
-			// info ophalen voor custom post type CPT_INITIATIEF
-			$obj = get_post_type_object( CPT_PROJECT );
+			// info ophalen voor custom post type CPT_INNOVATIEPROJECT
+			$obj = get_post_type_object( CPT_INNOVATIEPROJECT );
 
 			if ( $obj->labels->singular_name ) {
 				$archive_title = $obj->labels->archives;
@@ -803,41 +646,12 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		}
 		$return = '<h1>' . $archive_title . '</h1>';
 
-	} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
-
-		$customizer_pageid_led = get_theme_mod( 'customizer_led_pageid_overview' );
-		// als er een pagina is aangewezen als overview voor de initiatieven, neem
-		// dan die titel over
-		if ( $customizer_pageid_led ) {
-
-			$content_post        = get_post( $customizer_pageid_led );
-			$archive_title       = get_the_title( $customizer_pageid_led );
-			$content             = $content_post->post_content;
-			$archive_description = apply_filters( 'the_content', $content );
-
-		} else {
-			// anders is de paginatitel het label dat we aan het CPT hebben gegeven
-			// info ophalen voor custom post type CPT_INITIATIEF
-			$obj = get_post_type_object( CPT_INITIATIEF );
-
-			if ( $obj->labels->singular_name ) {
-				$archive_title = $obj->labels->archives;
-			}
-
-		}
-
-		$return = '<h1>' . $archive_title . '</h1>';
-
-	} elseif ( ( is_tax( CT_INITIATIEFTYPE ) ) || ( is_tax( CT_PROVINCIE ) ) || ( is_tax( CT_PROJECTJAAR ) ) || ( is_tax( CT_PROJECTORGANISATIE ) ) ) {
+	} elseif ( ( is_tax( CT_PROJECTJAAR ) ) || ( is_tax( CT_PROJECTORGANISATIE ) ) ) {
 		// we kijken naar een lijst van initiatieven per initiatieftype of provincie
 
-		$thetax = CT_PROVINCIE;
-		if ( is_tax( CT_INITIATIEFTYPE ) ) {
-			$thetax = CT_INITIATIEFTYPE;
-		} elseif ( is_tax( CT_PROJECTJAAR ) ) {
+		$thetax = CT_PROJECTORGANISATIE;
+		if ( is_tax( CT_PROJECTJAAR ) ) {
 			$thetax = CT_PROJECTJAAR;
-		} elseif ( is_tax( CT_PROJECTORGANISATIE ) ) {
-			$thetax = CT_PROJECTORGANISATIE;
 		}
 
 		$term_id = get_queried_object_id();
@@ -851,12 +665,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		}
 
 		if ( $count ) {
-			if ( is_tax( CT_PROVINCIE ) ) {
-				// voorzetsels, best belangrijk
-				$return = '<h1>' . sprintf( _n( '%s initiatief in %s', "%s initiatieven in %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
-			} else {
-				$return = '<h1>' . sprintf( _n( '%s initiatief voor %s', "%s initiatieven voor %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
-			}
+			$return = '<h1>' . sprintf( _n( '%s initiatief voor %s', "%s initiatieven voor %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
 		} else {
 			// Niks geen initiatieven niet. Nul, nada, noppes, nihil.
 			// Zeeland en Drenthe, laat van je HO-REN!
@@ -895,28 +704,17 @@ function led_initiatieven_taxonomy_list( $doreturn = false ) {
 	$return        = '';
 	$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
 
-	if ( is_tax( CT_INITIATIEFTYPE ) ) {
-		// toon de lijst van ANDERE initiatieftypes
-		$return .= led_initiatieven_show_taxonomy_list( CT_INITIATIEFTYPE, __( 'Andere initiatieftypes', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
-	} elseif ( is_tax( CT_PROVINCIE ) ) {
-		// toon de lijst van ANDERE provincies
-		$return .= led_initiatieven_show_taxonomy_list( CT_PROVINCIE, __( 'Andere provincies', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
-	} elseif ( is_tax( CT_PROJECTORGANISATIE ) ) {
+	if ( is_tax( CT_PROJECTORGANISATIE ) ) {
 		// toon de lijst van ANDERE type organisaties
 		$return .= led_initiatieven_show_taxonomy_list( CT_PROJECTORGANISATIE, __( 'Andere organisaties', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
 	} elseif ( is_tax( CT_PROJECTJAAR ) ) {
 		// toon de lijst van ANDERE projectjaren
 		$return .= led_initiatieven_show_taxonomy_list( CT_PROJECTJAAR, __( 'Andere jaren', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
-	} elseif ( is_post_type_archive( CPT_PROJECT ) || 'page-innovatieproject.php' == $page_template ) {
+	} elseif ( is_post_type_archive( CPT_INNOVATIEPROJECT ) || 'page-innovatieproject.php' == $page_template ) {
 		// toon de lijst van organisatietypes
 		$return .= led_initiatieven_show_taxonomy_list( CT_PROJECTORGANISATIE, __( 'Type organisaties', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
 		// toon de lijst van jaren
 		$return .= led_initiatieven_show_taxonomy_list( CT_PROJECTJAAR, __( 'Jaren', 'taxonomie-lijst', 'initiatieven-kaart' ), false, get_queried_object_id() );
-	} else {
-		// toon de lijst van ALLE initiatieftypes
-		$return .= led_initiatieven_show_taxonomy_list( CT_INITIATIEFTYPE, __( 'Initiatieftypes', 'taxonomie-lijst', 'initiatieven-kaart' ), false );
-		// en de lijst van ALLE provincies
-		$return .= led_initiatieven_show_taxonomy_list( CT_PROVINCIE, __( 'Provincies', 'taxonomie-lijst', 'initiatieven-kaart' ), false );
 	}
 
 	if ( $return ) {
@@ -993,15 +791,11 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 	global $post;
 
-	$object = get_post_type_object( CPT_PROJECT );
+	$object = get_post_type_object( CPT_INNOVATIEPROJECT );
 
 	if ( ! (
-		is_singular( CPT_INITIATIEF ) ||
-		is_post_type_archive( CPT_INITIATIEF ) ||
-		is_singular( CPT_PROJECT ) ||
-		is_post_type_archive( CPT_PROJECT ) ||
-		is_tax( CT_INITIATIEFTYPE ) ||
-		is_tax( CT_PROVINCIE ) ||
+		is_singular( CPT_INNOVATIEPROJECT ) ||
+		is_post_type_archive( CPT_INNOVATIEPROJECT ) ||
 		is_tax( CT_PROJECTORGANISATIE ) ||
 		is_tax( CT_PROJECTJAAR ) ) ) {
 		// niks doen we niet met een initiatief bezig zijn
@@ -1010,21 +804,15 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 
 	// uit siteopties de pagina ophalen die het overzicht is van alle links
-	if ( is_singular( CPT_INITIATIEF ) ||
-	     is_post_type_archive( CPT_INITIATIEF )
-	) {
-		$page_initatieven = get_theme_mod( 'customizer_led_pageid_overview' );
-	} else {
-		$page_initatieven = get_theme_mod( 'customizer_innovatieproject_pageid_overview' );
-	}
-	$currentitem = explode( '</span>', $crumb );
-	$parents     = array();
-	$return      = '';
-	$termid      = '';
-	if ( is_tax( CT_INITIATIEFTYPE ) ||
-	     is_tax( CT_PROVINCIE ) ||
-	     is_tax( CT_PROJECTORGANISATIE ) ||
-	     is_tax( CT_PROJECTJAAR ) ) {
+
+	$page_initatieven = get_theme_mod( 'customizer_innovatieproject_pageid_overview' );
+	$currentitem      = explode( '</span>', $crumb );
+	$parents          = array();
+	$return           = '';
+	$termid           = '';
+	if (
+		is_tax( CT_PROJECTORGANISATIE ) ||
+		is_tax( CT_PROJECTJAAR ) ) {
 		$termid = get_queried_object_id();
 	}
 
@@ -1032,16 +820,11 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 		// haal de ancestors op voor deze pagina
 		$ancestors = get_post_ancestors( $page_initatieven );
-		if ( is_post_type_archive( CPT_INITIATIEF ) ) {
-			$parents[] = array(
-				'text' => get_the_title( $page_initatieven ),
-			);
-		} else {
-			$parents[] = array(
-				'url'  => get_page_link( $page_initatieven ),
-				'text' => get_the_title( $page_initatieven ),
-			);
-		}
+
+		$parents[] = array(
+			'url'  => get_page_link( $page_initatieven ),
+			'text' => get_the_title( $page_initatieven ),
+		);
 
 		if ( $ancestors ) {
 
@@ -1058,49 +841,26 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 	} else {
 
 		// er is geen pagina bekend waaronder de items getoond worden
-		if ( is_singular( CPT_INITIATIEF ) || is_singular( CPT_PROJECT ) ) {
+		if ( is_singular( CPT_INNOVATIEPROJECT ) ) {
 			return $crumb;
 		}
 
-		if ( is_post_type_archive( CPT_INITIATIEF ) ||
-		     is_tax( CT_INITIATIEFTYPE ) ||
-		     is_tax( CT_PROVINCIE ) ) {
-			$obj = get_post_type_object( CPT_INITIATIEF );
+		$obj = get_post_type_object( CPT_INNOVATIEPROJECT );
 
-			if ( is_post_type_archive( CPT_INITIATIEF ) ) {
+		if ( is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
 
-			} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
+			$parents[] = array(
+				'text' => $obj->label,
+			);
 
-				$parents[] = array(
-					'text' => $obj->label,
-				);
-
-			} elseif ( is_tax( CT_INITIATIEFTYPE ) || is_tax( CT_PROVINCIE ) ) {
-				$parents[] = array(
-					'url'  => get_post_type_archive_link( CPT_INITIATIEF ),
-					'text' => $obj->label,
-				);
-
-			}
-		} else {
-			// geen archief voor CPT_INITIATIEF of is_tax( CT_INITIATIEFTYPE / CT_PROVINCIE )
-			$obj = get_post_type_object( CPT_PROJECT );
-
-			if ( is_post_type_archive( CPT_PROJECT ) ) {
-
-				$parents[] = array(
-					'text' => $obj->label,
-				);
-
-			} elseif ( is_tax( CT_PROJECTORGANISATIE ) ) {
-				$parents[] = array(
-					'url'  => get_post_type_archive_link( CPT_PROJECT ),
-					'text' => $obj->label,
-				);
-
-			}
+		} elseif ( is_tax( CT_PROJECTORGANISATIE ) ) {
+			$parents[] = array(
+				'url'  => get_post_type_archive_link( CPT_INNOVATIEPROJECT ),
+				'text' => $obj->label,
+			);
 
 		}
+
 
 	}
 
@@ -1114,13 +874,11 @@ function projecten_initiatieven_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 	if ( isset( $post->ID ) && $post->ID === $page_initatieven ) {
 		//
-	} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
-		//
 	} else {
 		if ( $termid ) {
 			$term   = get_term( $termid );
 			$return .= $term->name;
-		} elseif ( is_singular( CPT_PROJECT ) || is_singular( CPT_INITIATIEF ) ) {
+		} elseif ( is_singular( CPT_INNOVATIEPROJECT ) ) {
 			$return .= get_the_title( $post->ID );
 		} else {
 			//
@@ -1138,7 +896,7 @@ function led_initiatieven_list_after( $doreturn = true ) {
 
 	$page_template = get_page_template_slug( get_the_id() );
 
-	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_PROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
+	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_INNOVATIEPROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
 		$led_text_after_list = get_theme_mod( 'innovatiebudget_text_after_list' );
 	} else {
 		$led_text_after_list = get_theme_mod( 'led_text_after_list' );
@@ -1163,7 +921,7 @@ function led_initiatieven_list_before( $doreturn = true ) {
 
 	$page_template = get_post_meta( get_the_id(), '_wp_page_template', true );
 
-	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_PROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
+	if ( ( 'page-innovatieproject.php' == $page_template ) || is_post_type_archive( CPT_INNOVATIEPROJECT ) || is_tax( CT_PROJECTORGANISATIE ) || is_tax( CT_PROJECTJAAR ) ) {
 		$led_text_before_list = get_theme_mod( 'innovatiebudget_text_before_list' );
 	} else {
 		$led_text_before_list = get_theme_mod( 'led_text_before_list' );
@@ -1183,59 +941,3 @@ function led_initiatieven_list_before( $doreturn = true ) {
 }
 
 //========================================================================================================
-
-add_filter( 'pre_get_document_title', 'led_initiatieven_add_to_page_titles', 10, 2 ); // standard WordPress hook for <title>
-add_filter( 'wp_title', 'led_initiatieven_add_to_page_titles', 10, 2 ); // standard WordPress hook for <title>
-add_filter( 'wpseo_title', 'led_initiatieven_add_to_page_titles' ); // hook voor Yoast SEO
-
-
-function led_initiatieven_add_to_page_titles( $title ) {
-	global $wp_query;
-	$customizer_pageid_led = get_theme_mod( 'customizer_led_pageid_overview' );
-	$page_template         = get_post_meta( get_the_id(), '_wp_page_template', true );
-	$count                 = $wp_query->post_count;
-
-	if ( is_singular( CPT_INITIATIEF ) ) {
-
-		// het is een single voor CPT = CPT_INITIATIEF
-		// daarvoor staat de titel al ok.
-
-	} elseif ( is_post_type_archive( CPT_INITIATIEF ) ) {
-
-		// het totaaloverzicht van alle initiatieven
-		$title = get_the_title( $customizer_pageid_led );
-
-	} elseif ( is_tax( CT_INITIATIEFTYPE ) || is_tax( CT_PROVINCIE ) ) {
-
-		// het is een overzicht van initiatieven per type of per provincie
-		$term_id = get_queried_object_id();
-		$term    = get_term( $term_id, ( is_tax( CT_INITIATIEFTYPE ) ? CT_INITIATIEFTYPE : CT_PROVINCIE ) );
-
-		if ( $term && ! is_wp_error( $term ) ) {
-			$archive_title = $term->name;
-		}
-
-		if ( $count ) {
-			if ( is_tax( CT_PROVINCIE ) ) {
-				// voorzetsels, best belangrijk
-				$title = sprintf( _n( '%s initiatief in %s', "%s initiatieven in %s", $count, 'initiatieven-kaart' ), $count, $archive_title );
-			} else {
-				$title = sprintf( _n( '%s initiatief voor %s', "%s initiatieven voor %s", $count, 'initiatieven-kaart' ), $count, $archive_title );
-			}
-		} else {
-			// Niks geen initiatieven niet. Nul, nada, noppes, nihil.
-			// Zeeland en Drenthe, laat van je HO-REN!
-			$title = sprintf( _x( 'Geen initiatieven gevonden voor %s', "Geen initiatieven", 'initiatieven-kaart' ), $archive_title );
-		}
-
-
-	} elseif ( 'page-initiatieven.php' == $page_template ) {
-
-		// het totaaloverzicht van alle initiatieven
-		$title = get_the_title( $customizer_pageid_led );
-
-	}
-
-
-	return $title;
-}

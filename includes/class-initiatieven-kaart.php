@@ -68,7 +68,6 @@ class Initiatieven_Kaart {
 	 */
 	protected $icons;
 
-	protected $template_initiatievenpagina;
 	protected $template_innovatieprojectpagina;
 
 
@@ -83,7 +82,6 @@ class Initiatieven_Kaart {
 	 */
 	public function __construct() {
 
-		$this->template_initiatievenpagina     = 'page-initiatieven.php';
 		$this->template_innovatieprojectpagina = 'page-innovatieproject.php';
 
 		if ( defined( 'INITIATIEVEN_KAART_VERSION' ) ) {
@@ -91,23 +89,12 @@ class Initiatieven_Kaart {
 		} else {
 			$this->version = '1.0.0';
 		}
-
-		if ( ! defined( 'CPT_INITIATIEF' ) ) {
-			define( 'CPT_INITIATIEF', 'initiatief' );
-		}
-
 		if ( ! defined( 'CPT_PROJECT' ) ) {
+			// KEPT FOR BACKWARDS COMPATIBILITY
 			define( 'CPT_PROJECT', 'innovatieproject' );
 		}
-
-		// taxonomie voor initiatief-type
-		if ( ! defined( 'CT_INITIATIEFTYPE' ) ) {
-			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
-		}
-
-		// taxonomie voor provincie voor een initiatief
-		if ( ! defined( 'CT_PROVINCIE' ) ) {
-			define( 'CT_PROVINCIE', 'provincie' );
+		if ( ! defined( 'CPT_INNOVATIEPROJECT' ) ) {
+			define( 'CPT_INNOVATIEPROJECT', 'innovatieproject' );
 		}
 
 		// taxonomie voor type organisatie voor een innovatieproject
@@ -276,7 +263,6 @@ class Initiatieven_Kaart {
 	// Pagina-template toevoegen
 	public function add_page_template( $post_templates ) {
 
-		$post_templates[ $this->template_initiatievenpagina ]     = _x( 'Initiatieven-pagina', "naam template", 'initiatieven-kaart' );
 		$post_templates[ $this->template_innovatieprojectpagina ] = _x( 'Innovatiebudget-pagina', "naam template", 'initiatieven-kaart' );
 
 		return $post_templates;
@@ -297,10 +283,8 @@ class Initiatieven_Kaart {
 
 		if ( ! is_admin() && $query->is_main_query() ) {
 
-			if ( is_post_type_archive( CPT_INITIATIEF ) ||
-			     is_post_type_archive( CPT_PROJECT ) ||
-			     ( is_tax( CT_INITIATIEFTYPE ) ) ||
-			     ( is_tax( CT_PROVINCIE ) ) ||
+			if (
+			     is_post_type_archive( CPT_INNOVATIEPROJECT ) ||
 			     ( is_tax( CT_PROJECTORGANISATIE ) ) ||
 			     ( is_tax( CT_PROJECTJAAR ) ) ) {
 				// geen pagination voor overzichten van:

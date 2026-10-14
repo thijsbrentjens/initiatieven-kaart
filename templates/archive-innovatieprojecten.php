@@ -59,7 +59,7 @@ function led_initiatieven_archive_list( $doreturn = false ) {
 
 	if ( have_posts() ) {
 
-		if ( is_post_type_archive( CPT_INITIATIEF ) || is_post_type_archive( CPT_PROJECT ) ) {
+		if ( is_post_type_archive( CPT_INNOVATIEPROJECT ) ) {
 			$return .= led_initiatieven_list_before( true );
 		}
 		$initiatieficons = led_get_initiatieficons();

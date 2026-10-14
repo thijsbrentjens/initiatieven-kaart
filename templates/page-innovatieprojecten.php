@@ -14,7 +14,7 @@ if ( function_exists( 'genesis' ) ) {
 	add_action( 'genesis_before_loop', 'led_initiatieven_archive_title', 8 );
 
 	/** standard loop vervangen door custom loop */
-	if ( is_post_type_archive( CPT_PROJECT ) || is_page() ) {
+	if ( is_post_type_archive( CPT_INNOVATIEPROJECT ) || is_page() ) {
 		// check is nodig om te voorkomen dat in zoekresultaten rare dingen gebeuren
 
 		remove_action( 'genesis_loop', 'genesis_do_loop' );
@@ -62,7 +62,7 @@ function led_innovatieprojecten_page_list( $doreturn = false ) {
 	global $post;
 
 	$argscount = array(
-		'post_type'      => CPT_PROJECT,
+		'post_type'      => CPT_INNOVATIEPROJECT,
 		'post_status'    => 'publish',
 		'orderby'        => 'title',
 		'order'          => 'ASC',
