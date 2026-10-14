@@ -41,6 +41,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-initiatieven-kaart.php';
 // in dit bestand staan de veld-definities voor de ACF-velden
 require plugin_dir_path( __FILE__ ) . 'includes/acf-definitions.php';
 
+// in dit bestand staan de veld-definities voor de ACF-velden
+require plugin_dir_path( __FILE__ ) . 'includes/filter-functions.php';
+
+
 //========================================================================================================
 
 /**
@@ -155,7 +159,7 @@ function innovatiebudget_cpt_and_taxonomies() {
 			'edit_item'             => esc_html_x( 'Bewerk innovatieproject', 'post type', 'initiatieven-kaart' ),
 			'update_item'           => esc_html_x( 'Update innovatieproject', 'post type', 'initiatieven-kaart' ),
 			'view_item'             => esc_html_x( 'Bekijk innovatieproject', 'post type', 'initiatieven-kaart' ),
-			'view_items'            => esc_html_x( 'Bekijk initiatieven', 'post type', 'initiatieven-kaart' ),
+			'view_items'            => esc_html_x( 'Bekijk innovatieprojecten', 'post type', 'initiatieven-kaart' ),
 			'search_items'          => esc_html_x( 'Zoek innovatieproject', 'post type', 'initiatieven-kaart' ),
 			'not_found'             => esc_html_x( 'Not found', 'post type', 'initiatieven-kaart' ),
 			'not_found_in_trash'    => esc_html_x( 'Not found in Trash', 'post type', 'initiatieven-kaart' ),
@@ -204,8 +208,8 @@ function innovatiebudget_cpt_and_taxonomies() {
 		'parent_item_colon' => esc_html_x( 'Parent organisatie:', 'taxonomy', 'initiatieven-kaart' ),
 		'edit_item'         => esc_html_x( 'Edit organisatie', 'taxonomy', 'initiatieven-kaart' ),
 		'update_item'       => esc_html_x( 'Update organisatie', 'taxonomy', 'initiatieven-kaart' ),
-		'add_new_item'      => esc_html_x( 'Add New organisatie', 'taxonomy', 'initiatieven-kaart' ),
-		'new_item_name'     => esc_html_x( 'New organisatie Name', 'taxonomy', 'initiatieven-kaart' ),
+		'add_new_item'      => esc_html_x( 'Add new organisatie', 'taxonomy', 'initiatieven-kaart' ),
+		'new_item_name'     => esc_html_x( 'New organisatie name', 'taxonomy', 'initiatieven-kaart' ),
 		'menu_name'         => esc_html_x( 'Type organisatie', 'taxonomy', 'initiatieven-kaart' ),
 	);
 
@@ -579,7 +583,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		return;
 	}
 
-	$archive_title                      = _x( 'Initiatieven', 'Archive initiatieven', 'initiatieven-kaart' );
+	$archive_title                      = _x( 'Innovatieprojecten', 'Archive initiatieven', 'initiatieven-kaart' );
 	$archive_description                = '';
 	$return                             = '';
 	$count                              = $wp_query->post_count;
@@ -638,11 +642,11 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		}
 
 		if ( $count ) {
-			$return = '<h1>' . sprintf( _n( '%s initiatief voor %s', "%s initiatieven voor %s", $count, 'initiatieven-kaart' ), $count, $archive_title ) . '</h1>';
+			$return = '<h1>' . sprintf( _n( '%s innovatieproject voor %s', "%s innovatieprojecten voor %s", $count, 'initiatieven-kaart' ), $count, strtolower( $archive_title ) ) . '</h1>';
 		} else {
 			// Niks geen initiatieven niet. Nul, nada, noppes, nihil.
 			// Zeeland en Drenthe, laat van je HO-REN!
-			$return              = '<h1>' . sprintf( _x( 'Geen initiatieven gevonden voor %s', "Geen initiatieven", 'initiatieven-kaart' ), $archive_title ) . '</h1>';
+			$return              = '<h1>' . sprintf( _x( 'Geen innovatieprojecten gevonden voor %s', "Geen innovatieprojecten", 'initiatieven-kaart' ), $archive_title ) . '</h1>';
 			$archive_description = 'Sorry.';
 		}
 
