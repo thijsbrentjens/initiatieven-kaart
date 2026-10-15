@@ -111,6 +111,18 @@ class Initiatieven_Kaart {
 		if ( ! defined( 'QUERYVAR_SHOW_MAP' ) ) {
 			define( 'QUERYVAR_SHOW_MAP', 'showmap' );
 		}
+		if ( ! defined( 'QUERYVAR_SHOW_MAP_TRUE' ) ) {
+			define( 'QUERYVAR_SHOW_MAP_TRUE', 'yesplease' );
+		}
+		if ( ! defined( 'QUERYVAR_SHOW_MAP_FALSE' ) ) {
+			define( 'QUERYVAR_SHOW_MAP_FALSE', 'nothanks' );
+		}
+		if ( ! defined( 'FILTER_ALL' ) ) {
+			define( 'FILTER_ALL', 'all' );
+		}
+		if ( ! defined( 'FILTER_NOREQUEST' ) ) {
+			define( 'FILTER_NOREQUEST', 'none' );
+		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
 

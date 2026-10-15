@@ -20,7 +20,7 @@ if ( function_exists( 'genesis' ) ) {
         remove_action( 'genesis_loop', 'genesis_do_loop' );
 
         // lijstje met initiatieven toevoegen
-        add_action( 'genesis_loop', 'led_innovatieprojecten_page_list', 8 );
+        add_action( 'genesis_loop', 'led_write_innovatieprojecten_list', 10 );
 
         // lijstjes toevoegen met de diverse custom taxonomieen
         add_action( 'genesis_loop', 'led_initiatieven_taxonomy_list', 10 );
@@ -55,7 +55,7 @@ if ( function_exists( 'genesis' ) ) {
         <div id="content" class="clearfix">
 
             <?php echo led_initiatieven_archive_title() ?>
-            <?php echo led_innovatieprojecten_page_list() ?>
+            <?php echo led_write_innovatieprojecten_list() ?>
             <?php echo led_initiatieven_taxonomy_list() ?>
 
         </div><!-- #content -->
@@ -68,58 +68,6 @@ if ( function_exists( 'genesis' ) ) {
     get_footer();
 
 
-}
-
-//========================================================================================================
-
-function led_innovatieprojecten_page_list( $doreturn = false ) {
-
-    global $post;
-
-    $return = '';
-
-
-    $argscount = array(
-            'post_type'      => CPT_INNOVATIEPROJECT,
-            'post_status'    => 'publish',
-            'orderby'        => 'title',
-            'order'          => 'ASC',
-            'posts_per_page' => - 1,
-    );
-
-    // Assign predefined $args to your query
-    $contentblockpostscount = new WP_query();
-    $contentblockpostscount->query( $argscount );
-
-
-    if ( $contentblockpostscount->have_posts() ) {
-
-        $initiatieficons = led_get_initiatieficons();
-        $return          .= led_initiatieven_list_before( true );
-
-        $return .= '<ul id="map-items">';
-
-        while ( $contentblockpostscount->have_posts() ) : $contentblockpostscount->the_post();
-
-            $return .= led_get_list_item_archive( $post, $initiatieficons, CT_PROJECTORGANISATIE );
-
-        endwhile;
-
-        $return .= '</ul>';
-
-    } else {
-        $return = _x( 'Geen innovatieprojecten gevonden', 'led_innovatieprojecten_page_list', 'initiatieven-kaart' );
-    }
-    $return .= led_initiatieven_list_after( true );
-
-    wp_reset_query();
-    wp_reset_postdata();
-
-    if ( $doreturn ) {
-        return $return;
-    } else {
-        echo $return;
-    }
 }
 
 //========================================================================================================
