@@ -68,6 +68,8 @@ class Initiatieven_Kaart {
 	 */
 	protected $icons;
 
+	protected $template_innovatieprojectpagina;
+
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -80,7 +82,6 @@ class Initiatieven_Kaart {
 	 */
 	public function __construct() {
 
-		$this->template_initiatievenpagina     = 'page-initiatieven.php';
 		$this->template_innovatieprojectpagina = 'page-innovatieproject.php';
 
 		if ( defined( 'INITIATIEVEN_KAART_VERSION' ) ) {
@@ -88,33 +89,41 @@ class Initiatieven_Kaart {
 		} else {
 			$this->version = '1.0.0';
 		}
-
-		if ( ! defined( 'CPT_INITIATIEF' ) ) {
-			define( 'CPT_INITIATIEF', 'initiatief' );
-		}
-
 		if ( ! defined( 'CPT_PROJECT' ) ) {
+			// KEPT FOR BACKWARDS COMPATIBILITY
 			define( 'CPT_PROJECT', 'innovatieproject' );
 		}
-
-		// taxonomie voor initiatief-type
-		if ( ! defined( 'CT_INITIATIEFTYPE' ) ) {
-			define( 'CT_INITIATIEFTYPE', 'initiatieftype' );
-		}
-
-		// taxonomie voor provincie voor een initiatief
-		if ( ! defined( 'CT_PROVINCIE' ) ) {
-			define( 'CT_PROVINCIE', 'provincie' );
+		if ( ! defined( 'CPT_INNOVATIEPROJECT' ) ) {
+			define( 'CPT_INNOVATIEPROJECT', 'innovatieproject' );
 		}
 
 		// taxonomie voor type organisatie voor een innovatieproject
 		if ( ! defined( 'CT_PROJECTORGANISATIE' ) ) {
 			define( 'CT_PROJECTORGANISATIE', 'organisatie' );
 		}
-
 		// taxonomie voor jaar voor een innovatieproject
 		if ( ! defined( 'CT_PROJECTJAAR' ) ) {
 			define( 'CT_PROJECTJAAR', 'jaar-toekenning' );
+		}
+
+		// taxonomie voor jaar voor een innovatieproject
+		if ( ! defined( 'QUERYVAR_SHOW_MAP' ) ) {
+			define( 'QUERYVAR_SHOW_MAP', 'showmap' );
+		}
+		if ( ! defined( 'QUERYVAR_SHOW_MAP_TRUE' ) ) {
+			define( 'QUERYVAR_SHOW_MAP_TRUE', 'yesplease' );
+		}
+		if ( ! defined( 'QUERYVAR_SHOW_MAP_FALSE' ) ) {
+			define( 'QUERYVAR_SHOW_MAP_FALSE', 'nothanks' );
+		}
+		if ( ! defined( 'FILTER_ALL' ) ) {
+			define( 'FILTER_ALL', 'all' );
+		}
+		if ( ! defined( 'FILTER_NOREQUEST' ) ) {
+			define( 'FILTER_NOREQUEST', 'none' );
+		}
+		if ( ! defined( 'DO_SEPARATOR' ) ) {
+			define( 'DO_SEPARATOR', ' | ' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';
@@ -273,7 +282,6 @@ class Initiatieven_Kaart {
 	// Pagina-template toevoegen
 	public function add_page_template( $post_templates ) {
 
-		$post_templates[ $this->template_initiatievenpagina ]     = _x( 'Initiatieven-pagina', "naam template", 'initiatieven-kaart' );
 		$post_templates[ $this->template_innovatieprojectpagina ] = _x( 'Innovatiebudget-pagina', "naam template", 'initiatieven-kaart' );
 
 		return $post_templates;
@@ -294,10 +302,8 @@ class Initiatieven_Kaart {
 
 		if ( ! is_admin() && $query->is_main_query() ) {
 
-			if ( is_post_type_archive( CPT_INITIATIEF ) ||
-			     is_post_type_archive( CPT_PROJECT ) ||
-			     ( is_tax( CT_INITIATIEFTYPE ) ) ||
-			     ( is_tax( CT_PROVINCIE ) ) ||
+			if (
+			     is_post_type_archive( CPT_INNOVATIEPROJECT ) ||
 			     ( is_tax( CT_PROJECTORGANISATIE ) ) ||
 			     ( is_tax( CT_PROJECTJAAR ) ) ) {
 				// geen pagination voor overzichten van:

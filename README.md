@@ -133,5 +133,5 @@ Dit doe je via de Customizer, als je admin-rechten hebt op je website, via:
 
 Kies uit de dropdown-lijst de pagina waarop alle initatieven staan.
 
-## Versies
-* 1.0.7 - Plugin hernoemd naar ictuwp-plugin-initiatievenkaart
+## Current version:
+* 2.0.1 - Removed post type and taxonomies for data-initiatieven.

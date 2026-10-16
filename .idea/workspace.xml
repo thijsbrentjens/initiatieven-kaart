@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1a24d279-8cc2-468f-858b-3f0dd79cecc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/page-initiatieven.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page-initiatieven.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/filter-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/filter-functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/single-innovatieproject.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/single-innovatieproject.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +19,24 @@
   <component name="ComposerSettings">
     <execution />
   </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$USER_HOME$/Sites/localhost/digitaleoverheid.test/httpdocs/wp-admin" />
+      <path value="$USER_HOME$/Sites/localhost/digitaleoverheid.test/httpdocs/wp-includes" />
+    </include_path>
   </component>
   <component name="ProblemsViewState">
     <hideBySeverity>
@@ -23,6 +44,9 @@
       <option value="200" />
     </hideBySeverity>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="1xXSnob92DuriFYt2ivOajIbaRh" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -30,17 +54,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;versie-2.0&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/paul/shared-paul-files/Webs/git-repos/ictuwp-plugin-initiatievenkaart/includes&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/includes" />
       <recent name="$PROJECT_DIR$/templates" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.30387.85" />
+        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.30387.85" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -64,22 +110,40 @@
       <workItem from="1638542838258" duration="31999000" />
       <workItem from="1638907342534" duration="914000" />
       <workItem from="1639041897371" duration="6304000" />
+      <workItem from="1640092039435" duration="1215000" />
+      <workItem from="1640169952032" duration="7000" />
+      <workItem from="1642608099716" duration="893000" />
+      <workItem from="1642774780182" duration="597000" />
+      <workItem from="1647103823724" duration="1449000" />
+      <workItem from="1680774604368" duration="631000" />
+      <workItem from="1681202672656" duration="2875000" />
+      <workItem from="1684239472255" duration="1722000" />
+      <workItem from="1684255557893" duration="89000" />
+      <workItem from="1684924373729" duration="10704000" />
+      <workItem from="1685036122298" duration="2084000" />
+      <workItem from="1685285985070" duration="456000" />
+      <workItem from="1685537655069" duration="991000" />
+      <workItem from="1685604097268" duration="1108000" />
+      <workItem from="1693992041855" duration="1353000" />
+      <workItem from="1694437452823" duration="1313000" />
+      <workItem from="1698696850034" duration="845000" />
+      <workItem from="1698743508628" duration="727000" />
+      <workItem from="1698834508609" duration="599000" />
+      <workItem from="1699276596680" duration="4475000" />
+      <workItem from="1701421742356" duration="1112000" />
+      <workItem from="1738661768484" duration="459000" />
+      <workItem from="1753083687423" duration="2588000" />
+      <workItem from="1754247629682" duration="588000" />
+      <workItem from="1754731446838" duration="1170000" />
+      <workItem from="1755958978539" duration="582000" />
+      <workItem from="1762425401550" duration="1966000" />
+      <workItem from="1762504992177" duration="1792000" />
+      <workItem from="1777460654110" duration="1439000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="298" y="97" width="1035" height="582" key="find.popup" timestamp="1639082982849">
-      <screen x="0" y="25" width="1440" height="875" />
-    </state>
-    <state x="2211" y="485" width="1006" height="548" key="find.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1638970002942" />
-    <state x="298" y="97" width="1035" height="582" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1639082982849" />
-    <state x="2385" y="49" width="670" height="676" key="search.everywhere.popup" timestamp="1637835899181">
-      <screen x="1440" y="-275" width="2560" height="1415" />
-    </state>
-    <state x="2385" y="49" width="670" height="676" key="search.everywhere.popup/0.25.1440.875/1440.-275.2560.1415@1440.-275.2560.1415" timestamp="1637835899181" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

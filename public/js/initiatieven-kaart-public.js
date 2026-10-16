@@ -97,12 +97,12 @@ Authors:
         if (jQuery("#" + this.mapElementId).length == 0) {
           const _self = this;
           // append after the container
-          const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0" aria-label="Kaart met initiatieven"></div>`;
+          const mapDivHtml = `<div id="${this.mapElementId}" class="${this.mapClass}" tabindex="0"></div>`;
           jQuery("#" + this.mapItemsContainerId).after(mapDivHtml);
 
           // create the toggle map/list button
           const toggleListButton = Object.assign(document.createElement('button'), {
-            textContent: 'Toon de lijst',
+            textContent: 'Toon als lijst',
             id: "toggleListMapButton",
             title: "Wissel tussen het tonen van de kaart en de lijst",
             onclick(ev) {
@@ -467,7 +467,7 @@ Authors:
       jQuery(".leaflet-overlay-pane svg").attr("role", "presentation").attr("aria-label", "Kaart met initiatieven");
 
       // no tabindex: the links inside should be accessible only
-      jQuery(".leaflet-control-attribution").attr("tabindex", "0").attr("aria-label", "Attribution");
+      jQuery(".leaflet-control-attribution").attr("tabindex", "0");
 
       // zoom-knoppen een fatsoenlijke tekst geven
       jQuery(".leaflet-control-zoom-in").removeAttr("title").removeAttr("aria-label").text('Zoom in');
@@ -480,15 +480,15 @@ Authors:
 
     toggleListMap() {
       if (jQuery("#" + this.mapElementId).is(":visible")) {
-        // hide the map, show the list
+        // map is visible, so hide it and show list
         jQuery("#" + this.mapElementId).hide();
         jQuery("#" + this.mapItemsContainerId).show();
-        jQuery("#toggleListMapButton").html("Toon de kaart");
+        jQuery("#toggleListMapButton").html("Toon op de kaart");
       } else {
-        // the other way around
+        // list is visible, so hide it and show map
         jQuery("#" + this.mapElementId).show();
         jQuery("#" + this.mapItemsContainerId).hide();
-        jQuery("#toggleListMapButton").html("Toon de lijst");
+        jQuery("#toggleListMapButton").html("Toon als lijst");
       }
       this.getLMap().invalidateSize();
       return true;
@@ -516,7 +516,7 @@ Authors:
               iconSize = L.point(baseSize + 2 * increaseSize, baseSize + 2 * increaseSize);
             }
             return L.divIcon({
-              html: `<span aria-label="${cluster.getChildCount()} initiatieven">${cluster.getChildCount()}</span>`,
+              html: `<span>${cluster.getChildCount()}</span>`,
               className: 'clusterIcon clusterIcon-' + sizeClass,
               iconSize: iconSize
             });
