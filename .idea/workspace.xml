@@ -8,8 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/ictuwp-plugin-initiatievenkaart.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-initiatieven-kaart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/archive-innovatieprojecten.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/archive-innovatieprojecten.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/page-innovatieprojecten.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page-innovatieprojecten.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/filter-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/filter-functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/single-innovatieproject.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/single-innovatieproject.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

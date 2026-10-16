@@ -35,56 +35,39 @@ function initiatievenkaart_terms_for_post_type( string $taxonomy, string $post_t
 
 	$return = array();
 
+	$tax_query = array(
+		'relation' => 'AND',
+		array(
+			'taxonomy' => $taxonomy,
+			'operator' => 'EXISTS',
+		)
+	);
+
+	if ( ( is_tax( CT_PROJECTJAAR ) ) || ( is_tax( CT_PROJECTORGANISATIE ) ) ) {
+		// this is an archive. Filter the list projects, to only projects that have the get_queried_object_id()
+		$secondtaxonomy = CT_PROJECTORGANISATIE;
+		$term_id        = get_queried_object_id();
+
+		if ( is_tax( CT_PROJECTJAAR ) ) {
+			$secondtaxonomy = CT_PROJECTJAAR;
+		}
+
+		$tax_query[] = array(
+			'taxonomy' => $secondtaxonomy,
+			'field'    => 'term_id',
+			'terms'    => (int) $term_id,
+		);
+
+	}
+
 	$args_postids = array(
 		'post_type'     => $post_type,
 		'post_status'   => 'publish',
 		'numberposts'   => - 1,
 		'fields'        => 'ids',
 		'no_found_rows' => true,
-		'tax_query'     => array(
-			array(
-				'taxonomy' => $taxonomy,
-				'operator' => 'EXISTS',
-			)
-		)
+		'tax_query'     => $tax_query
 	);
-
-
-	/*
-	 *
-			'tax_query'      => array( 'relation' => 'AND' ),
-	);
-
-
-
-		if ( $filter_by_year && ( FILTER_ALL !== $filter_by_year ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => CT_PROJECTJAAR,
-				'field'    => 'slug',
-				'terms'    => $filter_by_year,
-			);
-		}
-
-
-	 *
-		if ( $filter_by_year && ( FILTER_ALL !== $filter_by_year ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => CT_PROJECTJAAR,
-				'field'    => 'slug',
-				'terms'    => $filter_by_year,
-			);
-		}
-
-		if ( $filter_by_dossier ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => RHSWP_CT_DOSSIER,
-				'field'    => 'slug',
-				'terms'    => $filter_by_dossier,
-			);
-		}
-
-	 */
-
 
 	$post_ids = get_posts( $args_postids );
 
@@ -194,7 +177,7 @@ function innovatieprojecten_form_object_select( $id, $label, $terms, $current, $
 
 	$return = '';
 	$return .= '<div class="row">';
-	$return .= '        <label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+	$return .= '        <label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . ' (' . count( $terms ) . 'x)</label>';
 	$return .= '        <select name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '">';
 	$return .= '            <option value="' . FILTER_ALL . '">' . esc_html( $alles_label ) . '</option>';
 	foreach ( $terms as $term ) :
@@ -227,7 +210,8 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 	$return               = '';
 	$initiatieficons      = led_get_initiatieficons();
 	$filter_label         = '';
-	$list_of_all_years    = initiatievenkaart_projects_get_terms( CT_PROJECTJAAR );
+//	$list_of_all_years    = initiatievenkaart_projects_get_terms( CT_PROJECTJAAR );
+	$list_of_all_years    = initiatievenkaart_terms_for_post_type( CT_PROJECTJAAR , CPT_INNOVATIEPROJECT );
 	$list_of_all_dossiers = initiatievenkaart_terms_for_post_type( RHSWP_CT_DOSSIER, CPT_INNOVATIEPROJECT );
 
 	$filter_by_year        = isset( $_GET['filter_by_year'] ) ? sanitize_title( wp_unslash( $_GET['filter_by_year'] ) ) : FILTER_NOREQUEST;
@@ -250,13 +234,14 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 		$index_array = array_search( $filter_by_dossier, array_column( $list_of_all_dossiers, 'ID' ) );
 		if ( false !== $index_array ) {
 			$filter_by_dossier = $list_of_all_dossiers[ $index_array ];
+		} else {
+			$filter_by_dossier = array();
 		}
 	}
 
-
-	$filter_is_taxonomy   = false;
-	$filter_taxonomy_term = '';
-	$filter_taxonomy      = '';
+	$filter_is_taxonomy      = false;
+	$filter_taxonomy_term_id = '';
+	$filter_taxonomy         = '';
 
 	if ( ( is_tax( CT_PROJECTJAAR ) ) || ( is_tax( CT_PROJECTORGANISATIE ) ) ) {
 		// this is an archive for CT_PROJECTJAAR / CT_PROJECTORGANISATIE
@@ -282,8 +267,8 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 		$term = get_term( $term_id, $filter_taxonomy );
 
 		if ( $term && ! is_wp_error( $term ) ) {
-			$filter_taxonomy_term = $term->name;
-			$filter_label         = sprintf( $filter_label, $term->name );
+			$filter_taxonomy_term_id = $term_id;
+			$filter_label            = sprintf( $filter_label, $term->name );
 		}
 	} else {
 		// not an archive
@@ -298,6 +283,11 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 			$term        = $terms[0]; // WP_Term object
 			$recent_year = array( 'label' => $term->name, 'ID' => $term->term_id );
+		}
+
+		$index_array = array_search( $filter_by_dossier, array_column( $list_of_all_dossiers, 'ID' ) );
+		if ( false !== $index_array ) {
+			$filter_by_dossier = $list_of_all_dossiers[ $index_array ];
 		}
 
 	}
@@ -336,40 +326,36 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 
 
 	if ( $filter_is_taxonomy ) {
+		// is archive
 		$args['tax_query'][] = array(
 			'taxonomy' => $filter_taxonomy,
-			'field'    => 'slug',
-			'terms'    => $filter_taxonomy_term,
+			'field'    => 'term_id',
+			'terms'    => $filter_taxonomy_term_id,
 		);
-	} else {
+	}
 
 
-		if ( $filter_by_year && ( FILTER_ALL !== $filter_by_year ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => CT_PROJECTJAAR,
-				'field'    => 'slug',
-				'terms'    => $filter_by_year,
-			);
-		}
+	if ( isset( $filter_by_year['ID'] ) && ( ! ( is_tax( CT_PROJECTJAAR ) ) ) && ( FILTER_ALL !== $filter_by_year ) ) {
+		$args['tax_query'][] = array(
+			'taxonomy' => CT_PROJECTJAAR,
+			'field'    => 'term_id',
+			'terms'    => $filter_by_year['ID'],
+		);
+	}
 
-		if ( $filter_by_dossier ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => RHSWP_CT_DOSSIER,
-				'field'    => 'slug',
-				'terms'    => $filter_by_dossier,
-			);
-		}
+	if ( isset( $filter_by_dossier['ID'] ) ) {
+
+		$args['tax_query'][] = array(
+			'taxonomy' => RHSWP_CT_DOSSIER,
+			'field'    => 'term_id',
+			'terms'    => $filter_by_dossier['ID'],
+		);
 	}
 
 	// No filters selected: drop the empty tax_query.
 	if ( count( $args['tax_query'] ) === 1 ) {
 		unset( $args['tax_query'] );
 	}
-
-	echo '<h1>SELECT projecten</h1>';
-	echo '<pre>';
-	var_dump( $args );
-	echo '</pre>';
 
 	$contentblockpostscount = new WP_Query( $args );
 
@@ -393,7 +379,9 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 		// this an archive for CT_PROJECTJAAR, we do not use a filter for years
 		$filter_by_year = array();
 	}
-	$return .= innovatieprojecten_form_object_select( 'filter_by_dossier', __( 'Onderwerpen', 'initiatieven-kaart' ), $list_of_all_dossiers, $filter_by_dossier, _x( '-- alle onderwerpen', 'default onderwerpen', 'initiatieven-kaart' ), true ); // phpcs:ignore
+	if ( $list_of_all_dossiers) {
+		$return .= innovatieprojecten_form_object_select( 'filter_by_dossier', __( 'Onderwerpen', 'initiatieven-kaart' ), $list_of_all_dossiers, $filter_by_dossier, _x( '-- alle onderwerpen', 'default onderwerpen', 'initiatieven-kaart' ), true ); // phpcs:ignore
+	}
 	$return .= '</fieldset>';
 
 	$options = array(
@@ -433,8 +421,25 @@ function led_write_innovatieprojecten_list( $doreturn = false ) {
 			$truncated_label = $filter_by_dossier['label'];
 			$aria_label      = sprintf( _x( $filderedby_title . " %s ", 'Search - no results', 'wp-rijkshuisstijl' ), $truncated_label );
 			$return          .= '<li><button aria-label="' . $aria_label . '" name="remove_filter_by_dossier" value="' . $filter_by_dossier['ID'] . '" class="remove">' . $filter_by_dossier['label'] . ' <span aria-hidden="true">&times;</span></button></li>';
-			if ( $filter_by_year ) {
-				$filter_label = sprintf( _x( 'voor de combinatie van \'%s\' met \'%s\'', "filter by year and dossier", 'initiatieven-kaart' ), $filter_by_year['label'], $filter_by_dossier['label'] );
+
+			$dossier_label = sprintf( _x( 'voor \'%s\'', "filter by other than year", 'initiatieven-kaart' ), $filter_by_dossier['label'] );
+
+			if ( is_tax( CT_PROJECTORGANISATIE )) {
+				$organisatie = get_query_var( CT_PROJECTORGANISATIE );
+				$organisatie_label = sprintf( _x( 'en \'%s\'', "filter by year", 'initiatieven-kaart' ), $organisatie);
+				$filter_label = sprintf( _x( '%s %s', "filter by year and dossier", 'initiatieven-kaart' ), $dossier_label, $organisatie_label );
+
+			} elseif ( $filter_by_year || is_tax( CT_PROJECTJAAR )) {
+				if ($filter_by_year ) {
+					$year = $filter_by_year['label'];
+				} else {
+					$year = get_query_var( CT_PROJECTJAAR );
+				}
+				$year_label = sprintf( _x( 'uit %s', "filter by year", 'initiatieven-kaart' ), $year);
+				$filter_label = sprintf( _x( '%s %s', "filter by year and dossier", 'initiatieven-kaart' ), $year_label, $dossier_label );
+
+
+
 			} else {
 				$filter_label = sprintf( _x( 'voor \'%s\'', "filter by other than year", 'initiatieven-kaart' ), $filter_by_dossier['label'] );
 			}

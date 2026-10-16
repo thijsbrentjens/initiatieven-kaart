@@ -101,7 +101,6 @@ class Initiatieven_Kaart {
 		if ( ! defined( 'CT_PROJECTORGANISATIE' ) ) {
 			define( 'CT_PROJECTORGANISATIE', 'organisatie' );
 		}
-
 		// taxonomie voor jaar voor een innovatieproject
 		if ( ! defined( 'CT_PROJECTJAAR' ) ) {
 			define( 'CT_PROJECTJAAR', 'jaar-toekenning' );
@@ -122,6 +121,9 @@ class Initiatieven_Kaart {
 		}
 		if ( ! defined( 'FILTER_NOREQUEST' ) ) {
 			define( 'FILTER_NOREQUEST', 'none' );
+		}
+		if ( ! defined( 'DO_SEPARATOR' ) ) {
+			define( 'DO_SEPARATOR', ' | ' );
 		}
 
 		$this->initiatieven_kaart = 'initiatieven-kaart';

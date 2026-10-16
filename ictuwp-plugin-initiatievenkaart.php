@@ -199,7 +199,7 @@ function innovatiebudget_cpt_and_taxonomies() {
 
 
 	// Type organisatie; dit is een taxonomy zodat we innovatieprojecten kunnen groeperen.
-	$labels = array(
+	$taxonomy_terms = array(
 		'name'              => esc_html_x( 'Type organisatie', 'taxonomy', 'initiatieven-kaart' ),
 		'singular_name'     => esc_html_x( 'Organisatie', 'taxonomy singular name', 'initiatieven-kaart' ),
 		'search_items'      => esc_html_x( 'Search organisatie', 'taxonomy', 'initiatieven-kaart' ),
@@ -215,7 +215,7 @@ function innovatiebudget_cpt_and_taxonomies() {
 
 	$args = array(
 		'hierarchical'      => true,
-		'labels'            => $labels,
+		'labels'            => $taxonomy_terms,
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
@@ -225,7 +225,7 @@ function innovatiebudget_cpt_and_taxonomies() {
 	register_taxonomy( CT_PROJECTORGANISATIE, array( CPT_INNOVATIEPROJECT ), $args );
 
 	// Type organisatie; dit is een taxonomy zodat we innovatieprojecten kunnen groeperen.
-	$labels = array(
+	$taxonomy_terms = array(
 		'name'              => esc_html_x( 'Jaar toekenning', 'taxonomy', 'initiatieven-kaart' ),
 		'singular_name'     => esc_html_x( 'Jaar toekenning', 'taxonomy singular name', 'initiatieven-kaart' ),
 		'search_items'      => esc_html_x( 'Search jaar', 'taxonomy', 'initiatieven-kaart' ),
@@ -241,7 +241,7 @@ function innovatiebudget_cpt_and_taxonomies() {
 
 	$args = array(
 		'hierarchical'      => true,
-		'labels'            => $labels,
+		'labels'            => $taxonomy_terms,
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
@@ -313,75 +313,141 @@ function led_get_initiatieficons() {
 /*
  * deze functie formatteert een list-item voor de lijst met initiatieven
  */
-function led_get_list_item_archive( $postobject, $initiatieficons = array(), $categorytype = CT_PROJECTORGANISATIE ) {
+function get_metadata_for_post( $postobject, $taxonomy = CT_PROJECTORGANISATIE, $arguments = array() ) {
+
+	$return = array();
+
+	if ( $taxonomy ) {
+
+		if ( function_exists( 'rhswp_translateposttypes' ) ) {
+			$return['label'] = rhswp_translateposttypes( $taxonomy );
+		} else {
+			$type            = get_taxonomy( $taxonomy );
+			$return['label'] = $type->labels->singular_name;
+		}
+		$return['items'] = array();
+		$terms           = get_the_terms( $postobject->ID, $taxonomy );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$return['items'][] = $term;
+			}
+		}
+	}
+
+	return $return;
+}
+
+//========================================================================================================
+/*
+ * deze functie formatteert een list-item voor de lijst met initiatieven
+ */
+function led_get_list_item_archive( $postobject, $initiatieficons = array(), $selected_taxonomy = CT_PROJECTORGANISATIE ) {
 
 	$return = '';
 
 	// use the location attributes to create data-attributes for the map
 	// second term false: current post
-	$locationField   = get_field( 'openstreet_map', $postobject->ID );
-	$title           = get_the_title( $postobject->ID );
-	$permalink       = led_get_initiatief_permalink( $postobject->ID );
-	$initiatieftypes = array();
-	$label           = 'type';
+	$locationField  = get_field( 'openstreet_map', $postobject->ID );
+	$title          = get_the_title( $postobject->ID );
+	$permalink      = led_get_initiatief_permalink( $postobject->ID );
+	$jaren          = get_metadata_for_post( $postobject, CT_PROJECTJAAR );
+	$organisaties   = get_metadata_for_post( $postobject, CT_PROJECTORGANISATIE );
+	$dossiers       = get_metadata_for_post( $postobject, RHSWP_CT_DOSSIER );
+	$meta_data      = '';
+	$taxonomy_terms = '';
+	$classes        = array();
 
 	/*
 	 * haal de intitieftypes op. Dit kunnen er meerdere zijn, op dit moment.
-	 * dit is de taxonomie $categorytype
+	 * dit is de taxonomie $selected_taxonomy
 	 * aan elke waarde hiervan zou een icoontje moeten hangen
 	 * dus bijv. type 'Community' krijgt een icoontje 'community'
 	 */
-	if ( $categorytype ) {
-		$initiatieftypes = get_the_terms( $postobject->ID, $categorytype );
-		$type            = get_taxonomy( $categorytype );
-		$label           = $type->labels->singular_name;
-	}
-	$classes = array();
+
+
+	if ( $organisaties && ! is_wp_error( $organisaties ) ) :
+		// check in welk initiatieftype dit initiatieftype zit
+		// aan dit type hangt o.m. het icoontje
+		// NB op dit moment is het praktisch mogelijk om een initiatief aan
+		// MEERDERE initiatieftypes te hangen
+
+		$counter        = 0;
+		$taxonomy_terms = '<span>';
+		$taxonomy_terms .= $organisaties['label'] . ': ';
+		$taxonomy_terms .= '</span>';
+
+		foreach ( $organisaties['items'] as $item ) {
+			$counter ++;
+			// het icoontje dat bij dit initiatieftype hoort, staat in de array $initiatieficons
+			if ( isset( $initiatieficons[ $item->slug ] ) ) {
+				array_push( $classes, $initiatieficons[ $item->slug ]['name'] );
+			} else {
+				array_push( $classes, $item->slug );
+			}
+			if ( $counter > 1 ) {
+				$taxonomy_terms .= ', ';
+			}
+			$taxonomy_terms .= '<span class="' . $item->slug . '">' . $item->name . '</span>';
+		}
+
+		$meta_data = '<span class="initiatieftype">';
+		$meta_data .= $taxonomy_terms;
+		$meta_data .= '</span>';
+
+	endif;
+
+	if ( $jaren['items'] && ! is_wp_error( $jaren ) ) :
+
+		$counter = 0;
+		if ( $meta_data ) {
+			$meta_data .= '<span>' . DO_SEPARATOR;
+		} else {
+			$meta_data .= '<span>';
+		}
+		$meta_data .= $jaren['label'] . ': ';
+		$meta_data .= '</span>';
+
+		foreach ( $jaren['items'] as $item ) {
+			$counter ++;
+			if ( $counter > 1 ) {
+				$meta_data .= ', ';
+			}
+			$meta_data .= '<span class="' . $item->slug . '">' . $item->name . '</span>';
+		}
+
+	endif;
+
+
+	if ( $dossiers['items'] && ! is_wp_error( $dossiers ) ) :
+
+		$counter = 0;
+		if ( $meta_data ) {
+			$meta_data .= '<span>' . DO_SEPARATOR;
+		} else {
+			$meta_data .= '<span>';
+		}
+		$meta_data .= $dossiers['label'] . ': ';
+		$meta_data .= '</span>';
+
+		foreach ( $dossiers['items'] as $item ) {
+			$counter ++;
+			if ( $counter > 1 ) {
+				$meta_data .= ', ';
+			}
+			$meta_data .= '<span class="' . $item->slug . '">' . $item->name . '</span>';
+		}
+
+	endif;
+
+
 
 	if ( $locationField != false ) {
 		// er zijn locatie-gegevens voor dit initiatief
-		$plaatsnaam     = get_field( 'locatie_plaatsnaam', $postobject->ID );
-		$initiatieftype = '';
-
-		if ( $initiatieftypes && ! is_wp_error( $initiatieftypes ) ) :
-			// check in welk initiatieftype dit initiatieftype zit
-			// aan dit type hangt o.m. het icoontje
-			// NB op dit moment is het praktisch mogelijk om een initiatief aan
-			// MEERDERE initiatieftypes te hangen
-
-			$labels  = '';
-			$counter = 0;
-			foreach ( $initiatieftypes as $term ) {
-				$counter ++;
-				// het icoontje dat bij dit initiatieftype hoort, staat in de array $initiatieficons
-				if ( isset( $initiatieficons[ $term->slug ] ) ) {
-					array_push( $classes, $initiatieficons[ $term->slug ]['name'] );
-				} else {
-					array_push( $classes, $term->slug );
-				}
-				if ( $counter > 1 ) {
-					$labels .= ', ';
-				}
-
-//				$labels .= '<div class="' . $term->slug . '">' . $term->name . '</div>';
-				$labels .= '<span class="' . $term->slug . '">' . $term->name . '</span>';
-			}
-
-			if ( $labels ) {
-				// als er iets aanwezig is voor de taxonomy initatietype,
-				// dan zetten we alle waarden daarvoor in een <dl>
-				$initiatieftype = '<div class="initiatieftype ' . join( " ", $classes ) . '">';
-				$initiatieftype .= $label . ': ';
-				$initiatieftype .= $labels;
-				$initiatieftype .= '</div>';
-			}
-
-		endif;
+		$plaatsnaam = get_field( 'locatie_plaatsnaam', $postobject->ID );
 
 		// TB: gebruik de lat/lon van de eerste marker als locatie
 		// zie https://github.com/mcguffin/acf-openstreetmap-field/wiki/Usage
-		$bestLatitude  = '';
-		$bestLongitude = '';
 		if ( count( $locationField["markers"] ) >= 1 ):
 			$bestLatitude  = $locationField["markers"][0]["lat"];
 			$bestLongitude = $locationField["markers"][0]["lng"];
@@ -393,7 +459,7 @@ function led_get_list_item_archive( $postobject, $initiatieficons = array(), $ca
 
 		$return .= sprintf( "\n\n" . '<li class="map-item" data-latitude="%s" data-longitude="%s" data-map-item-type="%s" data-map-item-plaats="%s" data-map-item-naam="%s">', $bestLatitude, $bestLongitude, join( " ", $classes ), $plaatsnaam, $title );
 		$return .= sprintf( "\n" . '<h2><a href="%s">%s</a></h2>', $permalink, $title );
-		$return .= sprintf( "\n" . '%s', $initiatieftype );
+		$return .= sprintf( "\n" . '<div class="meta">%s</div>', $meta_data );
 
 		// iets van een samenvatting, beschrijving tonen hier
 		$return .= sprintf( '<p>%s</p>', wp_strip_all_tags( get_the_excerpt() ) );
@@ -628,7 +694,10 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 
 		$thetax = CT_PROJECTORGANISATIE;
 		if ( is_tax( CT_PROJECTJAAR ) ) {
-			$thetax = CT_PROJECTJAAR;
+			$thetax       = CT_PROJECTJAAR;
+			$filter_label = _x( 'uit %s', "filter by year", 'initiatieven-kaart' );
+		} else {
+			$filter_label = _x( 'voor \'%s\'', "filter by other than year", 'initiatieven-kaart' );
 		}
 
 		$term_id = get_queried_object_id();
@@ -642,7 +711,7 @@ function led_initiatieven_archive_title( $doreturn = false ) {
 		}
 
 		if ( $count ) {
-			$return = '<h1>' . sprintf( _n( '%s innovatieproject voor %s', "%s innovatieprojecten voor %s", $count, 'initiatieven-kaart' ), $count, strtolower( $archive_title ) ) . '</h1>';
+			$return = '<h1>' . sprintf( _n( '1 innovatieproject voor %s', "Alle innovatieprojecten %s", $count, 'initiatieven-kaart' ), sprintf( $filter_label, strtolower( $archive_title ) ) ) . '</h1>';
 		} else {
 			// Niks geen initiatieven niet. Nul, nada, noppes, nihil.
 			// Zeeland en Drenthe, laat van je HO-REN!

@@ -205,7 +205,7 @@ function led_project_single_info( $doreturn = false ) {
 			$adres .= wp_strip_all_tags( $straatnaam_huisnummer ) . '<br>';
 		}
 		if ( $locatie_postcode ) {
-			$adres .= ( ( $adres ) ? wp_strip_all_tags( $locatie_postcode ) . '<br>' : wp_strip_all_tags( $locatie_postcode ) );
+			$adres .= ( ( $adres ) ? wp_strip_all_tags( $locatie_postcode ) . '<br>' : wp_strip_all_tags( $locatie_postcode ) . ', ');
 		}
 		if ( $plaatsnaam ) {
 			$adres .= ( ( $adres ) ? wp_strip_all_tags( $plaatsnaam ) . '<br>' : wp_strip_all_tags( $plaatsnaam ) );
